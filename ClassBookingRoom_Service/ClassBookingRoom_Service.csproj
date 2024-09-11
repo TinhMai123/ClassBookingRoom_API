@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ClassBookingRoom_Repository\ClassBookingRoom_Repository.csproj" />
+  </ItemGroup>
+
 </Project>
