@@ -10,8 +10,7 @@ namespace ClassBookingRoom_Repository.Data
 {
     public class AppDbContext : DbContext
     {
-
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
@@ -22,4 +21,5 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<User> Users { get; set; }
 
     }
+
 }
