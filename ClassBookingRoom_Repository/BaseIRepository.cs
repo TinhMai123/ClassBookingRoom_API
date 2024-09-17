@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository
 {
-    internal interface IRepository<T> where T : class
+    public interface BaseIRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

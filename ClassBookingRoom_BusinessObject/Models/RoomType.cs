@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject
+namespace ClassBookingRoom_BusinessObject.Models
 {
     [Table("RoomTypes")]
-    public class RoomType
+    public class RoomType : BaseModels
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public List<Room> Rooms { get; set; } = [];
-        public List<Group> AllowedGroup { get; set; } = [];
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public ICollection<Room> Rooms { get; set; } = [];
+        public ICollection<AllowedCohorts> AllowedCohorts { get; set; } = [];
     }
 }
