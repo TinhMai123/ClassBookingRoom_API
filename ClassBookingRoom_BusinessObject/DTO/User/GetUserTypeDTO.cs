@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject.DTO
+namespace ClassBookingRoom_BusinessObject.DTO.User
 {
-    public class GetUserDTO
+    public class GetUserTypeDTO
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;

@@ -22,7 +22,28 @@ namespace ClassBookingRoom_Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohorts", b =>
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Activity");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohort", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,13 +57,16 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<int?>("RoomTypeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CohortId");
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("AllowedCohorts");
+                    b.ToTable("AllowedCohort");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
@@ -62,18 +86,15 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("DeleteAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SlotId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -82,13 +103,34 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("CreateById");
 
+                    b.HasIndex("DepartmentId");
+
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("SlotId");
+                    b.ToTable("Booking");
+                });
 
-                    b.HasIndex("TeamId");
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.ToTable("Bookings");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoomSlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("RoomSlotId");
+
+                    b.ToTable("BookingSlot");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Campus", b =>
@@ -146,7 +188,23 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cohorts");
+                    b.ToTable("Cohort");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Department");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
@@ -175,7 +233,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Room", b =>
@@ -212,7 +270,31 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Room");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomSlot");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomType", b =>
@@ -229,6 +311,9 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("DeleteAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -238,60 +323,9 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomTypes");
-                });
+                    b.HasIndex("DepartmentId");
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Slot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeleteAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("duration")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Slots");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeleteAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teams");
+                    b.ToTable("RoomType");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
@@ -311,6 +345,9 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.Property<DateTime>("DeleteAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -349,36 +386,21 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("CohortId");
 
-                    b.ToTable("Users");
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("User");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.UserTeam", b =>
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
+                        .WithMany("Activities")
+                        .HasForeignKey("DepartmentId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("isLeader")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTeams");
+                    b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohorts", b =>
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohort", b =>
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Cohort", "Cohort")
                         .WithMany("AllowedCohorts")
@@ -399,25 +421,32 @@ namespace ClassBookingRoom_Repository.Migrations
                         .WithMany()
                         .HasForeignKey("CreateById");
 
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("DepartmentId");
+
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", "Room")
                         .WithMany("Bookings")
                         .HasForeignKey("RoomId");
 
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Slot", "Slot")
-                        .WithMany("Bookings")
-                        .HasForeignKey("SlotId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Team", "Team")
-                        .WithMany("Bookings")
-                        .HasForeignKey("TeamId");
-
                     b.Navigation("CreateBy");
 
                     b.Navigation("Room");
+                });
 
-                    b.Navigation("Slot");
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
+                {
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
+                        .WithMany("BookingSlots")
+                        .HasForeignKey("BookingId");
 
-                    b.Navigation("Team");
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.RoomSlot", "RoomSlot")
+                        .WithMany("BookingSlots")
+                        .HasForeignKey("RoomSlotId");
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("RoomSlot");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
@@ -444,6 +473,24 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("RoomType");
                 });
 
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomSlot", b =>
+                {
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", "Room")
+                        .WithMany("RoomSlots")
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomType", b =>
+                {
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Campus", "Campus")
@@ -454,28 +501,20 @@ namespace ClassBookingRoom_Repository.Migrations
                         .WithMany("Users")
                         .HasForeignKey("CohortId");
 
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
                     b.Navigation("Campus");
 
                     b.Navigation("Cohort");
+
+                    b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.UserTeam", b =>
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
                 {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "User")
-                        .WithMany("Team")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-
-                    b.Navigation("User");
+                    b.Navigation("BookingSlots");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Campus", b =>
@@ -490,11 +529,25 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Department", b =>
+                {
+                    b.Navigation("Activities");
+
+                    b.Navigation("Bookings");
+                });
+
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Room", b =>
                 {
                     b.Navigation("Bookings");
 
                     b.Navigation("Reports");
+
+                    b.Navigation("RoomSlots");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomSlot", b =>
+                {
+                    b.Navigation("BookingSlots");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomType", b =>
@@ -504,21 +557,9 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("Rooms");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Slot", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Team", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
                 {
                     b.Navigation("Reports");
-
-                    b.Navigation("Team");
                 });
 #pragma warning restore 612, 618
         }

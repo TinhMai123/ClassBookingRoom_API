@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO;
+﻿using ClassBookingRoom_BusinessObject.DTO.User;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,8 @@ namespace ClassBookingRoom_Service.IServices
     {
         Task AddUserAsync(AddUserTestDTO add);
         Task<bool> DeleteUserAsync(int id);
-        Task<GetUserDTO> GetUserByEmailAsync(string email);
+        Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<string> Login(LoginDTO request);
     }
 }

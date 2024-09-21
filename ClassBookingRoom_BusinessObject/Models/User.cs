@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_BusinessObject.Models
 {
-    [Table("Users")]
+    [Table("User")]
     public class User : BaseModels
     {
         public Guid Id { get; set; }
@@ -18,9 +18,9 @@ namespace ClassBookingRoom_BusinessObject.Models
         public string Role { get; set; } = string.Empty;
         public string ProfileImageURL {  get; set; } = string.Empty;  
         public string Status { get; set; } = string.Empty; 
+        public Department? Department { get; set; }
         public Campus? Campus { get; set; }
         public Cohort? Cohort { get; set; }
-        public ICollection<UserTeam> Team { get; set; } = [];
         public ICollection<Report> Reports { get; set; } = [];      
     }
 }
