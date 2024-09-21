@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO;
+﻿using ClassBookingRoom_BusinessObject.DTO.User;
 using ClassBookingRoom_BusinessObject.Models;
 using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
@@ -17,10 +17,10 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public async Task<GetUserDTO> GetUserById(string email)
+        public async Task<GetUserTypeDTO> GetUserTypeByEmail(string email)
         {
-            var answer =  await _context.Users.Where(c=>c.Email == email).SingleOrDefaultAsync();
-            var user = new GetUserDTO
+            var answer =  await GetUserByEmail(email);
+            var user = new GetUserTypeDTO
             {
                 FirstName = answer.FirstName,
                 LastName = answer.LastName,
@@ -33,8 +33,14 @@ namespace ClassBookingRoom_Repository.Repos
 
         public async Task<List<User>> GetUserByName(string name)
         {
-            return await _context.Users.Where(c => c.Equals(name)).ToListAsync();
+            return await _context.Users.Where(c => c.FirstName.Equals(name) || c.LastName.Equals(name)).ToListAsync();
+        }
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _context.Users.Where(c => c.Email == email).SingleOrDefaultAsync();
+            
         }
 
     }
 }
+ 

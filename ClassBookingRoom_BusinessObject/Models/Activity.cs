@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassBookingRoom_BusinessObject.Models
 {
-    public class AllowedCohorts
+    [Table("Activity")]
+    public class Activity
     {
         public int Id { get; set; }
-        public RoomType? RoomType { get; set; }
-        public Cohort? Cohort { get; set; }
+        public string? Name { get; set; }  
+        public Department? Department { get; set; }
+
     }
 }

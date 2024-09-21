@@ -1,5 +1,5 @@
 ﻿using ClassBookingRoom_BusinessObject;
-using ClassBookingRoom_BusinessObject.DTO;
+using ClassBookingRoom_BusinessObject.DTO.User;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,8 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IUserRepo
     {
-        Task<GetUserDTO> GetUserById(string email);
+        Task<GetUserTypeDTO> GetUserTypeByEmail(string email);
+        Task<User?> GetUserByEmail(string email);
+        Task<List<User>> GetUserByName(string name);
     }
 }

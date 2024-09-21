@@ -19,13 +19,13 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomType> RoomsTypes { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Team> Teams { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<UserTeam> UserTeams { get; set; }
-        public DbSet<Slot> Slots { get; set; }
-        public DbSet<AllowedCohorts> AllowedCohorts { get; set; }
-        public DbSet<Campus> Campus { get; set; }
-
-    }
+        public DbSet<AllowedCohort> AllowedCohorts { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<BookingSlot> BookingSlots { get; set; }
+        public DbSet<RoomSlot> RoomSlots { get; set; }
+        public DbSet<Campus> Campuses { get; set; }
+     }
 
 }
