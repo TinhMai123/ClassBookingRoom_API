@@ -15,5 +15,6 @@ namespace ClassBookingRoom_BusinessObject.Models
         public User? CreateBy {  get; set; }
         public Room? Room { get; set; }
         public ICollection<BookingSlot>? BookingSlots { get; set; }
+        public ICollection<BookingActivity>? BookingActivities { get; set; }
     }
 }

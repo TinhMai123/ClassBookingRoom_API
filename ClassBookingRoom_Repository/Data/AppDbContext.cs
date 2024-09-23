@@ -26,6 +26,8 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<BookingSlot> BookingSlots { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
         public DbSet<Campus> Campuses { get; set; }
+        public DbSet<BookingActivity> BookingActivities { get; set; }
+        public DbSet<BookingDepartment> BookingDepartments { get; set;}
      }
 
 }
