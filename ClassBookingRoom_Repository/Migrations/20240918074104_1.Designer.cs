@@ -4,6 +4,7 @@ using ClassBookingRoom_Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassBookingRoom_Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918074104_1")]
+    partial class _1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,49 +111,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Booking");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingActivity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ActivityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
-
-                    b.HasIndex("BookingId");
-
-                    b.ToTable("BookingActivities");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingDepartment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("BookingDepartments");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
@@ -477,36 +437,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingActivity", b =>
-                {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Activity", "Activity")
-                        .WithMany("BookingActivities")
-                        .HasForeignKey("ActivityId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
-                        .WithMany("BookingActivities")
-                        .HasForeignKey("BookingId");
-
-                    b.Navigation("Activity");
-
-                    b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingDepartment", b =>
-                {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
-                        .WithMany()
-                        .HasForeignKey("BookingId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Department");
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
@@ -585,15 +515,8 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
-                {
-                    b.Navigation("BookingActivities");
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
                 {
-                    b.Navigation("BookingActivities");
-
                     b.Navigation("BookingSlots");
                 });
 

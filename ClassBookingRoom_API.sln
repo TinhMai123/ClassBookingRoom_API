@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassBookingRoom_BusinessObject", "ClassBookingRoom_BusinessObject\ClassBookingRoom_BusinessObject.csproj", "{AF391658-2A6C-44EC-AB38-2BDA916E268A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassBookingRoom_BusinessObject", "ClassBookingRoom_BusinessObject\ClassBookingRoom_BusinessObject.csproj", "{AF391658-2A6C-44EC-AB38-2BDA916E268A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassBookingRoom_Repository", "ClassBookingRoom_Repository\ClassBookingRoom_Repository.csproj", "{EEAADDE5-0C68-455A-A02C-4CC6F9019211}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassBookingRoom_Repository", "ClassBookingRoom_Repository\ClassBookingRoom_Repository.csproj", "{EEAADDE5-0C68-455A-A02C-4CC6F9019211}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassBookingRoom_Service", "ClassBookingRoom_Service\ClassBookingRoom_Service.csproj", "{98D15218-0C4C-40A6-9C43-0058D8EE1B23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassBookingRoom_Service", "ClassBookingRoom_Service\ClassBookingRoom_Service.csproj", "{98D15218-0C4C-40A6-9C43-0058D8EE1B23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassBookingRoom_API", "ClassBookingRoom_API\ClassBookingRoom_API.csproj", "{C9E07D62-D163-48C0-8083-CE7275A02D19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassBookingRoom_API", "ClassBookingRoom_API\ClassBookingRoom_API.csproj", "{C9E07D62-D163-48C0-8083-CE7275A02D19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

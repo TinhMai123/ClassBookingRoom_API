@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ClassBookingRoom_Repository.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository
 {
-    internal class Repository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : BaseIRepository<T> where T : class
     {
-        private readonly DbContext _context;
+        public readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public Repository(DbContext context)
+        public BaseRepository(AppDbContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
@@ -36,18 +37,21 @@ namespace ClassBookingRoom_Repository
 
         public async Task UpdateAsync(T entity)
         {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
+            
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
                 await _context.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
     }
 }
