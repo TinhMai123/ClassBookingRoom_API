@@ -1,5 +1,8 @@
 ﻿using ClassBookingRoom_BusinessObject.Models;
+using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +11,38 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Service.Services
 {
+
     public class CohortService : ICohortService
     {
-        public Task<bool> AddCohortAsync(Cohort add)
+
+        private readonly ICohortRepo _repo;
+        private readonly BaseIRepository<Cohort> _baseRepo;
+        private IConfiguration _configuration;
+
+        public CohortService(ICohortRepo repo, BaseIRepository<Cohort> baseRepo, IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            _repo = repo;
+            _baseRepo = baseRepo;
+            _configuration = configuration;
+        }
+        public async Task<bool> AddCohortAsync(Cohort add)
+        {
+            return await _repo.AddCohortAsync(add);
         }
 
-        public Task<bool> DeleteCohortAsync(int id)
+        public async Task<bool> DeleteCohortAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.DeleteCohortAsync(id);
         }
 
         public Task<Cohort> GetCohort(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetCohort(id);
         }
 
         public Task<Cohort> GetCohortByCode(string code)
         {
-            throw new NotImplementedException();
+            return _repo.GetCohortByCode(code);
         }
 
         public Task<List<Cohort>> GetCohorts()
@@ -35,9 +50,9 @@ namespace ClassBookingRoom_Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateCohortAsync(Cohort update)
+        public async Task<bool> UpdateCohortAsync(Cohort update)
         {
-            throw new NotImplementedException();
+            return await _repo.UpdateCohortAsync(update);
         }
     }
 }

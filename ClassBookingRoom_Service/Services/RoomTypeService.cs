@@ -1,5 +1,8 @@
 ﻿using ClassBookingRoom_BusinessObject.Models;
+using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +13,35 @@ namespace ClassBookingRoom_Service.Services
 {
     public class RoomTypeService : IRoomTypeService
     {
-        public Task<bool> AddRoomTypeAsync(RoomType add)
+        private readonly IRoomTypeRepo _repo;
+        private readonly BaseIRepository<RoomType> _baseRepo;
+        private IConfiguration _configuration;
+
+        public RoomTypeService(IRoomTypeRepo repo, BaseIRepository<RoomType> baseRepo, IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            _repo = repo;
+            _baseRepo = baseRepo;
+            _configuration = configuration;
+        }
+        public async Task<bool> AddRoomTypeAsync(RoomType add)
+        {
+            return await _repo.AddRoomTypeAsync(add);
         }
 
-        public Task<bool> DeleteRoomTypeAsync(int id)
+        public async Task<bool> DeleteRoomTypeAsync(int id)
         {
-            throw new NotImplementedException();
+            var de = await _baseRepo.DeleteAsync(id);
+            return de;
         }
 
-        public Task<RoomType> GetRoomByName(string name)
+        public async Task<RoomType> GetRoomTypeByName(string name)
         {
-            throw new NotImplementedException();
+            return await _repo.GetRoomTypeByName(name);
         }
 
-        public Task<Room> GetRoomType(int id)
+        public Task<RoomType> GetRoomType(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetRoomType(id);
         }
 
         public Task<List<RoomType>> GetRoomTypes()
@@ -35,9 +49,9 @@ namespace ClassBookingRoom_Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateRoomTypeAsync(RoomType update)
+        public async Task<bool> UpdateRoomTypeAsync(RoomType update)
         {
-            throw new NotImplementedException();
+            return await _repo.UpdateRoomTypeAsync(update);
         }
     }
 }

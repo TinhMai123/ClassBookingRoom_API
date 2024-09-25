@@ -1,5 +1,8 @@
 ﻿using ClassBookingRoom_BusinessObject.Models;
+using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +13,34 @@ namespace ClassBookingRoom_Service.Services
 {
     public class RoomService : IRoomService
     {
-        public Task<bool> AddRoomAsync(Room add)
+        private readonly IRoomRepo _repo;
+        private readonly BaseIRepository<Room> _baseRepo;
+        private IConfiguration _configuration;
+
+        public RoomService(IRoomRepo repo, BaseIRepository<Room> baseRepo, IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            _repo = repo;
+            _baseRepo = baseRepo;
+            _configuration = configuration;
+        }
+        public async Task<bool> AddRoomAsync(Room add)
+        {
+            return await _repo.AddRoomAsync(add);
         }
 
-        public Task<bool> DeleteRoomAsync(int id)
+        public async Task<bool> DeleteRoomAsync(int id)
         {
-            throw new NotImplementedException();
+            return await (_repo.DeleteRoomAsync(id));
         }
 
         public Task<Room> GetRoom(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetRoom(id);
         }
 
         public Task<Room> GetRoomByRoomName(string name)
         {
-            throw new NotImplementedException();
+            return _repo.GetRoomByRoomName(name);
         }
 
         public Task<List<Room>> GetRooms()
@@ -35,9 +48,9 @@ namespace ClassBookingRoom_Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateRoomAsync(Room update)
+        public async Task<bool> UpdateRoomAsync(Room update)
         {
-            throw new NotImplementedException();
+            return await _repo.UpdateRoomAsync(update); 
         }
     }
 }

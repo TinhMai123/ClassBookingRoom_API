@@ -1,5 +1,8 @@
 ﻿using ClassBookingRoom_BusinessObject.Models;
+using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +11,37 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Service.Services
 {
+
     public class ReportService : IReportService
     {
-        public Task<bool> AddReportAsync(Report add)
+        private readonly IReportRepo _repo;
+        private readonly BaseIRepository<Report> _baseRepo;
+        private IConfiguration _configuration;
+
+        public ReportService(IReportRepo repo, BaseIRepository<Report> baseRepo, IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            _repo = repo;
+            _baseRepo = baseRepo;
+            _configuration = configuration;
+        }
+        public async Task<bool> AddReportAsync(Report add)
+        {
+            return await _repo.AddReportAsync(add);
         }
 
-        public Task<bool> DeleteReportAsync(int id)
+        public async Task<bool> DeleteReportAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.DeleteReportAsync(id);
         }
 
         public Task<Report> GetReport(int id)
         {
-            throw new NotImplementedException();
+            return _repo.GetReport(id);
         }
 
         public Task<Report> GetReportByTitle(string title)
         {
-            throw new NotImplementedException();
+            return _repo.GetReportByTitle(title);
         }
 
         public Task<List<Report>> GetReports()
@@ -35,9 +49,9 @@ namespace ClassBookingRoom_Service.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateReportAsync(Report update)
+        public async Task<bool> UpdateReportAsync(Report update)
         {
-            throw new NotImplementedException();
+            return await _repo.UpdateReportAsync(update);
         }
     }
 }

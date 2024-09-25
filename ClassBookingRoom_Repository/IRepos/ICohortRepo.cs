@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_BusinessObject;
+using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,11 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface ICohortRepo
     {
+        Task<bool> AddCohortAsync(Cohort add);
+        Task<bool> DeleteCohortAsync(int id);
+        Task<Cohort> GetCohort(int id);
+        Task<List<Cohort>> GetCohorts();
+        Task<Cohort> GetCohortByCode(string code);
+        Task<bool> UpdateCohortAsync(Cohort update);
     }
 }

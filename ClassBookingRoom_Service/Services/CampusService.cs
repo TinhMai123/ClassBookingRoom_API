@@ -14,11 +14,11 @@ namespace ClassBookingRoom_Service.Services
 {
     class CampusService : ICampusService
     {
-        private readonly IReportRepo _repo;
+        private readonly ICampusRepo _repo;
         private readonly BaseIRepository<Campus> _baseRepo;
         private IConfiguration _configuration;
 
-        public CampusService(IReportRepo repo, BaseIRepository<Campus> baseRepo, IConfiguration configuration)
+        public CampusService(ICampusRepo repo, BaseIRepository<Campus> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;
@@ -26,23 +26,24 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddCampusAsync(Campus add)
         {
-            throw new NotImplementedException();
+           return await _repo.AddCampusAsync(add); 
 
         }
 
-        public Task<bool> DeleteCampusAsync(int id)
+        public async Task<bool> DeleteCampusAsync(int id)
         {
-            throw new NotImplementedException();
+            var de = await _baseRepo.DeleteAsync(id);
+            return de;
         }
 
-        public Task<Campus> GetCampus(int id)
+        public  Task<Campus> GetCampus(int id)
         {
-            throw new NotImplementedException();
+            return  _repo.GetCampus(id);
         }
 
         public Task<Campus> GetCampusByName(string name)
         {
-            throw new NotImplementedException();
+            return _repo.GetCampusByName(name);
         }
 
         public Task<List<Campus>> GetCampuses()
@@ -52,7 +53,7 @@ namespace ClassBookingRoom_Service.Services
 
         public Task<bool> UpdateCampusAsync(Campus update)
         {
-            throw new NotImplementedException();
+            return _repo.UpdateCampusAsync(update);
         }
     }
 }
