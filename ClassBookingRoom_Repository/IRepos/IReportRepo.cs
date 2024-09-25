@@ -9,11 +9,6 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IReportRepo
     {
-        Task<bool> AddReportAsync(Report add);
-        Task<bool> DeleteReportAsync(int id);
-        Task<Report> GetReport(int id);
-        Task<List<Report>> GetReports();
         Task<Report> GetReportByTitle(string title);
-        Task<bool> UpdateReportAsync(Report update);
     }
 }

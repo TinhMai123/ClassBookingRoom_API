@@ -26,19 +26,19 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddCampusAsync(Campus add)
         {
-           return await _repo.AddCampusAsync(add); 
+           return await _baseRepo.AddAsync(add);
 
         }
 
         public async Task<bool> DeleteCampusAsync(int id)
         {
-            var de = await _baseRepo.DeleteAsync(id);
-            return de;
+            return await _baseRepo.DeleteAsync(id);
+            
         }
 
         public  Task<Campus> GetCampus(int id)
         {
-            return  _repo.GetCampus(id);
+            return  _baseRepo.GetByIdAsync(id);
         }
 
         public Task<Campus> GetCampusByName(string name)
@@ -48,12 +48,12 @@ namespace ClassBookingRoom_Service.Services
 
         public Task<List<Campus>> GetCampuses()
         {
-            throw new NotImplementedException();
+            return _baseRepo.GetAllAsync();
         }
 
         public Task<bool> UpdateCampusAsync(Campus update)
         {
-            return _repo.UpdateCampusAsync(update);
+            return _baseRepo.UpdateAsync(update);
         }
     }
 }

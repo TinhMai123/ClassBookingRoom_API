@@ -25,13 +25,12 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddRoomTypeAsync(RoomType add)
         {
-            return await _repo.AddRoomTypeAsync(add);
+            return await _baseRepo.AddAsync(add);
         }
 
         public async Task<bool> DeleteRoomTypeAsync(int id)
         {
-            var de = await _baseRepo.DeleteAsync(id);
-            return de;
+            return await _baseRepo.DeleteAsync(id);
         }
 
         public async Task<RoomType> GetRoomTypeByName(string name)
@@ -41,17 +40,17 @@ namespace ClassBookingRoom_Service.Services
 
         public Task<RoomType> GetRoomType(int id)
         {
-            return _repo.GetRoomType(id);
+            return _baseRepo.GetByIdAsync(id);
         }
 
         public Task<List<RoomType>> GetRoomTypes()
         {
-            throw new NotImplementedException();
+            return _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateRoomTypeAsync(RoomType update)
         {
-            return await _repo.UpdateRoomTypeAsync(update);
+            return await _baseRepo.UpdateAsync(update);
         }
     }
 }

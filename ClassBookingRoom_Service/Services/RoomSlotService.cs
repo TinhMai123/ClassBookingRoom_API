@@ -25,27 +25,27 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddRoomSlotAsync(RoomSlot add)
         {
-            return await _repo.AddRoomSlotAsync(add);
+            return await _baseRepo.AddAsync(add);
         }
 
         public async Task<bool> DeleteRoomSlotAsync(int id)
         {
-            return await (_repo.DeleteRoomSlotAsync(id));
+            return await _baseRepo.DeleteAsync(id);
         }
 
         public Task<RoomSlot> GetRoomSlot(int id)
         {
-            return _repo.GetRoomSlot(id);
+            return _baseRepo.GetByIdAsync(id);
         }
 
         public Task<List<RoomSlot>> GetRoomSlots()
         {
-            throw new NotImplementedException();
+            return _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateRoomSlotAsync(RoomSlot update)
         {
-            return await _repo.UpdateRoomSlotAsync(update);
+            return await _baseRepo.UpdateAsync(update);
         }
     }
 }

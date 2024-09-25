@@ -14,6 +14,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> DeleteUserAsync(int id);
         Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
         Task<User?> GetUserByEmailAsync(string email);
-        Task<string> Login(LoginDTO request);
+        Task<string?> Login(LoginDTO request);
     }
 }
