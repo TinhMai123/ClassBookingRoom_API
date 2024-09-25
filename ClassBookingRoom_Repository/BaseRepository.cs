@@ -29,17 +29,26 @@ namespace ClassBookingRoom_Repository
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task AddAsync(T entity)
+        public async Task<bool> AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try {
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch { return false; }
+            
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
+            try
+            {
                 _dbSet.Update(entity);
                 await _context.SaveChangesAsync();
-            
+                return true;
+            }
+            catch { return false; }
         }
 
         public async Task<bool> DeleteAsync(int id)

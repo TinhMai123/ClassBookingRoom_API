@@ -27,17 +27,17 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddCohortAsync(Cohort add)
         {
-            return await _repo.AddCohortAsync(add);
+            return await _baseRepo.AddAsync(add);
         }
 
         public async Task<bool> DeleteCohortAsync(int id)
         {
-            return await _repo.DeleteCohortAsync(id);
+            return await _baseRepo.DeleteAsync(id);
         }
 
         public Task<Cohort> GetCohort(int id)
         {
-            return _repo.GetCohort(id);
+            return _baseRepo.GetByIdAsync(id);
         }
 
         public Task<Cohort> GetCohortByCode(string code)
@@ -47,12 +47,12 @@ namespace ClassBookingRoom_Service.Services
 
         public Task<List<Cohort>> GetCohorts()
         {
-            throw new NotImplementedException();
+            return _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateCohortAsync(Cohort update)
         {
-            return await _repo.UpdateCohortAsync(update);
+            return await _baseRepo.UpdateAsync(update);
         }
     }
 }

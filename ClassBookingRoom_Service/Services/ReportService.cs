@@ -26,17 +26,17 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddReportAsync(Report add)
         {
-            return await _repo.AddReportAsync(add);
+            return await _baseRepo.AddAsync(add);
         }
 
         public async Task<bool> DeleteReportAsync(int id)
         {
-            return await _repo.DeleteReportAsync(id);
+            return await _baseRepo.DeleteAsync(id);
         }
 
         public Task<Report> GetReport(int id)
         {
-            return _repo.GetReport(id);
+            return _baseRepo.GetByIdAsync(id);
         }
 
         public Task<Report> GetReportByTitle(string title)
@@ -46,12 +46,12 @@ namespace ClassBookingRoom_Service.Services
 
         public Task<List<Report>> GetReports()
         {
-            throw new NotImplementedException();
+            return  _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateReportAsync(Report update)
         {
-            return await _repo.UpdateReportAsync(update);
+            return await _baseRepo.UpdateAsync(update);
         }
     }
 }

@@ -18,4 +18,4 @@ namespace ClassBookingRoom_Repository.IRepos
         Task<bool> UpdateRoomAsync(Room update);
     }
 }
-}
+
