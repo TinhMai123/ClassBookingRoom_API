@@ -28,7 +28,7 @@ namespace ClassBookingRoom_API.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        [AllowAnonymous]
+        
         [HttpPut("Add-user")]
         public async Task<IActionResult> AddNewUser(AddUserTestDTO add)
         {

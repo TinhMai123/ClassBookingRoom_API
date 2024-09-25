@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_Service.IServices
+namespace ClassBookingRoom_Service.Services
 {
-    public interface IBookingService
+    public class DepartmentService
     {
+
     }
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Service.IServices
 {
-    public interface IBookingService
+    public interface IActivityService
     {
+
     }
 }
