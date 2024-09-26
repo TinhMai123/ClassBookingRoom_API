@@ -17,5 +17,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<string?> Login(LoginDTO request);
         Task<List<UserDTO>> GetAllUser();
         Task<UserDetailDTO?> GetById(Guid id);
+        Task<bool> UpdateUser(Guid id, UpdateUserDTO dto);
     }
 }

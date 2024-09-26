@@ -20,15 +20,23 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IUserRepo _repo;
         private readonly IBaseRepository<User> _baseRepo;
+        private readonly IBaseRepository<Campus> _campusRepo;
+        private readonly IBaseRepository<Cohort> _cohortRepo;
+        private readonly IBaseRepository<Department> _departmentRepo;
+
         private IConfiguration _configuration;
 
-        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration)
+        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration, IBaseRepository<Campus> campusRepo, IBaseRepository<Cohort> cohortRepo, IBaseRepository<Department> departmentRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
             _configuration = configuration;
+            _campusRepo = campusRepo;
+            _cohortRepo = cohortRepo;
+            _departmentRepo = departmentRepo;
         }
-        public async Task AddUserAsync(AddUserTestDTO add) {
+        public async Task AddUserAsync(AddUserTestDTO add)
+        {
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -37,7 +45,7 @@ namespace ClassBookingRoom_Service.Services
                 Email = add.Email,
                 Password = add.Password,
             };
-            
+
             await _baseRepo.AddAsync(user);
         }
         public async Task<bool> DeleteUserAsync(int id)
@@ -49,7 +57,7 @@ namespace ClassBookingRoom_Service.Services
         public async Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email)
         {
             return await _repo.GetUserTypeByEmail(email);
-            
+
         }
         private string CreateToken(User user)
         {
@@ -112,6 +120,26 @@ namespace ClassBookingRoom_Service.Services
         {
             var user = await _baseRepo.GetByIdAsync(id);
             return user?.ToUserDetailDTO();
+        }
+
+        public async Task<bool> UpdateUser(Guid id, UpdateUserDTO dto)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            existingUser.FirstName = dto.FirstName;
+            existingUser.LastName = dto.LastName;
+            existingUser.Role = dto.Role;
+            existingUser.ProfileImageURL = dto.ProfileImageURL;
+            existingUser.Status = dto.Status;
+            var campus = await _campusRepo.GetByIdAsync(dto.CampusId);
+            var cohort = await _cohortRepo.GetByIdAsync(dto.CohortId);
+            var department = await _departmentRepo.GetByIdAsync(dto.DepartmentId);
+            //if (campus == null || cohort == null || department == null) return false;
+            existingUser.Campus = campus;
+            existingUser.Cohort = cohort;
+            existingUser.Department = department;
+            existingUser.UpdatedAt = DateTime.Now;  
+            return await _baseRepo.UpdateAsync(existingUser);
         }
     }
 }
