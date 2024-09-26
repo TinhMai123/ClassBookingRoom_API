@@ -105,9 +105,10 @@ namespace ClassBookingRoom_Service.Services
             }
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<UserDetailDTO?> GetUserByEmailAsync(string email)
         {
-            return await _repo.GetUserByEmail(email);
+            var user = await _repo.GetUserByEmail(email);
+            return user?.ToUserDetailDTO();
         }
 
         public async Task<List<UserDTO>> GetAllUser()
@@ -118,7 +119,7 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<UserDetailDTO?> GetById(Guid id)
         {
-            var user = await _baseRepo.GetByIdAsync(id);
+            var user = await _repo.GetById(id);
             return user?.ToUserDetailDTO();
         }
 

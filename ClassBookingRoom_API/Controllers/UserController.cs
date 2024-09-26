@@ -47,11 +47,11 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpGet("by-email")]
-        public async Task<IActionResult> GetUserTypeByEmail(string email)
+        public async Task<ActionResult<UserDetailDTO>> GetUserTypeByEmail(string email)
         {
             try
             {
-                var user = await _userService.GetUserTypeByEmailAsync(email);
+                var user = await _userService.GetUserByEmailAsync(email);
                 return user != null ? Ok(user) : NotFound("Can't find the email");
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -142,7 +142,7 @@ namespace ClassBookingRoom_API.Controllers
             }
 
             // If token is valid, return success response
-            return Ok(user.ToUserDTO());
+            return Ok(user);
         }
     }
 }

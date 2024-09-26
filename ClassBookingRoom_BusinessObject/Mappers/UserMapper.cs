@@ -25,9 +25,9 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             };
         }
         public static UserDetailDTO ToUserDetailDTO(this User model) { 
-            var campus = model.Campus!.ToCampusDTO();
-            var cohort = model.Cohort!.ToCohortDTO();
-            var department = model.Department!.ToDepartmentDTO();
+            var campus = model.Campus?.ToCampusDTO();
+            var cohort = model.Cohort?.ToCohortDTO();
+            var department = model.Department?.ToDepartmentDTO();
             return new UserDetailDTO
             {
                 Email = model.Email,
