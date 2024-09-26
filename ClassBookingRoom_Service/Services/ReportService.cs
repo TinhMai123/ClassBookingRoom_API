@@ -15,10 +15,10 @@ namespace ClassBookingRoom_Service.Services
     public class ReportService : IReportService
     {
         private readonly IReportRepo _repo;
-        private readonly BaseIRepository<Report> _baseRepo;
+        private readonly IBaseRepository<Report> _baseRepo;
         private IConfiguration _configuration;
 
-        public ReportService(IReportRepo repo, BaseIRepository<Report> baseRepo, IConfiguration configuration)
+        public ReportService(IReportRepo repo, IBaseRepository<Report> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;

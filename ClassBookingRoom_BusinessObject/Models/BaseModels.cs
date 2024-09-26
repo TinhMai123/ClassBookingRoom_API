@@ -9,7 +9,7 @@ namespace ClassBookingRoom_BusinessObject.Models
     public class BaseModels
     {
         public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime DeleteAt { get; set; }
+        public DateTime? DeleteAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
 }

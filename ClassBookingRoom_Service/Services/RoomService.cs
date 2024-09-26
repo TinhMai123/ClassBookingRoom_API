@@ -14,10 +14,10 @@ namespace ClassBookingRoom_Service.Services
     public class RoomService : IRoomService
     {
         private readonly IRoomRepo _repo;
-        private readonly BaseIRepository<Room> _baseRepo;
+        private readonly IBaseRepository<Room> _baseRepo;
         private IConfiguration _configuration;
 
-        public RoomService(IRoomRepo repo, BaseIRepository<Room> baseRepo, IConfiguration configuration)
+        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;

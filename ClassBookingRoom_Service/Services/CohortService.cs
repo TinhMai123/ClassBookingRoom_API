@@ -16,10 +16,10 @@ namespace ClassBookingRoom_Service.Services
     {
 
         private readonly ICohortRepo _repo;
-        private readonly BaseIRepository<Cohort> _baseRepo;
+        private readonly IBaseRepository<Cohort> _baseRepo;
         private IConfiguration _configuration;
 
-        public CohortService(ICohortRepo repo, BaseIRepository<Cohort> baseRepo, IConfiguration configuration)
+        public CohortService(ICohortRepo repo, IBaseRepository<Cohort> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;

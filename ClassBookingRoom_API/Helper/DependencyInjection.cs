@@ -11,7 +11,7 @@ namespace ClassBookingRoom_API.Helper
     {
         public static IServiceCollection AddServicesConfiguration(this IServiceCollection services)
         {
-            services.AddTransient(typeof(BaseIRepository<>), typeof(BaseRepository<>));
+            services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IBookingRepo, BookingRepo>();
             services.AddTransient<IRoomRepo, RoomRepo>();
