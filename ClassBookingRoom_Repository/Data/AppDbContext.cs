@@ -30,7 +30,17 @@ namespace ClassBookingRoom_Repository.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Seeding data
-
+            modelBuilder.Entity<RoomType>().HasData(
+                new RoomType
+                {
+                    Id = -1,
+                    Name = "RoomT1",
+                    DepartmentId = -1,
+                    CreateAt = DateTime.Now,
+                    DeleteAt = null,
+                    UpdatedAt = DateTime.Now,
+                }
+                );
             modelBuilder.Entity<Department>().HasData(
                 new Department
                 {
