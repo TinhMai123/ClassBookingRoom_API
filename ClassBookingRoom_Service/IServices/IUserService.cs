@@ -13,7 +13,10 @@ namespace ClassBookingRoom_Service.IServices
         Task AddUserAsync(AddUserTestDTO add);
         Task<bool> DeleteUserAsync(int id);
         Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
-        Task<User?> GetUserByEmailAsync(string email);
+        Task<UserDetailDTO?> GetUserByEmailAsync(string email);
         Task<string?> Login(LoginDTO request);
+        Task<List<UserDTO>> GetAllUser();
+        Task<UserDetailDTO?> GetById(Guid id);
+        Task<bool> UpdateUser(Guid id, UpdateUserDTO dto);
     }
 }

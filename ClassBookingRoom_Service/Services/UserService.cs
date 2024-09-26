@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_BusinessObject.DTO.User;
+using ClassBookingRoom_BusinessObject.Mappers;
 using ClassBookingRoom_BusinessObject.Models;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
@@ -18,16 +19,22 @@ namespace ClassBookingRoom_Service.Services
     public class UserService : IUserService
     {
         private readonly IUserRepo _repo;
-        private readonly BaseIRepository<User> _baseRepo;
+        private readonly IBaseRepository<User> _baseRepo;
+        private readonly IBaseRepository<Cohort> _cohortRepo;
+        private readonly IBaseRepository<Department> _departmentRepo;
+
         private IConfiguration _configuration;
 
-        public UserService(IUserRepo repo, BaseIRepository<User> baseRepo, IConfiguration configuration)
+        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration, IBaseRepository<Cohort> cohortRepo, IBaseRepository<Department> departmentRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
             _configuration = configuration;
+            _cohortRepo = cohortRepo;
+            _departmentRepo = departmentRepo;
         }
-        public async Task AddUserAsync(AddUserTestDTO add) {
+        public async Task AddUserAsync(AddUserTestDTO add)
+        {
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -36,7 +43,7 @@ namespace ClassBookingRoom_Service.Services
                 Email = add.Email,
                 Password = add.Password,
             };
-            
+
             await _baseRepo.AddAsync(user);
         }
         public async Task<bool> DeleteUserAsync(int id)
@@ -48,7 +55,7 @@ namespace ClassBookingRoom_Service.Services
         public async Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email)
         {
             return await _repo.GetUserTypeByEmail(email);
-            
+
         }
         private string CreateToken(User user)
         {
@@ -96,9 +103,40 @@ namespace ClassBookingRoom_Service.Services
             }
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<UserDetailDTO?> GetUserByEmailAsync(string email)
         {
-            return await _repo.GetUserByEmail(email);
+            var user = await _repo.GetUserByEmail(email);
+            return user?.ToUserDetailDTO();
+        }
+
+        public async Task<List<UserDTO>> GetAllUser()
+        {
+            var modelList = await _baseRepo.GetAllAsync();
+            return modelList.Select(x => x.ToUserDTO()).ToList();
+        }
+
+        public async Task<UserDetailDTO?> GetById(Guid id)
+        {
+            var user = await _repo.GetById(id);
+            return user?.ToUserDetailDTO();
+        }
+
+        public async Task<bool> UpdateUser(Guid id, UpdateUserDTO dto)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            existingUser.FirstName = dto.FirstName;
+            existingUser.LastName = dto.LastName;
+            existingUser.Role = dto.Role;
+            existingUser.ProfileImageURL = dto.ProfileImageURL;
+            existingUser.Status = dto.Status;
+            var cohort = await _cohortRepo.GetByIdAsync(dto.CohortId);
+            var department = await _departmentRepo.GetByIdAsync(dto.DepartmentId);
+            //if (campus == null || cohort == null || department == null) return false;
+            existingUser.Cohort = cohort;
+            existingUser.Department = department;
+            existingUser.UpdatedAt = DateTime.Now;  
+            return await _baseRepo.UpdateAsync(existingUser);
         }
     }
 }

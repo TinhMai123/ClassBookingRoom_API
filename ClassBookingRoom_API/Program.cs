@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Repository.Repos;
+using ClassBookingRoom_Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -43,6 +46,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -75,7 +79,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) 
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
