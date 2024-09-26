@@ -15,10 +15,10 @@ namespace ClassBookingRoom_Service.Services
     class CampusService : ICampusService
     {
         private readonly ICampusRepo _repo;
-        private readonly BaseIRepository<Campus> _baseRepo;
+        private readonly IBaseRepository<Campus> _baseRepo;
         private IConfiguration _configuration;
 
-        public CampusService(ICampusRepo repo, BaseIRepository<Campus> baseRepo, IConfiguration configuration)
+        public CampusService(ICampusRepo repo, IBaseRepository<Campus> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;

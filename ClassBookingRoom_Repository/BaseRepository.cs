@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository
 {
-    public class BaseRepository<T> : BaseIRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         public readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -24,11 +24,14 @@ namespace ClassBookingRoom_Repository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
-
+        public async Task<T?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
         public async Task<bool> AddAsync(T entity)
         {
             try {

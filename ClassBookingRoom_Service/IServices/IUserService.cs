@@ -15,5 +15,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
         Task<User?> GetUserByEmailAsync(string email);
         Task<string?> Login(LoginDTO request);
+        Task<List<UserDTO>> GetAllUser();
+        Task<UserDetailDTO?> GetById(Guid id);
     }
 }

@@ -18,6 +18,18 @@ namespace ClassBookingRoom_API.Controllers
         {
             _userService = userService;
         }
+        [HttpGet]
+        public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUser();
+            return Ok(users);
+        }
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult<UserDetailDTO>> GetById([FromRoute] Guid id)
+        {
+            var users = await _userService.GetById(id);
+            return Ok(users);
+        }
         [HttpGet("by-email")]
         public async Task<IActionResult> GetUserTypeByEmail(string email)
         {
@@ -28,8 +40,7 @@ namespace ClassBookingRoom_API.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> AddNewUser(AddUserTestDTO add)
         {
             try
@@ -54,7 +65,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO login)
+        public async Task<IActionResult> Login([FromBody]LoginDTO login)
         {
             try
             {

@@ -28,6 +28,6 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Campus> Campuses { get; set; }
         public DbSet<BookingActivity> BookingActivities { get; set; }
         public DbSet<BookingDepartment> BookingDepartments { get; set;}
-     }
+    }
 
 }

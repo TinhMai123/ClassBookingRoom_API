@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_BusinessObject.DTO.User;
+using ClassBookingRoom_BusinessObject.Mappers;
 using ClassBookingRoom_BusinessObject.Models;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
@@ -18,10 +19,10 @@ namespace ClassBookingRoom_Service.Services
     public class UserService : IUserService
     {
         private readonly IUserRepo _repo;
-        private readonly BaseIRepository<User> _baseRepo;
+        private readonly IBaseRepository<User> _baseRepo;
         private IConfiguration _configuration;
 
-        public UserService(IUserRepo repo, BaseIRepository<User> baseRepo, IConfiguration configuration)
+        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration)
         {
             _repo = repo;
             _baseRepo = baseRepo;
@@ -99,6 +100,18 @@ namespace ClassBookingRoom_Service.Services
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _repo.GetUserByEmail(email);
+        }
+
+        public async Task<List<UserDTO>> GetAllUser()
+        {
+            var modelList = await _baseRepo.GetAllAsync();
+            return modelList.Select(x => x.ToUserDTO()).ToList();
+        }
+
+        public async Task<UserDetailDTO?> GetById(Guid id)
+        {
+            var user = await _baseRepo.GetByIdAsync(id);
+            return user?.ToUserDetailDTO();
         }
     }
 }
