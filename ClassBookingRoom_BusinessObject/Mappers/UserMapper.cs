@@ -22,6 +22,8 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 ProfileImageURL = model.ProfileImageURL,
                 Role = model.Role,
                 Status = model.Status,
+                CohortId = model.CohortId,
+                DepartmentId = model.DepartmentId,
             };
         }
         public static UserDetailDTO ToUserDetailDTO(this User model) { 
