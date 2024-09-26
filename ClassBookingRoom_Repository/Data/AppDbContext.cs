@@ -25,7 +25,6 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Activity> Activities { get; set; }
         public DbSet<BookingSlot> BookingSlots { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
-        public DbSet<Campus> Campuses { get; set; }
         public DbSet<BookingActivity> BookingActivities { get; set; }
         public DbSet<BookingDepartment> BookingDepartments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,22 +51,11 @@ namespace ClassBookingRoom_Repository.Data
                     CohortCode = "K17"
                 }
                 );
-            modelBuilder.Entity<Campus>().HasData(
-                new Campus
-                {
-                    Id = -1,
-                    CreateAt = DateTime.Now,
-                    DeleteAt = null,
-                    UpdatedAt = DateTime.Now,
-                    Address = "Lưu Hữu Phước Tân Lập, Khu phố, Dĩ An, Bình Dương, Vietnam",
-                    Name = "NVH",
-                    HotLine = "0979563412",
-                });
+            
             modelBuilder.Entity<User>().HasData(
           new User
           {
               Id = Guid.NewGuid(),
-              CampusId = -1,
               CohortId = null,
               DepartmentId = -1,
               CreateAt = DateTime.Now,
@@ -84,7 +72,6 @@ namespace ClassBookingRoom_Repository.Data
            new User
            {
                Id = Guid.NewGuid(),
-               CampusId = -1,
                CohortId = null,
                DepartmentId = -1,
                CreateAt = DateTime.Now,
@@ -101,7 +88,6 @@ namespace ClassBookingRoom_Repository.Data
             new User
             {
                 Id = Guid.NewGuid(),
-                CampusId = -1,
                 CohortId = -1,
                 DepartmentId = -1,
                 CreateAt = DateTime.Now,

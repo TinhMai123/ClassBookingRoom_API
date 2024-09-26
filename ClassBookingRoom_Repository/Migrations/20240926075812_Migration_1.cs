@@ -14,24 +14,6 @@ namespace ClassBookingRoom_Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Campus",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HotLine = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Campus", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cohort",
                 columns: table => new
                 {
@@ -117,7 +99,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     ProfileImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    CampusId = table.Column<int>(type: "int", nullable: true),
                     CohortId = table.Column<int>(type: "int", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -126,11 +107,6 @@ namespace ClassBookingRoom_Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_Campus_CampusId",
-                        column: x => x.CampusId,
-                        principalTable: "Campus",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_User_Cohort_CohortId",
                         column: x => x.CohortId,
@@ -347,28 +323,23 @@ namespace ClassBookingRoom_Repository.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Campus",
-                columns: new[] { "Id", "Address", "CreateAt", "DeleteAt", "HotLine", "Name", "UpdatedAt" },
-                values: new object[] { -1, "Lưu Hữu Phước Tân Lập, Khu phố, Dĩ An, Bình Dương, Vietnam", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5732), null, "0979563412", "NVH", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5733) });
-
-            migrationBuilder.InsertData(
                 table: "Cohort",
                 columns: new[] { "Id", "CohortCode", "CreateAt", "DeleteAt", "UpdatedAt" },
-                values: new object[] { -1, "K17", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5708), null, new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5709) });
+                values: new object[] { -1, "K17", new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7436), null, new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7437) });
 
             migrationBuilder.InsertData(
                 table: "Department",
                 columns: new[] { "Id", "CreateAt", "DeleteAt", "Name", "UpdatedAt" },
-                values: new object[] { -1, new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5585), null, "IT", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5586) });
+                values: new object[] { -1, new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7283), null, "IT", new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7284) });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "CampusId", "CohortId", "CreateAt", "DeleteAt", "DepartmentId", "Email", "FirstName", "LastName", "Password", "ProfileImageURL", "Role", "Status", "UpdatedAt" },
+                columns: new[] { "Id", "CohortId", "CreateAt", "DeleteAt", "DepartmentId", "Email", "FirstName", "LastName", "Password", "ProfileImageURL", "Role", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("9cc40017-61ba-4c9d-8ecd-5eee20b270fa"), -1, -1, new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5795), null, -1, "student@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Student", "Active", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5797) },
-                    { new Guid("bfd78cee-b40e-48d3-8aed-f7694640edbb"), -1, null, new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5791), null, -1, "manager@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Manager", "Active", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5793) },
-                    { new Guid("ec612731-07c5-4101-b7ee-656d7de388fc"), -1, null, new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5783), null, -1, "admin@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Admin", "Active", new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5787) }
+                    { new Guid("24a9ed53-3def-4582-bd46-872f50528e41"), -1, new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7493), null, -1, "student@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Student", "Active", new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7494) },
+                    { new Guid("68c8cb26-8a82-48f2-b6eb-f0224aed11d3"), null, new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7489), null, -1, "manager@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Manager", "Active", new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7491) },
+                    { new Guid("f44f3c52-00e4-4d90-a03c-6a0474eefa9f"), null, new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7483), null, -1, "admin@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Admin", "Active", new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7486) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -457,11 +428,6 @@ namespace ClassBookingRoom_Repository.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_CampusId",
-                table: "User",
-                column: "CampusId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_CohortId",
                 table: "User",
                 column: "CohortId");
@@ -504,9 +470,6 @@ namespace ClassBookingRoom_Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "Room");
-
-            migrationBuilder.DropTable(
-                name: "Campus");
 
             migrationBuilder.DropTable(
                 name: "Cohort");
