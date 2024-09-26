@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO;
+﻿using ClassBookingRoom_BusinessObject.DTO.Cohort;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,10 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             return new CohortDTO
             {
                 Id = model.Id,
-                CohortCode = model.CohortCode
+                CohortCode = model.CohortCode,
+                UpdatedAt = model.UpdatedAt,
+                DeleteAt = model.DeleteAt,
+                CreateAt = model.CreateAt
             };
         }
     }

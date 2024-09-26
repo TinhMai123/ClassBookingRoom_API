@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO;
+﻿using ClassBookingRoom_BusinessObject.DTO.Department;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,17 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             return new DepartmentDTO()
             {
                 Id = model.Id,
-                Name = model.Name
+                Name = model.Name,
+                CreateAt = model.CreateAt,
+                DeleteAt = model.DeleteAt,
+                UpdatedAt = model.UpdatedAt,
+            };
+        }
+        public static Department ToDepartmentFromCreate(this CreateDepartmentDTO dto)
+        {
+            return new Department
+            {
+                Name = dto.Name,
             };
         }
     }

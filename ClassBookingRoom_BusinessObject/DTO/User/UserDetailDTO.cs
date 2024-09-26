@@ -1,4 +1,6 @@
-﻿using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_BusinessObject.DTO.Cohort;
+using ClassBookingRoom_BusinessObject.DTO.Department;
+using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
