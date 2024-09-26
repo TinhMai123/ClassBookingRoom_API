@@ -8,9 +8,8 @@ using System.Security.Claims;
 
 namespace ClassBookingRoom_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
-    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -19,17 +18,18 @@ namespace ClassBookingRoom_API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet("user-type-by-email")]
-        public async Task<IActionResult> GetUserTypeByEmail(string email) {
+        [HttpGet("by-email")]
+        public async Task<IActionResult> GetUserTypeByEmail(string email)
+        {
             try
             {
                 var user = await _userService.GetUserTypeByEmailAsync(email);
-                return user != null ? Ok(user) : NotFound("Can't find the email");   
+                return user != null ? Ok(user) : NotFound("Can't find the email");
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        
-        [HttpPut("Add-user")]
+
+        [HttpPut]
         public async Task<IActionResult> AddNewUser(AddUserTestDTO add)
         {
             try
@@ -37,22 +37,9 @@ namespace ClassBookingRoom_API.Controllers
                 await _userService.AddUserAsync(add);
                 return Ok("Add user succesfully");
             }
-            catch(Exception ex) { return BadRequest(ex.Message); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        [HttpGet("user-by-email")]
-        public async Task<IActionResult> GetUserByEmail(string email)
-        {
-            try
-            {
-                var user = await _userService.GetUserByEmailAsync(email);
-                return user != null ? Ok(user) : NotFound("Can't find the email");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpDelete("Delete-user")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteUser(int id)
         {
             try
@@ -61,13 +48,12 @@ namespace ClassBookingRoom_API.Controllers
                 if (delete) return Ok("User Removed");
                 else return NotFound("User Not Found");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO login)
         {
             try
@@ -78,7 +64,7 @@ namespace ClassBookingRoom_API.Controllers
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        [HttpGet("GetUserInfo")]
+        [HttpGet("token")]
         public IActionResult GetUserInfo()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -88,12 +74,15 @@ namespace ClassBookingRoom_API.Controllers
                 var claims = identity.Claims;
                 var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-                return Ok(new
+                if (email != null && role != null)
                 {
-                    Email = email,
-                    Role = role
-                });
+                    var user = _userService.GetUserByEmailAsync(email);
+                    return Ok(user);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
 
             return Unauthorized();
