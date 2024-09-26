@@ -18,7 +18,6 @@ namespace ClassBookingRoom_BusinessObject.DTO.User
         public string ProfileImageURL { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public DepartmentDTO? Department { get; set; }
-        public CampusDTO? Campus { get; set; }
         public CohortDTO? Cohort { get; set; }
     }
 }

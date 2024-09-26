@@ -25,7 +25,6 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             };
         }
         public static UserDetailDTO ToUserDetailDTO(this User model) { 
-            var campus = model.Campus?.ToCampusDTO();
             var cohort = model.Cohort?.ToCohortDTO();
             var department = model.Department?.ToDepartmentDTO();
             return new UserDetailDTO
@@ -37,7 +36,6 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 ProfileImageURL = model.ProfileImageURL,
                 Role = model.Role,
                 Status = model.Status,
-                Campus = campus,
                 Cohort = cohort,
                 Department = department
             };

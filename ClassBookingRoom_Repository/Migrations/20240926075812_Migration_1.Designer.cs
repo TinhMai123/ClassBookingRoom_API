@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassBookingRoom_Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240926063810_Migration_1")]
+    [Migration("20240926075812_Migration_1")]
     partial class Migration_1
     {
         /// <inheritdoc />
@@ -179,50 +179,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.ToTable("BookingSlot");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Campus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HotLine")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Campus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Address = "Lưu Hữu Phước Tân Lập, Khu phố, Dĩ An, Bình Dương, Vietnam",
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5732),
-                            HotLine = "0979563412",
-                            Name = "NVH",
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5733)
-                        });
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Cohort", b =>
                 {
                     b.Property<int>("Id")
@@ -252,8 +208,8 @@ namespace ClassBookingRoom_Repository.Migrations
                         {
                             Id = -1,
                             CohortCode = "K17",
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5708),
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5709)
+                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7436),
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7437)
                         });
                 });
 
@@ -285,9 +241,9 @@ namespace ClassBookingRoom_Repository.Migrations
                         new
                         {
                             Id = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5585),
+                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7283),
                             Name = "IT",
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5586)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7284)
                         });
                 });
 
@@ -427,9 +383,6 @@ namespace ClassBookingRoom_Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CampusId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CohortId")
                         .HasColumnType("int");
 
@@ -475,8 +428,6 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CampusId");
-
                     b.HasIndex("CohortId");
 
                     b.HasIndex("DepartmentId");
@@ -486,9 +437,8 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ec612731-07c5-4101-b7ee-656d7de388fc"),
-                            CampusId = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5783),
+                            Id = new Guid("f44f3c52-00e4-4d90-a03c-6a0474eefa9f"),
+                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7483),
                             DepartmentId = -1,
                             Email = "admin@fpt.edu.vn",
                             FirstName = "John",
@@ -497,13 +447,12 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Admin",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5787)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7486)
                         },
                         new
                         {
-                            Id = new Guid("bfd78cee-b40e-48d3-8aed-f7694640edbb"),
-                            CampusId = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5791),
+                            Id = new Guid("68c8cb26-8a82-48f2-b6eb-f0224aed11d3"),
+                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7489),
                             DepartmentId = -1,
                             Email = "manager@fpt.edu.vn",
                             FirstName = "John",
@@ -512,14 +461,13 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Manager",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5793)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7491)
                         },
                         new
                         {
-                            Id = new Guid("9cc40017-61ba-4c9d-8ecd-5eee20b270fa"),
-                            CampusId = -1,
+                            Id = new Guid("24a9ed53-3def-4582-bd46-872f50528e41"),
                             CohortId = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5795),
+                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7493),
                             DepartmentId = -1,
                             Email = "student@fpt.edu.vn",
                             FirstName = "John",
@@ -528,7 +476,7 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Student",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 13, 38, 10, 242, DateTimeKind.Local).AddTicks(5797)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7494)
                         });
                 });
 
@@ -664,10 +612,6 @@ namespace ClassBookingRoom_Repository.Migrations
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
                 {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Campus", "Campus")
-                        .WithMany("Users")
-                        .HasForeignKey("CampusId");
-
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Cohort", "Cohort")
                         .WithMany("Users")
                         .HasForeignKey("CohortId");
@@ -675,8 +619,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Campus");
 
                     b.Navigation("Cohort");
 
@@ -693,11 +635,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("BookingActivities");
 
                     b.Navigation("BookingSlots");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Campus", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Cohort", b =>

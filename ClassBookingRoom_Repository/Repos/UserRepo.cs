@@ -38,7 +38,6 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<User?> GetUserByEmail(string email)
         {
             return await _context.Users
-                .Include(x => x.Campus)
                 .Include(x => x.Cohort)
                 .Include(x => x.Department)
                 .FirstOrDefaultAsync(c => c.Email == email);
@@ -47,7 +46,6 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<User?> GetById(Guid id)
         {
             return await _context.Users
-                .Include(x => x.Campus)
                 .Include(x => x.Cohort)
                 .Include(x => x.Department)
                 .FirstOrDefaultAsync(c => c.Id == id);

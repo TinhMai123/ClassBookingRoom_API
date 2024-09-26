@@ -20,18 +20,16 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IUserRepo _repo;
         private readonly IBaseRepository<User> _baseRepo;
-        private readonly IBaseRepository<Campus> _campusRepo;
         private readonly IBaseRepository<Cohort> _cohortRepo;
         private readonly IBaseRepository<Department> _departmentRepo;
 
         private IConfiguration _configuration;
 
-        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration, IBaseRepository<Campus> campusRepo, IBaseRepository<Cohort> cohortRepo, IBaseRepository<Department> departmentRepo)
+        public UserService(IUserRepo repo, IBaseRepository<User> baseRepo, IConfiguration configuration, IBaseRepository<Cohort> cohortRepo, IBaseRepository<Department> departmentRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
             _configuration = configuration;
-            _campusRepo = campusRepo;
             _cohortRepo = cohortRepo;
             _departmentRepo = departmentRepo;
         }
@@ -132,11 +130,9 @@ namespace ClassBookingRoom_Service.Services
             existingUser.Role = dto.Role;
             existingUser.ProfileImageURL = dto.ProfileImageURL;
             existingUser.Status = dto.Status;
-            var campus = await _campusRepo.GetByIdAsync(dto.CampusId);
             var cohort = await _cohortRepo.GetByIdAsync(dto.CohortId);
             var department = await _departmentRepo.GetByIdAsync(dto.DepartmentId);
             //if (campus == null || cohort == null || department == null) return false;
-            existingUser.Campus = campus;
             existingUser.Cohort = cohort;
             existingUser.Department = department;
             existingUser.UpdatedAt = DateTime.Now;  
