@@ -35,9 +35,9 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public Task<Cohort> GetCohort(int id)
+        public async Task<Cohort?> GetCohort(int id)
         {
-            return _baseRepo.GetByIdAsync(id);
+            return await _baseRepo.GetByIdAsync(id);
         }
 
         public Task<Cohort> GetCohortByCode(string code)

@@ -11,7 +11,7 @@ namespace ClassBookingRoom_Service.IServices
     {
         Task<bool> AddCohortAsync(Cohort add);
         Task<bool> DeleteCohortAsync(int id);
-        Task<Cohort> GetCohort(int id);
+        Task<Cohort?> GetCohort(int id);
         Task<List<Cohort>> GetCohorts();
         Task<Cohort> GetCohortByCode(string code);
         Task<bool> UpdateCohortAsync(Cohort update);

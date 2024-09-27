@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.Department;
+﻿using ClassBookingRoom_BusinessObject.DTO.Report;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;
@@ -9,24 +9,26 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_BusinessObject.Mappers
 {
-    public static class DepartmentMapper
+    public static class ReportMapper
     {
-        public static DepartmentDTO ToDepartmentDTO(this Department model)
+        public static ReportDTO ToReportDTO(this Report model)
         {
-            return new DepartmentDTO()
+            return new ReportDTO
             {
                 Id = model.Id,
-                Name = model.Name,
                 CreateAt = model.CreateAt,
                 DeleteAt = model.DeleteAt,
-                UpdatedAt = model.UpdatedAt,
+                Description = model.Description,
+                Title = model.Title,
+                UpdatedAt = model.UpdatedAt
             };
         }
-        public static Department ToDepartmentFromCreate(this CreateDepartmentDTO dto)
+        public static Report CreateReportFromDTO(this CreateReportDTO dto)
         {
-            return new Department
+            return new Report
             {
-                Name = dto.Name,
+                Description = dto.Description,
+                Title = dto.Title,
                 CreateAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };

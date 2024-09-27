@@ -39,7 +39,9 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 Role = model.Role,
                 Status = model.Status,
                 Cohort = cohort,
-                Department = department
+                Department = department,
+                DepartmentId =  model.DepartmentId,
+                CohortId = model.CohortId
             };
         }
     }

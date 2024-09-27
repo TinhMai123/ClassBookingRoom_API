@@ -55,7 +55,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
-
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -85,7 +85,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
         builder => builder
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173", "https://fu-booking-room.vercel.app")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });

@@ -33,14 +33,14 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public Task<RoomSlot> GetRoomSlot(int id)
+        public async Task<RoomSlot> GetRoomSlot(int id)
         {
-            return _baseRepo.GetByIdAsync(id);
+            return await _baseRepo.GetByIdAsync(id);
         }
 
-        public Task<List<RoomSlot>> GetRoomSlots()
+        public async Task<List<RoomSlot>> GetRoomSlots()
         {
-            return _baseRepo.GetAllAsync();
+            return await _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateRoomSlotAsync(RoomSlot update)

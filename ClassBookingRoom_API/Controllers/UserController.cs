@@ -134,7 +134,11 @@ namespace ClassBookingRoom_API.Controllers
                 return BadRequest("Token has expired.");
             }
 
-            string email = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            string? email = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (email is null)
+            {
+                return StatusCode(500);
+            }
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
             {

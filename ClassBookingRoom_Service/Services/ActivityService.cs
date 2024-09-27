@@ -26,11 +26,6 @@ namespace ClassBookingRoom_Service.Services
             _configuration = configuration;
         }
 
-        public ActivityService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public async Task<bool> CreateAsync(CreateActivityDTO add)
         {
             return await _baseRepo.AddAsync(add.ToActivityFromCreate());

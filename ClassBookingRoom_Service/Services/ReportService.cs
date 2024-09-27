@@ -8,50 +8,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassBookingRoom_BusinessObject.DTO.Report;
+using ClassBookingRoom_BusinessObject.Mappers;
 
 namespace ClassBookingRoom_Service.Services
 {
 
     public class ReportService : IReportService
     {
-        private readonly IReportRepo _repo;
         private readonly IBaseRepository<Report> _baseRepo;
         private IConfiguration _configuration;
 
-        public ReportService(IReportRepo repo, IBaseRepository<Report> baseRepo, IConfiguration configuration)
+        public ReportService(IBaseRepository<Report> baseRepo, IConfiguration configuration)
         {
-            _repo = repo;
             _baseRepo = baseRepo;
             _configuration = configuration;
         }
-        public async Task<bool> AddReportAsync(Report add)
+        public async Task<bool> AddAsync(CreateReportDTO add)
         {
-            return await _baseRepo.AddAsync(add);
+            return await _baseRepo.AddAsync(add.CreateReportFromDTO());
         }
 
-        public async Task<bool> DeleteReportAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public Task<Report> GetReport(int id)
+        public async Task<ReportDTO?> GetById(int id)
         {
-            return _baseRepo.GetByIdAsync(id);
+            var result = await _baseRepo.GetByIdAsync(id);
+            return result?.ToReportDTO();
         }
 
-        public Task<Report> GetReportByTitle(string title)
+        public async Task<List<ReportDTO>> GetAll()
         {
-            return _repo.GetReportByTitle(title);
+            var list = await _baseRepo.GetAllAsync();
+            return list.Select(x => x.ToReportDTO()).ToList();
         }
 
-        public Task<List<Report>> GetReports()
+        public async Task<bool> UpdateAsync(int id, UpdateReportDTO update)
         {
-            return  _baseRepo.GetAllAsync();
-        }
-
-        public async Task<bool> UpdateReportAsync(Report update)
-        {
-            return await _baseRepo.UpdateAsync(update);
+            var result = await _baseRepo.GetByIdAsync(id);
+            if (result is null) { return false; }
+            result.Title = update.Title;
+            result.Description = update.Description;
+            result.UpdatedAt = DateTime.Now;
+            return await _baseRepo.UpdateAsync(result);
         }
     }
+
 }
+
