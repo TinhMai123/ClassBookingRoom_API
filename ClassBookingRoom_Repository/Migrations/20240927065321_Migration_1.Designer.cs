@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassBookingRoom_Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240926075812_Migration_1")]
+    [Migration("20240927065321_Migration_1")]
     partial class Migration_1
     {
         /// <inheritdoc />
@@ -25,54 +25,22 @@ namespace ClassBookingRoom_Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BookingRoomSlot", b =>
+                {
+                    b.Property<int>("BookingsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomSlotsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingsId", "RoomSlotsId");
+
+                    b.HasIndex("RoomSlotsId");
+
+                    b.ToTable("BookingRoomSlot", (string)null);
+                });
+
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Activity");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohort", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CohortId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RoomTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CohortId");
-
-                    b.HasIndex("RoomTypeId");
-
-                    b.ToTable("AllowedCohort");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,8 +51,38 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("CreateById")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime?>("DeleteAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Activity");
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime2");
@@ -102,81 +100,20 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreateById");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Booking");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingActivity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ActivityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
 
-                    b.HasIndex("BookingId");
-
-                    b.ToTable("BookingActivities");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingDepartment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("BookingDepartments");
-                });
+                    b.HasIndex("RoomId");
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasIndex("UserId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RoomSlotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("RoomSlotId");
-
-                    b.ToTable("BookingSlot");
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Cohort", b =>
@@ -208,8 +145,8 @@ namespace ClassBookingRoom_Repository.Migrations
                         {
                             Id = -1,
                             CohortCode = "K17",
-                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7436),
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7437)
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206),
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206)
                         });
                 });
 
@@ -241,10 +178,45 @@ namespace ClassBookingRoom_Repository.Migrations
                         new
                         {
                             Id = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7283),
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4186),
                             Name = "IT",
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7284)
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4187)
                         });
+                });
+
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.News", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeleteAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Newss");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
@@ -333,7 +305,7 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<TimeOnly>("StartTime")
@@ -360,7 +332,7 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -375,6 +347,16 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("RoomType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3997),
+                            DepartmentId = -1,
+                            Name = "RoomT1",
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3999)
+                        });
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
@@ -437,8 +419,8 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f44f3c52-00e4-4d90-a03c-6a0474eefa9f"),
-                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7483),
+                            Id = new Guid("985fb9c3-ad6b-41fd-9e3a-540bb121a21c"),
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4280),
                             DepartmentId = -1,
                             Email = "admin@fpt.edu.vn",
                             FirstName = "John",
@@ -447,12 +429,12 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Admin",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7486)
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4284)
                         },
                         new
                         {
-                            Id = new Guid("68c8cb26-8a82-48f2-b6eb-f0224aed11d3"),
-                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7489),
+                            Id = new Guid("82380f5b-5c86-427e-affe-817b55c22330"),
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4287),
                             DepartmentId = -1,
                             Email = "manager@fpt.edu.vn",
                             FirstName = "John",
@@ -461,13 +443,13 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Manager",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7491)
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4289)
                         },
                         new
                         {
-                            Id = new Guid("24a9ed53-3def-4582-bd46-872f50528e41"),
+                            Id = new Guid("17d69571-7e44-440f-8455-81fded39c983"),
                             CohortId = -1,
-                            CreateAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7493),
+                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4303),
                             DepartmentId = -1,
                             Email = "student@fpt.edu.vn",
                             FirstName = "John",
@@ -476,96 +458,87 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Student",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 58, 10, 716, DateTimeKind.Local).AddTicks(7494)
+                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4304)
                         });
+                });
+
+            modelBuilder.Entity("CohortRoomType", b =>
+                {
+                    b.Property<int>("AllowedCohortsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomTypesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AllowedCohortsId", "RoomTypesId");
+
+                    b.HasIndex("RoomTypesId");
+
+                    b.ToTable("RoomTypeCohort", (string)null);
+                });
+
+            modelBuilder.Entity("BookingRoomSlot", b =>
+                {
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", null)
+                        .WithMany()
+                        .HasForeignKey("BookingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.RoomSlot", null)
+                        .WithMany()
+                        .HasForeignKey("RoomSlotsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
                         .WithMany("Activities")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.AllowedCohort", b =>
-                {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Cohort", "Cohort")
-                        .WithMany("AllowedCohorts")
-                        .HasForeignKey("CohortId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.RoomType", "RoomType")
-                        .WithMany("AllowedCohorts")
-                        .HasForeignKey("RoomTypeId");
-
-                    b.Navigation("Cohort");
-
-                    b.Navigation("RoomType");
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
                 {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "CreateBy")
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Activity", "Activity")
                         .WithMany()
-                        .HasForeignKey("CreateById");
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", null)
                         .WithMany("Bookings")
                         .HasForeignKey("DepartmentId");
 
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", "Room")
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", null)
                         .WithMany("Bookings")
                         .HasForeignKey("RoomId");
 
-                    b.Navigation("CreateBy");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingActivity", b =>
-                {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Activity", "Activity")
-                        .WithMany("BookingActivities")
-                        .HasForeignKey("ActivityId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
-                        .WithMany("BookingActivities")
-                        .HasForeignKey("BookingId");
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "CreateBy")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Activity");
 
-                    b.Navigation("Booking");
+                    b.Navigation("CreateBy");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingDepartment", b =>
+            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.News", b =>
                 {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("BookingId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.BookingSlot", b =>
-                {
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Booking", "Booking")
-                        .WithMany("BookingSlots")
-                        .HasForeignKey("BookingId");
-
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.RoomSlot", "RoomSlot")
-                        .WithMany("BookingSlots")
-                        .HasForeignKey("RoomSlotId");
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("RoomSlot");
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
@@ -596,7 +569,9 @@ namespace ClassBookingRoom_Repository.Migrations
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", "Room")
                         .WithMany("RoomSlots")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Room");
                 });
@@ -605,7 +580,9 @@ namespace ClassBookingRoom_Repository.Migrations
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
                 });
@@ -625,22 +602,23 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Activity", b =>
+            modelBuilder.Entity("CohortRoomType", b =>
                 {
-                    b.Navigation("BookingActivities");
-                });
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Cohort", null)
+                        .WithMany()
+                        .HasForeignKey("AllowedCohortsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Booking", b =>
-                {
-                    b.Navigation("BookingActivities");
-
-                    b.Navigation("BookingSlots");
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.RoomType", null)
+                        .WithMany()
+                        .HasForeignKey("RoomTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Cohort", b =>
                 {
-                    b.Navigation("AllowedCohorts");
-
                     b.Navigation("Users");
                 });
 
@@ -660,15 +638,8 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Navigation("RoomSlots");
                 });
 
-            modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomSlot", b =>
-                {
-                    b.Navigation("BookingSlots");
-                });
-
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomType", b =>
                 {
-                    b.Navigation("AllowedCohorts");
-
                     b.Navigation("Rooms");
                 });
 

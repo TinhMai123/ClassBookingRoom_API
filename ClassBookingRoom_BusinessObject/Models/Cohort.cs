@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace ClassBookingRoom_BusinessObject.Models
 {
     [Table("Cohort")]
-    public class Cohort : BaseModels
+    public class Cohort : BaseModel
     {
         public int Id { get; set; }
         public string? CohortCode { get; set; }
         public ICollection<User>? Users { get; set; }
-        public ICollection<AllowedCohort>? AllowedCohorts { get; set; }
+        public ICollection<RoomType>? RoomTypes { get; set; }
     }
 }

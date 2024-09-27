@@ -9,7 +9,7 @@ namespace ClassBookingRoom_BusinessObject.Models
 {
     [Table("Report")]
 
-    public class Report : BaseModels
+    public class Report : BaseModel
     {
         public int Id { get; set; }
         public string? Title { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ClassBookingRoom_BusinessObject.Models
 {
     [Table("Department")]
-    public class Department : BaseModels
+    public class Department : BaseModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }
