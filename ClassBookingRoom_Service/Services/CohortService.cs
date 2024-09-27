@@ -17,13 +17,11 @@ namespace ClassBookingRoom_Service.Services
 
         private readonly ICohortRepo _repo;
         private readonly IBaseRepository<Cohort> _baseRepo;
-        private IConfiguration _configuration;
 
-        public CohortService(ICohortRepo repo, IBaseRepository<Cohort> baseRepo, IConfiguration configuration)
+        public CohortService(ICohortRepo repo, IBaseRepository<Cohort> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
         public async Task<bool> AddCohortAsync(Cohort add)
         {

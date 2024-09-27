@@ -15,13 +15,11 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IRoomRepo _repo;
         private readonly IBaseRepository<Room> _baseRepo;
-        private IConfiguration _configuration;
 
-        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IConfiguration configuration)
+        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
         public async Task<bool> AddRoomAsync(Room add)
         {

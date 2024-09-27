@@ -15,6 +15,7 @@ namespace ClassBookingRoom_BusinessObject.Models
         public Guid UserId { get; set; }
         public int ActivityId { get; set; }
         public User? CreateBy { get; set; }
+        public string Description { get; set; } = string.Empty;
         public ICollection<RoomSlot>? RoomSlots { get; set; }
         public Activity? Activity { get; set; }
     }

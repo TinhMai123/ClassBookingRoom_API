@@ -23,5 +23,6 @@ namespace ClassBookingRoom_BusinessObject.Models
         public Department? Department { get; set; }
         public Cohort? Cohort { get; set; }
         public ICollection<Report> Reports { get; set; } = [];
+        public ICollection<News> Newss { get; set; } = [];
     }
 }

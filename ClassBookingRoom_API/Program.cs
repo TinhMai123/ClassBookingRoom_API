@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Repository.Repos;
 using ClassBookingRoom_Service.Services;
+using ClassBookingRoom_Repository.IRepos;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -56,6 +57,7 @@ builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IReportRepo, ReportRepo>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

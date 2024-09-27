@@ -17,13 +17,11 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IActivityRepo _repo;
         private readonly IBaseRepository<Activity> _baseRepo;
-        private IConfiguration _configuration;
 
-        public ActivityService(IActivityRepo repo, IBaseRepository<Activity> baseRepo, IConfiguration configuration)
+        public ActivityService(IActivityRepo repo, IBaseRepository<Activity> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
 
         public async Task<bool> CreateAsync(CreateActivityDTO add)

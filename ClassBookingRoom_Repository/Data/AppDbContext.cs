@@ -35,6 +35,14 @@ namespace ClassBookingRoom_Repository.Data
                 .HasMany(x => x.RoomSlots)
                 .WithMany(x => x.Bookings)
                 .UsingEntity(x => x.ToTable("BookingRoomSlot"));
+            modelBuilder.Entity<Report>()
+                .HasOne(x => x.CreatedBy)
+                .WithMany(x => x.Reports)
+                .HasForeignKey(x => x.CreatorId);
+            modelBuilder.Entity<News>()
+                .HasOne(x => x.CreatedBy)
+                .WithMany(x => x.Newss)
+                .HasForeignKey(x => x.CreatorId);
 
             // Seeding data
             modelBuilder.Entity<RoomType>().HasData(
@@ -48,6 +56,32 @@ namespace ClassBookingRoom_Repository.Data
                     UpdatedAt = DateTime.Now,
                 }
                 );
+            modelBuilder.Entity<Room>().HasData(
+                new Room
+                {
+                    Id = -1,
+                    Capacity = 10,
+                    RoomName = "101",
+                    RoomTypeId = -1,
+                    Status = "Open"
+                },
+                new Room
+                {
+                    Id = -2,
+                    Capacity = 10,
+                    RoomName = "102",
+                    RoomTypeId = -1,
+                    Status = "Open"
+                },
+                new Room
+                {
+                    Id = -3,
+                    Capacity = 10,
+                    RoomName = "103",
+                    RoomTypeId = -1,
+                    Status = "Closed"
+                }
+            );
             modelBuilder.Entity<Department>().HasData(
                 new Department
                 {
@@ -70,7 +104,7 @@ namespace ClassBookingRoom_Repository.Data
                 }
                 )
                 ;
-            
+
             modelBuilder.Entity<User>().HasData(
           new User
           {

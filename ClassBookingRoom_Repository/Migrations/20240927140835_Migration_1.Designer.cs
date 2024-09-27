@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassBookingRoom_Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240927065321_Migration_1")]
+    [Migration("20240927140835_Migration_1")]
     partial class Migration_1
     {
         /// <inheritdoc />
@@ -87,8 +87,9 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
@@ -106,8 +107,6 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("RoomId");
 
@@ -145,8 +144,8 @@ namespace ClassBookingRoom_Repository.Migrations
                         {
                             Id = -1,
                             CohortCode = "K17",
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206),
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206)
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6112),
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6113)
                         });
                 });
 
@@ -178,9 +177,9 @@ namespace ClassBookingRoom_Repository.Migrations
                         new
                         {
                             Id = -1,
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4186),
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6096),
                             Name = "IT",
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4187)
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6097)
                         });
                 });
 
@@ -195,6 +194,9 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime2");
 
@@ -209,14 +211,11 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatorId");
 
-                    b.ToTable("Newss");
+                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
@@ -230,14 +229,21 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -245,14 +251,11 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("CreatorId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Report");
                 });
@@ -292,6 +295,38 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Room");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Capacity = 10,
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6071),
+                            RoomName = "101",
+                            RoomTypeId = -1,
+                            Status = "Open",
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6072)
+                        },
+                        new
+                        {
+                            Id = -2,
+                            Capacity = 10,
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6075),
+                            RoomName = "102",
+                            RoomTypeId = -1,
+                            Status = "Open",
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6075)
+                        },
+                        new
+                        {
+                            Id = -3,
+                            Capacity = 10,
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6077),
+                            RoomName = "103",
+                            RoomTypeId = -1,
+                            Status = "Closed",
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6077)
+                        });
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.RoomSlot", b =>
@@ -352,10 +387,10 @@ namespace ClassBookingRoom_Repository.Migrations
                         new
                         {
                             Id = -1,
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3997),
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(5934),
                             DepartmentId = -1,
                             Name = "RoomT1",
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3999)
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(5935)
                         });
                 });
 
@@ -419,8 +454,8 @@ namespace ClassBookingRoom_Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("985fb9c3-ad6b-41fd-9e3a-540bb121a21c"),
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4280),
+                            Id = new Guid("89b278a1-9643-4c12-83dd-66cf5177da69"),
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6163),
                             DepartmentId = -1,
                             Email = "admin@fpt.edu.vn",
                             FirstName = "John",
@@ -429,12 +464,12 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Admin",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4284)
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6166)
                         },
                         new
                         {
-                            Id = new Guid("82380f5b-5c86-427e-affe-817b55c22330"),
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4287),
+                            Id = new Guid("53a16bfb-c2e1-4a40-bee2-630617b3c2cf"),
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6169),
                             DepartmentId = -1,
                             Email = "manager@fpt.edu.vn",
                             FirstName = "John",
@@ -443,13 +478,13 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Manager",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4289)
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6170)
                         },
                         new
                         {
-                            Id = new Guid("17d69571-7e44-440f-8455-81fded39c983"),
+                            Id = new Guid("f746a6af-afc9-4930-bc14-0f30d930c927"),
                             CohortId = -1,
-                            CreateAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4303),
+                            CreateAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6173),
                             DepartmentId = -1,
                             Email = "student@fpt.edu.vn",
                             FirstName = "John",
@@ -458,7 +493,7 @@ namespace ClassBookingRoom_Repository.Migrations
                             ProfileImageURL = "https://placehold.co/600x400",
                             Role = "Student",
                             Status = "Active",
-                            UpdatedAt = new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4304)
+                            UpdatedAt = new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6175)
                         });
                 });
 
@@ -511,10 +546,6 @@ namespace ClassBookingRoom_Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.Department", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("DepartmentId");
-
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", null)
                         .WithMany("Bookings")
                         .HasForeignKey("RoomId");
@@ -533,8 +564,8 @@ namespace ClassBookingRoom_Repository.Migrations
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.News", b =>
                 {
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithMany("Newss")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -543,17 +574,21 @@ namespace ClassBookingRoom_Repository.Migrations
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Report", b =>
                 {
+                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "CreatedBy")
+                        .WithMany("Reports")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ClassBookingRoom_BusinessObject.Models.Room", "Room")
                         .WithMany("Reports")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("ClassBookingRoom_BusinessObject.Models.User", "User")
-                        .WithMany("Reports")
-                        .HasForeignKey("UserId");
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("Room");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Room", b =>
@@ -625,8 +660,6 @@ namespace ClassBookingRoom_Repository.Migrations
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Department", b =>
                 {
                     b.Navigation("Activities");
-
-                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.Room", b =>
@@ -645,6 +678,8 @@ namespace ClassBookingRoom_Repository.Migrations
 
             modelBuilder.Entity("ClassBookingRoom_BusinessObject.Models.User", b =>
                 {
+                    b.Navigation("Newss");
+
                     b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618

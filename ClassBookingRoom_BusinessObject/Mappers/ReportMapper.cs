@@ -13,6 +13,7 @@ namespace ClassBookingRoom_BusinessObject.Mappers
     {
         public static ReportDTO ToReportDTO(this Report model)
         {
+            var user = model.CreatedBy?.ToUserDTO();
             return new ReportDTO
             {
                 Id = model.Id,
@@ -20,7 +21,10 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 DeleteAt = model.DeleteAt,
                 Description = model.Description,
                 Title = model.Title,
-                UpdatedAt = model.UpdatedAt
+                UpdatedAt = model.UpdatedAt,
+                CreatedBy = user,
+                CreatorId = model.CreatorId,
+                RoomId = model.RoomId,
             };
         }
         public static Report CreateReportFromDTO(this CreateReportDTO dto)
@@ -30,7 +34,9 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 Description = dto.Description,
                 Title = dto.Title,
                 CreateAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.Now,
+                CreatorId= dto.CreatorId,
+                RoomId= dto.RoomId,
             };
         }
     }

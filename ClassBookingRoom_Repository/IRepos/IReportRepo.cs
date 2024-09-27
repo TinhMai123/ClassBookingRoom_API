@@ -9,6 +9,7 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IReportRepo
     {
-        Task<Report> GetReportByTitle(string title);
+        Task<Report?> GetReportById(int id);
+        Task<List<Report>> GetReports();
     }
 }

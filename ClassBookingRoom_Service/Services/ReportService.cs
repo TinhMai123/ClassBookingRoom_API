@@ -16,17 +16,17 @@ namespace ClassBookingRoom_Service.Services
 
     public class ReportService : IReportService
     {
+        private readonly IReportRepo _reportRepo;
         private readonly IBaseRepository<Report> _baseRepo;
-        private IConfiguration _configuration;
 
-        public ReportService(IBaseRepository<Report> baseRepo, IConfiguration configuration)
+        public ReportService(IBaseRepository<Report> baseRepo, IReportRepo reportRepo)
         {
             _baseRepo = baseRepo;
-            _configuration = configuration;
+            _reportRepo = reportRepo;
         }
-        public async Task<bool> AddAsync(CreateReportDTO add)
+        public async Task<bool> AddAsync(CreateReportDTO dto)
         {
-            return await _baseRepo.AddAsync(add.CreateReportFromDTO());
+            return await _baseRepo.AddAsync(dto.CreateReportFromDTO());
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -36,13 +36,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<ReportDTO?> GetById(int id)
         {
-            var result = await _baseRepo.GetByIdAsync(id);
+            var result = await _reportRepo.GetReportById(id);
             return result?.ToReportDTO();
         }
 
         public async Task<List<ReportDTO>> GetAll()
         {
-            var list = await _baseRepo.GetAllAsync();
+            var list = await _reportRepo.GetReports();
             return list.Select(x => x.ToReportDTO()).ToList();
         }
 
@@ -52,6 +52,7 @@ namespace ClassBookingRoom_Service.Services
             if (result is null) { return false; }
             result.Title = update.Title;
             result.Description = update.Description;
+            result.Status = update.Status;
             result.UpdatedAt = DateTime.Now;
             return await _baseRepo.UpdateAsync(result);
         }
