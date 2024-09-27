@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject.DTO
+namespace ClassBookingRoom_BusinessObject.DTO.RoomType
 {
-    public class RoomTypeDTO 
+    public class RoomTypeDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
