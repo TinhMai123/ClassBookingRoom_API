@@ -33,8 +33,7 @@ namespace ClassBookingRoom_API.Controllers
             if (result)
             {
                 return Ok();
-            }
-            else
+            } else
             {
                 return BadRequest();
             }
@@ -46,18 +45,16 @@ namespace ClassBookingRoom_API.Controllers
             {
                 var user = await _userService.GetUserByEmailAsync(email);
                 return user != null ? Ok(user) : NotFound("Can't find the email");
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            } catch (Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpPost]
-        public async Task<IActionResult> AddNewUser(AddUserTestDTO add)
+        public async Task<IActionResult> AddNewUser(CreateUserDTO dto)
         {
             try
             {
-                await _userService.AddUserAsync(add);
+                await _userService.AddUserAsync(dto);
                 return Ok("Add user succesfully");
-            }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            } catch (Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(int id)
@@ -67,12 +64,11 @@ namespace ClassBookingRoom_API.Controllers
                 var delete = await _userService.DeleteUserAsync(id);
                 if (delete) return Ok("User Removed");
                 else return NotFound("User Not Found");
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-       
+
     }
 }

@@ -10,7 +10,7 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface IUserService
     {
-        Task AddUserAsync(AddUserTestDTO add);
+        Task<bool> AddUserAsync(CreateUserDTO dto);
         Task<bool> DeleteUserAsync(int id);
         Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
         Task<UserDetailDTO?> GetUserByEmailAsync(string email);

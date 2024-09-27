@@ -33,18 +33,10 @@ namespace ClassBookingRoom_Service.Services
             _cohortRepo = cohortRepo;
             _departmentRepo = departmentRepo;
         }
-        public async Task AddUserAsync(AddUserTestDTO add)
+        public async Task<bool> AddUserAsync(CreateUserDTO dto)
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                FirstName = add.FirstName,
-                LastName = add.LastName,
-                Email = add.Email,
-                Password = add.Password,
-            };
-
-            await _baseRepo.AddAsync(user);
+            var user = dto.ToUserFromCreate();
+            return await _baseRepo.AddAsync(user);
         }
         public async Task<bool> DeleteUserAsync(int id)
         {

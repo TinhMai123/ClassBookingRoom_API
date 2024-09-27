@@ -26,6 +26,22 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 DepartmentId = model.DepartmentId,
             };
         }
+
+        public static User ToUserFromCreate(this CreateUserDTO dto)
+        {
+            return new User
+            {
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                CohortId = dto.CohortId,
+                DepartmentId = dto.DepartmentId,
+                LastName = dto.LastName,
+                Password = dto.Password,
+                ProfileImageURL = dto.ProfileImageURL,
+                Role = dto.Role,
+                Status = dto.Status,
+            };
+        }
         public static UserDetailDTO ToUserDetailDTO(this User model) { 
             var cohort = model.Cohort?.ToCohortDTO();
             var department = model.Department?.ToDepartmentDTO();
