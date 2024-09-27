@@ -27,6 +27,8 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             return new Department
             {
                 Name = dto.Name,
+                CreateAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
         }
     }

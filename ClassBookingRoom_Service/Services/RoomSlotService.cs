@@ -15,13 +15,10 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IRoomSlotRepo _repo;
         private readonly IBaseRepository<RoomSlot> _baseRepo;
-        private IConfiguration _configuration;
-
-        public RoomSlotService(IRoomSlotRepo repo, IBaseRepository<RoomSlot> baseRepo, IConfiguration configuration)
+        public RoomSlotService(IRoomSlotRepo repo, IBaseRepository<RoomSlot> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
         public async Task<bool> AddRoomSlotAsync(RoomSlot add)
         {
@@ -33,14 +30,14 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public Task<RoomSlot> GetRoomSlot(int id)
+        public async Task<RoomSlot> GetRoomSlot(int id)
         {
-            return _baseRepo.GetByIdAsync(id);
+            return await _baseRepo.GetByIdAsync(id);
         }
 
-        public Task<List<RoomSlot>> GetRoomSlots()
+        public async Task<List<RoomSlot>> GetRoomSlots()
         {
-            return _baseRepo.GetAllAsync();
+            return await _baseRepo.GetAllAsync();
         }
 
         public async Task<bool> UpdateRoomSlotAsync(RoomSlot update)

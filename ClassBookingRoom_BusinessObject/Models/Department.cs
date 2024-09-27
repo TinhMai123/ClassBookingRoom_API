@@ -13,6 +13,5 @@ namespace ClassBookingRoom_BusinessObject.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public ICollection<Activity>? Activities { get; set; }
-        public ICollection<Booking>? Bookings { get; set; }
     }
 }

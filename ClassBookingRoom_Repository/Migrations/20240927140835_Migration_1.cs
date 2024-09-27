@@ -173,24 +173,24 @@ namespace ClassBookingRoom_Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Newss",
+                name: "News",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Newss", x => x.Id);
+                    table.PrimaryKey("PK_News", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Newss_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_News_User_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -205,7 +205,7 @@ namespace ClassBookingRoom_Repository.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ActivityId = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -220,11 +220,6 @@ namespace ClassBookingRoom_Repository.Migrations
                         principalTable: "Activity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Booking_Department_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Department",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Booking_Room_RoomId",
                         column: x => x.RoomId,
@@ -246,8 +241,9 @@ namespace ClassBookingRoom_Repository.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeleteAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -259,12 +255,14 @@ namespace ClassBookingRoom_Repository.Migrations
                         name: "FK_Report_Room_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Room",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Report_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Report_User_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "User",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -315,26 +313,36 @@ namespace ClassBookingRoom_Repository.Migrations
             migrationBuilder.InsertData(
                 table: "Cohort",
                 columns: new[] { "Id", "CohortCode", "CreateAt", "DeleteAt", "UpdatedAt" },
-                values: new object[] { -1, "K17", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206), null, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4206) });
+                values: new object[] { -1, "K17", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6112), null, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6113) });
 
             migrationBuilder.InsertData(
                 table: "Department",
                 columns: new[] { "Id", "CreateAt", "DeleteAt", "Name", "UpdatedAt" },
-                values: new object[] { -1, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4186), null, "IT", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4187) });
+                values: new object[] { -1, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6096), null, "IT", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6097) });
 
             migrationBuilder.InsertData(
                 table: "RoomType",
                 columns: new[] { "Id", "CreateAt", "DeleteAt", "DepartmentId", "Name", "UpdatedAt" },
-                values: new object[] { -1, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3997), null, -1, "RoomT1", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(3999) });
+                values: new object[] { -1, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(5934), null, -1, "RoomT1", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(5935) });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CohortId", "CreateAt", "DeleteAt", "DepartmentId", "Email", "FirstName", "LastName", "Password", "ProfileImageURL", "Role", "Status", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("17d69571-7e44-440f-8455-81fded39c983"), -1, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4303), null, -1, "student@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Student", "Active", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4304) },
-                    { new Guid("82380f5b-5c86-427e-affe-817b55c22330"), null, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4287), null, -1, "manager@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Manager", "Active", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4289) },
-                    { new Guid("985fb9c3-ad6b-41fd-9e3a-540bb121a21c"), null, new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4280), null, -1, "admin@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Admin", "Active", new DateTime(2024, 9, 27, 13, 53, 20, 859, DateTimeKind.Local).AddTicks(4284) }
+                    { new Guid("53a16bfb-c2e1-4a40-bee2-630617b3c2cf"), null, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6169), null, -1, "manager@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Manager", "Active", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6170) },
+                    { new Guid("89b278a1-9643-4c12-83dd-66cf5177da69"), null, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6163), null, -1, "admin@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Admin", "Active", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6166) },
+                    { new Guid("f746a6af-afc9-4930-bc14-0f30d930c927"), -1, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6173), null, -1, "student@fpt.edu.vn", "John", "Doe", "123456", "https://placehold.co/600x400", "Student", "Active", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6175) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Room",
+                columns: new[] { "Id", "Capacity", "CreateAt", "DeleteAt", "RoomName", "RoomTypeId", "Status", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { -3, 10, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6077), null, "103", -1, "Closed", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6077) },
+                    { -2, 10, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6075), null, "102", -1, "Open", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6075) },
+                    { -1, 10, new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6071), null, "101", -1, "Open", new DateTime(2024, 9, 27, 21, 8, 34, 953, DateTimeKind.Local).AddTicks(6072) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -346,11 +354,6 @@ namespace ClassBookingRoom_Repository.Migrations
                 name: "IX_Booking_ActivityId",
                 table: "Booking",
                 column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Booking_DepartmentId",
-                table: "Booking",
-                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Booking_RoomId",
@@ -368,19 +371,19 @@ namespace ClassBookingRoom_Repository.Migrations
                 column: "RoomSlotsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Newss_UserId",
-                table: "Newss",
-                column: "UserId");
+                name: "IX_News_CreatorId",
+                table: "News",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Report_CreatorId",
+                table: "Report",
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Report_RoomId",
                 table: "Report",
                 column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Report_UserId",
-                table: "Report",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Room_RoomTypeId",
@@ -420,7 +423,7 @@ namespace ClassBookingRoom_Repository.Migrations
                 name: "BookingRoomSlot");
 
             migrationBuilder.DropTable(
-                name: "Newss");
+                name: "News");
 
             migrationBuilder.DropTable(
                 name: "Report");

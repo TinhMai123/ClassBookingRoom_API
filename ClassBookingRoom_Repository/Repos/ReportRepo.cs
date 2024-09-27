@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_BusinessObject.Models;
 using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,40 +10,22 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.Repos
 {
-    public class ReportRepo : BaseRepository<Report>, IReportRepo
+    public class ReportRepo:  IReportRepo
     {
-        public ReportRepo(AppDbContext context) : base(context)
+        private readonly AppDbContext _context;
+        public ReportRepo(AppDbContext context) 
         {
+            _context = context;
         }
 
-        public Task<bool> AddReportAsync(Report add)
+        public async Task<Report?> GetReportById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Reports.Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<bool> DeleteReportAsync(int id)
+        public async Task<List<Report>> GetReports()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Report> GetReport(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Report> GetReportByTitle(string title)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Report>> GetReports()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateReportAsync(Report update)
-        {
-            throw new NotImplementedException();
+            return await _context.Reports.Include(x => x.CreatedBy).ToListAsync();
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Repository.Repos;
 using ClassBookingRoom_Service.Services;
+using ClassBookingRoom_Repository.IRepos;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -55,7 +56,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
-
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IReportRepo, ReportRepo>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -76,7 +78,7 @@ builder
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
             )
         };
     });
@@ -85,7 +87,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
         builder => builder
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173", "https://fu-booking-room.vercel.app")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });

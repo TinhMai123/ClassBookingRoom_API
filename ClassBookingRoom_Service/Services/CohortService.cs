@@ -17,13 +17,11 @@ namespace ClassBookingRoom_Service.Services
 
         private readonly ICohortRepo _repo;
         private readonly IBaseRepository<Cohort> _baseRepo;
-        private IConfiguration _configuration;
 
-        public CohortService(ICohortRepo repo, IBaseRepository<Cohort> baseRepo, IConfiguration configuration)
+        public CohortService(ICohortRepo repo, IBaseRepository<Cohort> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
         public async Task<bool> AddCohortAsync(Cohort add)
         {
@@ -35,9 +33,9 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public Task<Cohort> GetCohort(int id)
+        public async Task<Cohort?> GetCohort(int id)
         {
-            return _baseRepo.GetByIdAsync(id);
+            return await _baseRepo.GetByIdAsync(id);
         }
 
         public Task<Cohort> GetCohortByCode(string code)

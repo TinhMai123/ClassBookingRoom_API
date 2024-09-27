@@ -17,13 +17,11 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IRoomTypeRepo _repo;
         private readonly IBaseRepository<RoomType> _baseRepo;
-        private IConfiguration _configuration;
 
-        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo, IConfiguration configuration)
+        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
-            _configuration = configuration;
         }
         public async Task<bool> AddRoomTypeAsync(CreateRoomTypeDTO dto)
         {
