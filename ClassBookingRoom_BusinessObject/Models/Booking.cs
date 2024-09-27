@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 namespace ClassBookingRoom_BusinessObject.Models
 {
     [Table("Booking")]
-    public class Booking : BaseModels
+    public class Booking : BaseModel
     {
         public int Id { get; set; }
         public string Status { get; set; } = string.Empty;
-        public User? CreateBy {  get; set; }
-        public Room? Room { get; set; }
-        public ICollection<BookingSlot>? BookingSlots { get; set; }
-        public ICollection<BookingActivity>? BookingActivities { get; set; }
+        public Guid UserId { get; set; }
+        public int ActivityId { get; set; }
+        public User? CreateBy { get; set; }
+        public ICollection<RoomSlot>? RoomSlots { get; set; }
+        public Activity? Activity { get; set; }
     }
 }

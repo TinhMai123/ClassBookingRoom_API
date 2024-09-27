@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClassBookingRoom_BusinessObject.DTO;
 using ClassBookingRoom_BusinessObject.Mappers;
 using ClassBookingRoom_BusinessObject.DTO.RoomType;
 

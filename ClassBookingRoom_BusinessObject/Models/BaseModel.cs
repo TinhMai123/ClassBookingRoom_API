@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_BusinessObject.Models
 {
-    public class BaseModels
+    public class BaseModel
     {
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? DeleteAt { get; set; }

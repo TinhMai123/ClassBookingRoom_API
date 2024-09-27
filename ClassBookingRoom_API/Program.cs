@@ -53,6 +53,9 @@ builder.Services.AddSwaggerGen(c =>
     );
 });
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

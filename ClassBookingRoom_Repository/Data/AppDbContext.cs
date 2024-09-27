@@ -20,15 +20,22 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<RoomType> RoomsTypes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<AllowedCohort> AllowedCohorts { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Activity> Activities { get; set; }
-        public DbSet<BookingSlot> BookingSlots { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
-        public DbSet<BookingActivity> BookingActivities { get; set; }
-        public DbSet<BookingDepartment> BookingDepartments { get; set; }
+        public DbSet<News> Newss { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Cohort>()
+                .HasMany(x => x.RoomTypes)
+                .WithMany(x => x.AllowedCohorts)
+                .UsingEntity(x => x.ToTable("RoomTypeCohort"));
+            modelBuilder.Entity<Booking>()
+                .HasMany(x => x.RoomSlots)
+                .WithMany(x => x.Bookings)
+                .UsingEntity(x => x.ToTable("BookingRoomSlot"));
+
             // Seeding data
             modelBuilder.Entity<RoomType>().HasData(
                 new RoomType
@@ -51,7 +58,8 @@ namespace ClassBookingRoom_Repository.Data
                     UpdatedAt = DateTime.Now,
 
                 });
-            modelBuilder.Entity<Cohort>().HasData(
+            modelBuilder.Entity<Cohort>()
+                .HasData(
                 new Cohort
                 {
                     Id = -1,
@@ -60,7 +68,8 @@ namespace ClassBookingRoom_Repository.Data
                     UpdatedAt = DateTime.Now,
                     CohortCode = "K17"
                 }
-                );
+                )
+                ;
             
             modelBuilder.Entity<User>().HasData(
           new User

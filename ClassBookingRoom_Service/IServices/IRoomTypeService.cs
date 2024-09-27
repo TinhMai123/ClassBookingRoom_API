@@ -1,5 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO;
-using ClassBookingRoom_BusinessObject.DTO.RoomType;
+﻿using ClassBookingRoom_BusinessObject.DTO.RoomType;
 using ClassBookingRoom_BusinessObject.Models;
 using System;
 using System.Collections.Generic;

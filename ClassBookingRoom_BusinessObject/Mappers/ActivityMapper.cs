@@ -22,5 +22,14 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 UpdatedAt = model.UpdatedAt
             };
         }
+
+        public static Activity ToActivityFromCreate(this CreateActivityDTO dto)
+        {
+            return new Activity
+            {
+                Name = dto.Name,
+                DepartmentId = dto.DepartmentId,
+            };
+        }
     }
 }
