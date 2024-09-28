@@ -16,7 +16,6 @@ namespace ClassBookingRoom_BusinessObject.Models
         public string? Status { get; set; }
         public int? RoomTypeId { get; set; }
         public RoomType? RoomType { get; set; }
-        public ICollection<Booking>? Bookings { get; set; }
         public ICollection<Report>? Reports { get; set; }
         public ICollection<RoomSlot>? RoomSlots { get; set; }
 
