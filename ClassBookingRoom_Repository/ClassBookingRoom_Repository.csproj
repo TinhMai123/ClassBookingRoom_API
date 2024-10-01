@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassBookingRoom_BusinessObject\ClassBookingRoom_BusinessObject.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Data\AppDbContext.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
