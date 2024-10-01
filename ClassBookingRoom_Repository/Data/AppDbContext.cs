@@ -23,7 +23,6 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
-        public DbSet<ActivityType> ActivityTypes { get; set; }
         public DbSet<BookingModifyHistory> BookingModifyHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,12 +38,11 @@ namespace ClassBookingRoom_Repository.Data
             modelBuilder.Entity<Report>()
                 .HasOne(x => x.CreatedBy)
                 .WithMany(x => x.Reports)
-                .HasForeignKey(x => x.CreatorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(x => x.CreatorId);
             modelBuilder.Entity<RoomType>()
-                .HasMany(x => x.ActivityTypes)
+                .HasMany(x => x.Activities)
                 .WithMany(x => x.RoomTypes)
-                .UsingEntity(x => x.ToTable("ActivityTypeRoomType"));
+                .UsingEntity(x => x.ToTable("ActivityRoomType"));
             modelBuilder.Entity<BookingModifyHistory>()
                 .HasOne(x => x.ModifiedBy)
                 .WithMany(x => x.BookingModifyHistories)

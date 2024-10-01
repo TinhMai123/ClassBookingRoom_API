@@ -14,6 +14,6 @@ namespace ClassBookingRoom_Repository.Models
         public string Name { get; set; } = string.Empty;
         public ICollection<Room> Rooms { get; set; } = [];
         public ICollection<Cohort> AllowedCohorts { get; set; } = [];
-        public ICollection<ActivityType> ActivityTypes { get; set; } = [];
+        public ICollection<Activity> Activities { get; set; } = [];
     }
 }
