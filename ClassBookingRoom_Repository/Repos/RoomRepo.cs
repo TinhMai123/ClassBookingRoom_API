@@ -1,6 +1,9 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Report;
+using ClassBookingRoom_Repository.RequestModels.Room;
+using ClassBookingRoom_Repository.ResponseModels.Room;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +18,12 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public Task<bool> AddRoomAsync(Room add)
+        public Task<bool> AddRoomAsync(CreateReportRequestModel add)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddRoomAsync(CreateRoomRequestModel add)
         {
             throw new NotImplementedException();
         }
@@ -25,22 +33,19 @@ namespace ClassBookingRoom_Repository.Repos
             throw new NotImplementedException();
         }
 
-        public Task<Room> GetRoom(int id)
+        public Task<RoomResponseModel> GetRoom(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Room> GetRoomByRoomName(string name)
+       
+
+        public Task<List<RoomResponseModel>> GetRooms()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Room>> GetRooms()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateRoomAsync(Room update)
+        public Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
         {
             throw new NotImplementedException();
         }

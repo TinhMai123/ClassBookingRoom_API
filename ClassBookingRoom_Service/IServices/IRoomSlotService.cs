@@ -11,7 +11,7 @@ namespace ClassBookingRoom_Service.IServices
     {
         Task<bool> AddRoomSlotAsync(RoomSlot add);
         Task<bool> DeleteRoomSlotAsync(int id);
-        Task<RoomSlot> GetRoomSlot(int id);
+        Task<RoomSlot?> GetRoomSlot(int id);
         Task<List<RoomSlot>> GetRoomSlots();
         Task<bool> UpdateRoomSlotAsync(RoomSlot update);
     }

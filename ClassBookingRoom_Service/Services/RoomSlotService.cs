@@ -30,7 +30,7 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public async Task<RoomSlot> GetRoomSlot(int id)
+        public async Task<RoomSlot?> GetRoomSlot(int id)
         {
             return await _baseRepo.GetByIdAsync(id);
         }
