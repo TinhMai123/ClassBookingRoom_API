@@ -17,7 +17,6 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             {
                 Id = model.Id,
                 Name = model.Name,
-                DepartmentId = model.DepartmentId,
                 CreateAt = model.CreateAt,
                 DeleteAt = model.DeleteAt,
                 UpdatedAt = model.UpdatedAt
@@ -29,7 +28,6 @@ namespace ClassBookingRoom_BusinessObject.Mappers
             return new RoomType()
             {
                 Name = dto.Name,
-                DepartmentId = dto.DepartmentId,
                 CreateAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
             };

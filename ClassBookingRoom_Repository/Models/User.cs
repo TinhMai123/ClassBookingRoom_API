@@ -23,5 +23,6 @@ namespace ClassBookingRoom_Repository.Models
         public Department? Department { get; set; }
         public Cohort? Cohort { get; set; }
         public ICollection<Report> Reports { get; set; } = [];
+        public ICollection<BookingModifyHistory> BookingModifyHistories { get; set; } = [];
     }
 }

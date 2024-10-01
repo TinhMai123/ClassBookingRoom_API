@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.Models
 {
-    [Table("RoomType")]
-    public class RoomType : BaseModel
+    [Table("ActivityType")]
+    public class ActivityType : BaseModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public ICollection<Room> Rooms { get; set; } = [];
-        public ICollection<Cohort> AllowedCohorts { get; set; } = [];
-        public ICollection<ActivityType> ActivityTypes { get; set; } = [];
+        public ICollection<Activity> Activities { get; set; } = [];
+        public ICollection<RoomType> RoomTypes { get; set; } = [];
     }
 }

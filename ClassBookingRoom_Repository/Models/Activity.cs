@@ -14,5 +14,8 @@ namespace ClassBookingRoom_Repository.Models
         public string? Name { get; set; }  
         public int DepartmentId { get; set; }
         public Department? Department { get; set; }
+        public int ActivityTypeId { get; set; }
+        public ActivityType? ActivityType { get; set; }
+
     }
 }
