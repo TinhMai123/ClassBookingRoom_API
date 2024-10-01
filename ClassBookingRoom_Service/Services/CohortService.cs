@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.Cohort;
+using ClassBookingRoom_Repository.RequestModels.Cohort;
+using ClassBookingRoom_BusinessObject.Mappers;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -23,9 +26,9 @@ namespace ClassBookingRoom_Service.Services
             _repo = repo;
             _baseRepo = baseRepo;
         }
-        public async Task<bool> AddCohortAsync(Cohort add)
+        public async Task<bool> AddCohortAsync(CreateCohortRequestModel add)
         {
-            return await _baseRepo.AddAsync(add);
+            return await _baseRepo.AddAsync(add.ToCohortFromCreate());
         }
 
         public async Task<bool> DeleteCohortAsync(int id)
@@ -33,24 +36,25 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public async Task<Cohort?> GetCohort(int id)
+        public async Task<CohortResponseModel?> GetCohort(int id)
         {
-            return await _baseRepo.GetByIdAsync(id);
+            var result = await _baseRepo.GetByIdAsync(id);
+            return result?.ToCohortDTO();
         }
 
-        public Task<Cohort> GetCohortByCode(string code)
+        public async Task<List<CohortResponseModel>> GetCohorts()
         {
-            return _repo.GetCohortByCode(code);
+            var result = await _baseRepo.GetAllAsync();
+            return result.Select(x => x.ToCohortDTO()).ToList();
         }
 
-        public Task<List<Cohort>> GetCohorts()
+        public async Task<bool> UpdateCohortAsync(int id, UpdateCohortRequestModel update)
         {
-            return _baseRepo.GetAllAsync();
-        }
-
-        public async Task<bool> UpdateCohortAsync(Cohort update)
-        {
-            return await _baseRepo.UpdateAsync(update);
+            var result = await _baseRepo.GetByIdAsync(id);
+            if (result is null){return false;}
+            result.UpdatedAt = DateTime.Now;
+            result.CohortCode = update.CohortCode;
+            return await _baseRepo.UpdateAsync(result);
         }
     }
 }
