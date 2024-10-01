@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.User;
+﻿using ClassBookingRoom_Repository.RequestModels.Auth;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace ClassBookingRoom_API.Controllers
             _userService = userService;
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO login)
+        public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
         {
             try
             {
@@ -50,7 +51,7 @@ namespace ClassBookingRoom_API.Controllers
             return Unauthorized();
         }
         [HttpGet("token")]
-        public async Task<ActionResult<UserDTO>> CheckToken()
+        public async Task<ActionResult<UserResponseModel>> CheckToken()
         {
             Request.Headers.TryGetValue("Authorization", out var token);
             token = token.ToString().Split()[1];

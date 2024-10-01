@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.Activity;
+﻿using ClassBookingRoom_Repository.RequestModels.Activity;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ActivityDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<ActivityResponseModel>> GetById([FromRoute] int id)
         {
             var activity = await _activityService.GetById(id);
             if (activity == null) { return NotFound(); }
@@ -24,14 +25,14 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDTO>>> GetAll()
+        public async Task<ActionResult<List<ActivityResponseModel>>> GetAll()
         {
             var list = await _activityService.GetAll();
             return Ok(list);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateActivity(CreateActivityDTO add)
+        public async Task<ActionResult> CreateActivity(CreateActivityRequestModel add)
         {
             var result = await _activityService.CreateAsync(add);
             if (result)
@@ -46,7 +47,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateActivityDTO update)
+        public async Task<ActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateActivityRequestModel update)
         {
             var result = await _activityService.UpdateAsync(id, update);
 

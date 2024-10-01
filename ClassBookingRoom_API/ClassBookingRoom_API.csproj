@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassBookingRoom_BusinessObject\ClassBookingRoom_BusinessObject.csproj" />
     <ProjectReference Include="..\ClassBookingRoom_Repository\ClassBookingRoom_Repository.csproj" />
     <ProjectReference Include="..\ClassBookingRoom_Service\ClassBookingRoom_Service.csproj" />
   </ItemGroup>

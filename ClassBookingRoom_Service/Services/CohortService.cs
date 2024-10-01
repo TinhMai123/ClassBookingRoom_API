@@ -1,5 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.Models;
-using ClassBookingRoom_Repository.IRepos;
+﻿using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassBookingRoom_Repository.Models;
 
 namespace ClassBookingRoom_Service.Services
 {

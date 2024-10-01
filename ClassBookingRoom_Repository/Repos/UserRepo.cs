@@ -1,7 +1,7 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.User;
-using ClassBookingRoom_BusinessObject.Models;
-using ClassBookingRoom_Repository.Data;
+﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,10 +17,10 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public async Task<GetUserTypeDTO> GetUserTypeByEmail(string email)
+        public async Task<GetUserTypeResponseModel> GetUserTypeByEmail(string email)
         {
             var answer = await GetUserByEmail(email);
-            var user = new GetUserTypeDTO
+            var user = new GetUserTypeResponseModel
             {
                 FirstName = answer.FirstName,
                 LastName = answer.LastName,

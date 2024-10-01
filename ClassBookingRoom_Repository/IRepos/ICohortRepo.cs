@@ -1,5 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject;
-using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_Repository.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
