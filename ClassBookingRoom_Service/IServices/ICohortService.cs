@@ -1,4 +1,6 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Cohort;
+using ClassBookingRoom_Repository.ResponseModels.Cohort;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,10 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface ICohortService
     {
-        Task<bool> AddCohortAsync(Cohort add);
+        Task<bool> AddCohortAsync(CreateCohortRequestModel add);
         Task<bool> DeleteCohortAsync(int id);
-        Task<Cohort?> GetCohort(int id);
-        Task<List<Cohort>> GetCohorts();
-        Task<Cohort> GetCohortByCode(string code);
-        Task<bool> UpdateCohortAsync(Cohort update);
+        Task<CohortResponseModel?> GetCohort(int id);
+        Task<List<CohortResponseModel>> GetCohorts();
+        Task<bool> UpdateCohortAsync(int id,UpdateCohortRequestModel update);
     }
 }

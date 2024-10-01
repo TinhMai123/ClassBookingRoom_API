@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Cohort;
 using ClassBookingRoom_Repository.ResponseModels.Cohort;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,15 @@ namespace ClassBookingRoom_BusinessObject.Mappers
                 UpdatedAt = model.UpdatedAt,
                 DeleteAt = model.DeleteAt,
                 CreateAt = model.CreateAt
+            };
+        }
+        public static Cohort ToCohortFromCreate(this CreateCohortRequestModel dto)
+        {
+            return new Cohort
+            {
+                CohortCode = dto.CohortCode,
+                CreateAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
         }
     }

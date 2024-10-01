@@ -59,6 +59,7 @@ builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportRepo, ReportRepo>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<ICohortService, CohortService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
