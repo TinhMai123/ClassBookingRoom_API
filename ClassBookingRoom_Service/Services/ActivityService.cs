@@ -1,6 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.Activity;
-using ClassBookingRoom_BusinessObject.Models;
-using ClassBookingRoom_Repository.IRepos;
+﻿using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassBookingRoom_BusinessObject.Mappers;
+using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Activity;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -24,7 +25,7 @@ namespace ClassBookingRoom_Service.Services
             _baseRepo = baseRepo;
         }
 
-        public async Task<bool> CreateAsync(CreateActivityDTO add)
+        public async Task<bool> CreateAsync(CreateActivityRequestModel add)
         {
             return await _baseRepo.AddAsync(add.ToActivityFromCreate());
         }
@@ -34,19 +35,19 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public async Task<List<ActivityDTO>> GetAll()
+        public async Task<List<ActivityResponseModel>> GetAll()
         {
             var activities = await _baseRepo.GetAllAsync();
             return activities.Select(x => x.ToAcivityDTO()).ToList();
         }
 
-        public async Task<ActivityDTO?> GetById(int id)
+        public async Task<ActivityResponseModel?> GetById(int id)
         {
             var activity = await _baseRepo.GetByIdAsync(id);
             return activity?.ToAcivityDTO();
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateActivityDTO update)
+        public async Task<bool> UpdateAsync(int id, UpdateActivityRequestModel update)
         {
             var activity =await _baseRepo.GetByIdAsync(id);
             if (activity is null) { return false; }

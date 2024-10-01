@@ -1,4 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,6 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
-        public DbSet<News> Newss { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,10 +37,6 @@ namespace ClassBookingRoom_Repository.Data
             modelBuilder.Entity<Report>()
                 .HasOne(x => x.CreatedBy)
                 .WithMany(x => x.Reports)
-                .HasForeignKey(x => x.CreatorId);
-            modelBuilder.Entity<News>()
-                .HasOne(x => x.CreatedBy)
-                .WithMany(x => x.Newss)
                 .HasForeignKey(x => x.CreatorId);
 
             // Seeding data

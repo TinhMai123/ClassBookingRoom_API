@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject.Models
+namespace ClassBookingRoom_Repository.Models
 {
     public class BaseModel
     {

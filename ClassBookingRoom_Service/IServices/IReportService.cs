@@ -1,6 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.Activity;
-using ClassBookingRoom_BusinessObject.DTO.Report;
-using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_Repository.RequestModels.Report;
+using ClassBookingRoom_Repository.ResponseModels.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +10,10 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface IReportService
     {
-        Task<bool> AddAsync(CreateReportDTO add);
+        Task<bool> AddAsync(CreateReportRequestModel add);
         Task<bool> DeleteAsync(int id);
-        Task<ReportDTO?> GetById(int id);
-        Task<List<ReportDTO>> GetAll();
-        Task<bool> UpdateAsync(int id,UpdateReportDTO update);
+        Task<ReportResponseModel?> GetById(int id);
+        Task<List<ReportResponseModel>> GetAll();
+        Task<bool> UpdateAsync(int id,UpdateReportRequestModel update);
     }
 }

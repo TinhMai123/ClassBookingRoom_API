@@ -1,5 +1,6 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.User;
-using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_Repository.RequestModels.Auth;
+using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,13 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface IUserService
     {
-        Task<bool> AddUserAsync(CreateUserDTO dto);
+        Task<bool> AddUserAsync(CreateUserRequestModel dto);
         Task<bool> DeleteUserAsync(int id);
-        Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email);
-        Task<UserDetailDTO?> GetUserByEmailAsync(string email);
-        Task<string?> Login(LoginDTO request);
-        Task<List<UserDTO>> GetAllUser();
-        Task<UserDetailDTO?> GetById(Guid id);
-        Task<bool> UpdateUser(Guid id, UpdateUserDTO dto);
+        Task<GetUserTypeResponseModel> GetUserTypeByEmailAsync(string email);
+        Task<UserDetailResponseModel?> GetUserByEmailAsync(string email);
+        Task<string?> Login(LoginRequestModel request);
+        Task<List<UserResponseModel>> GetAllUser();
+        Task<UserDetailResponseModel?> GetById(Guid id);
+        Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto);
     }
 }

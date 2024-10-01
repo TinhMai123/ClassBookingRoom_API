@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.Report;
+﻿using ClassBookingRoom_Repository.RequestModels.Report;
+using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace ClassBookingRoom_API.Controllers
             _reportService = reportService;
         }
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ReportDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<ReportResponseModel>> GetById([FromRoute] int id)
         {
             var result = await _reportService.GetById(id);
             if (result == null) { return NotFound(); }
@@ -24,14 +25,14 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ReportDTO>>> GetAll()
+        public async Task<ActionResult<List<ReportResponseModel>>> GetAll()
         {
             var result = await _reportService.GetAll();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ReportDTO>> CreateReport([FromBody] CreateReportDTO add)
+        public async Task<ActionResult<ReportResponseModel>> CreateReport([FromBody] CreateReportRequestModel add)
         {
             var result = await _reportService.AddAsync(add);
             if (result)
@@ -45,7 +46,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateReport([FromRoute]int id ,[FromBody] UpdateReportDTO update)
+        public async Task<ActionResult> UpdateReport([FromRoute]int id ,[FromBody] UpdateReportRequestModel update)
         {
             var result = await _reportService.UpdateAsync(id, update);
             if (result)

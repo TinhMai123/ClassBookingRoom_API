@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.RoomType;
+﻿using ClassBookingRoom_Repository.RequestModels.RoomType;
+using ClassBookingRoom_Repository.ResponseModels.RoomType;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +17,14 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<RoomTypeDTO>>> GetAll()
+        public async Task<ActionResult<List<RoomTypeResponseModel>>> GetAll()
         {
             var roomType = await roomTypeService.GetRoomTypes();
             return Ok(roomType);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<RoomTypeDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<RoomTypeResponseModel>> GetById([FromRoute] int id)
         {
             var room = await roomTypeService.GetRoomType(id);
             if (room == null) { return NotFound(); }
@@ -31,7 +32,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateRoomType([FromBody] CreateRoomTypeDTO add)
+        public async Task<ActionResult> CreateRoomType([FromBody] CreateRoomTypeRequestModel add)
         {
             var result = await roomTypeService.AddRoomTypeAsync(add);
             if (result)
@@ -45,7 +46,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateRoomType([FromRoute] int id, [FromBody] UpdateRoomTypeDTO update)
+        public async Task<ActionResult> UpdateRoomType([FromRoute] int id, [FromBody] UpdateRoomTypeRequestModel update)
         {
             var result = await roomTypeService.UpdateRoomTypeAsync(id, update);
             if (result)

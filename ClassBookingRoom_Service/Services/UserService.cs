@@ -1,8 +1,10 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.User;
-using ClassBookingRoom_BusinessObject.Mappers;
-using ClassBookingRoom_BusinessObject.Models;
+﻿using ClassBookingRoom_BusinessObject.Mappers;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Auth;
+using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -33,7 +35,7 @@ namespace ClassBookingRoom_Service.Services
             _cohortRepo = cohortRepo;
             _departmentRepo = departmentRepo;
         }
-        public async Task<bool> AddUserAsync(CreateUserDTO dto)
+        public async Task<bool> AddUserAsync(CreateUserRequestModel dto)
         {
             var user = dto.ToUserFromCreate();
             return await _baseRepo.AddAsync(user);
@@ -44,7 +46,7 @@ namespace ClassBookingRoom_Service.Services
             return deleted;
         }
 
-        public async Task<GetUserTypeDTO> GetUserTypeByEmailAsync(string email)
+        public async Task<GetUserTypeResponseModel> GetUserTypeByEmailAsync(string email)
         {
             return await _repo.GetUserTypeByEmail(email);
 
@@ -74,7 +76,7 @@ namespace ClassBookingRoom_Service.Services
 
         }
 
-        public async Task<string?> Login(LoginDTO request)
+        public async Task<string?> Login(LoginRequestModel request)
         {
             try
             {
@@ -95,25 +97,25 @@ namespace ClassBookingRoom_Service.Services
             }
         }
 
-        public async Task<UserDetailDTO?> GetUserByEmailAsync(string email)
+        public async Task<UserDetailResponseModel?> GetUserByEmailAsync(string email)
         {
             var user = await _repo.GetUserByEmail(email);
             return user?.ToUserDetailDTO();
         }
 
-        public async Task<List<UserDTO>> GetAllUser()
+        public async Task<List<UserResponseModel>> GetAllUser()
         {
             var modelList = await _baseRepo.GetAllAsync();
             return modelList.Select(x => x.ToUserDTO()).ToList();
         }
 
-        public async Task<UserDetailDTO?> GetById(Guid id)
+        public async Task<UserDetailResponseModel?> GetById(Guid id)
         {
             var user = await _repo.GetById(id);
             return user?.ToUserDetailDTO();
         }
 
-        public async Task<bool> UpdateUser(Guid id, UpdateUserDTO dto)
+        public async Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto)
         {
             var existingUser = await _baseRepo.GetByIdAsync(id);
             if (existingUser == null) return false;

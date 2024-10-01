@@ -1,6 +1,6 @@
-﻿using ClassBookingRoom_BusinessObject.Models;
-using ClassBookingRoom_Repository.Data;
+﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

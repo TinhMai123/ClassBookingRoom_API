@@ -1,5 +1,4 @@
-﻿using ClassBookingRoom_BusinessObject.Models;
-using ClassBookingRoom_Repository.IRepos;
+﻿using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClassBookingRoom_BusinessObject.Mappers;
-using ClassBookingRoom_BusinessObject.DTO.RoomType;
+using ClassBookingRoom_Repository.ResponseModels.RoomType;
+using ClassBookingRoom_Repository.RequestModels.RoomType;
+using ClassBookingRoom_Repository.Models;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -23,7 +24,7 @@ namespace ClassBookingRoom_Service.Services
             _repo = repo;
             _baseRepo = baseRepo;
         }
-        public async Task<bool> AddRoomTypeAsync(CreateRoomTypeDTO dto)
+        public async Task<bool> AddRoomTypeAsync(CreateRoomTypeRequestModel dto)
         {
             return await _baseRepo.AddAsync(dto.ToRoomTypeFromCreate());
         }
@@ -35,19 +36,19 @@ namespace ClassBookingRoom_Service.Services
         }
 
 
-        public async Task<RoomTypeDTO?> GetRoomType(int id)
+        public async Task<RoomTypeResponseModel?> GetRoomType(int id)
         {
             var roomType = await _baseRepo.GetByIdAsync(id);
             return roomType?.ToRoomTypeDTO();
         }
 
-        public async Task<List<RoomTypeDTO>> GetRoomTypes()
+        public async Task<List<RoomTypeResponseModel>> GetRoomTypes()
         {
             var rooms =await _baseRepo.GetAllAsync();
             return rooms.Select(x => x.ToRoomTypeDTO()).ToList();
         }
 
-        public async Task<bool> UpdateRoomTypeAsync(int id, UpdateRoomTypeDTO update)
+        public async Task<bool> UpdateRoomTypeAsync(int id, UpdateRoomTypeRequestModel update)
         {
             var roomType = await _baseRepo.GetByIdAsync(id);
             if (roomType is null)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject.Models
+namespace ClassBookingRoom_Repository.Models
 {
     [Table("User")]
     public class User : BaseModel
@@ -23,6 +23,5 @@ namespace ClassBookingRoom_BusinessObject.Models
         public Department? Department { get; set; }
         public Cohort? Cohort { get; set; }
         public ICollection<Report> Reports { get; set; } = [];
-        public ICollection<News> Newss { get; set; } = [];
     }
 }

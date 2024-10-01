@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_BusinessObject.DTO.User;
+﻿using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,19 +16,19 @@ namespace ClassBookingRoom_API.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
+        public async Task<ActionResult<List<UserResponseModel>>> GetAllUsers()
         {
             var users = await _userService.GetAllUser();
             return Ok(users);
         }
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult<UserDetailDTO>> GetById([FromRoute] Guid id)
+        public async Task<ActionResult<UserDetailResponseModel>> GetById([FromRoute] Guid id)
         {
             var users = await _userService.GetById(id);
             return Ok(users);
         }
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateUserDTO dto)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateUserRequestModel dto)
         {
             var result = await _userService.UpdateUser(id, dto);
             if (result)
@@ -39,7 +40,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpGet("by-email")]
-        public async Task<ActionResult<UserDetailDTO>> GetUserTypeByEmail(string email)
+        public async Task<ActionResult<UserDetailResponseModel>> GetUserTypeByEmail(string email)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace ClassBookingRoom_API.Controllers
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpPost]
-        public async Task<IActionResult> AddNewUser(CreateUserDTO dto)
+        public async Task<IActionResult> AddNewUser(CreateUserRequestModel dto)
         {
             try
             {
