@@ -6,7 +6,7 @@ using Microsoft.Identity.Client;
 
 namespace ClassBookingRoom_API.Controllers
 {
-    [Route("api/department")]
+    [Route("api/departments")]
     [ApiController]
     public class DepartmentController : Controller
     {

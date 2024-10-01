@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassBookingRoom_API.Controllers
 {
-    [Route("api/activity")]
+    [Route("api/activitys")]
     [ApiController]
     public class ActivityController : ControllerBase
     {
