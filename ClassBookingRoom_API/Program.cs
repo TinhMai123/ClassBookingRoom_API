@@ -80,10 +80,10 @@ builder
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
-            ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+            ValidIssuer = Environment.GetEnvironmentVariable("ASPNETCORE_JWT_ISSUER"),
+            ValidAudience = Environment.GetEnvironmentVariable("ASPNETCORE_JWT_AUDIENCE"),
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!)
+                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ASPNETCORE_JWT_KEY")!)
             )
         };
     });
