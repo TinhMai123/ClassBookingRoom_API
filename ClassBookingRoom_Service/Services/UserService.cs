@@ -68,7 +68,7 @@ namespace ClassBookingRoom_Service.Services
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: DateTime.UtcNow,
                 signingCredentials: creds
                 );
 
@@ -129,7 +129,7 @@ namespace ClassBookingRoom_Service.Services
             //if (campus == null || cohort == null || department == null) return false;
             existingUser.Cohort = cohort;
             existingUser.Department = department;
-            existingUser.UpdatedAt = DateTime.Now;
+            existingUser.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(existingUser);
         }
 

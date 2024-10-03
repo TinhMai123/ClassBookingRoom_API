@@ -52,7 +52,7 @@ namespace ClassBookingRoom_Service.Services
         {
             var result = await _baseRepo.GetByIdAsync(id);
             if (result is null){return false;}
-            result.UpdatedAt = DateTime.Now;
+            result.UpdatedAt = DateTime.UtcNow;
             result.CohortCode = update.CohortCode;
             return await _baseRepo.UpdateAsync(result);
         }
