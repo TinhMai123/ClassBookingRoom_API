@@ -1,9 +1,9 @@
-﻿using ClassBookingRoom_BusinessObject.Mappers;
-using ClassBookingRoom_Repository;
+﻿using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Department;
 using ClassBookingRoom_Repository.ResponseModels.Department;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

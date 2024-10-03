@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ClassBookingRoom_BusinessObject.Mappers
+namespace ClassBookingRoom_Service.Mappers
 {
     public static class UserMapper
     {

@@ -13,8 +13,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Room
         public int Capacity { get; set; } = 0;
         public string? Status { get; set; }
         public int? RoomTypeId { get; set; }
-
-        //public RoomType? RoomType { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? DeleteAt { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

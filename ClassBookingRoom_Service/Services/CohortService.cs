@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.ResponseModels.Cohort;
 using ClassBookingRoom_Repository.RequestModels.Cohort;
-using ClassBookingRoom_BusinessObject.Mappers;
+using ClassBookingRoom_Service.Mappers;
 
 namespace ClassBookingRoom_Service.Services
 {

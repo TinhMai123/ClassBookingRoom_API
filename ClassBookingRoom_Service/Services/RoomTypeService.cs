@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClassBookingRoom_BusinessObject.Mappers;
 using ClassBookingRoom_Repository.ResponseModels.RoomType;
 using ClassBookingRoom_Repository.RequestModels.RoomType;
 using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Service.Mappers;
 
 namespace ClassBookingRoom_Service.Services
 {

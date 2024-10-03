@@ -17,7 +17,7 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public async Task<GetUserTypeResponseModel> GetUserTypeByEmail(string email)
+        public async Task<GetUserTypeResponseModel?> GetUserTypeByEmail(string email)
         {
             var answer = await GetUserByEmail(email);
             var user = new GetUserTypeResponseModel

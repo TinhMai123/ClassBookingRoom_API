@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="RequestModels\BookingModifyHistory\" />
+    <Folder Include="RequestModels\RoomSlot\" />
+    <Folder Include="ResponseModels\BookingModifyHistory\" />
+    <Folder Include="ResponseModels\RoomSlot\" />
   </ItemGroup>
 
 </Project>
