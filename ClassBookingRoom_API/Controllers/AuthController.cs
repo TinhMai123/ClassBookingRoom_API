@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace ClassBookingRoom_API.Controllers
 {
-    [Route("api/auths")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
