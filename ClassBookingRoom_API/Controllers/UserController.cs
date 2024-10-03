@@ -70,6 +70,16 @@ namespace ClassBookingRoom_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("search")]
+        public async Task<ActionResult<UserDetailResponseModel>> SearchUser([FromBody]SearchUserQuery query)
+        {
+            var (users, totalCount) = await _userService.SearchUser(query);
+            var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
+            Response.Headers.Append("X-Total-Count", totalCount.ToString());
+            Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
+            Response.Headers.Append("X-Total-Pages", totalPages.ToString());
+            return Ok(users);
+        }
 
     }
 }

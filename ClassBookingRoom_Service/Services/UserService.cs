@@ -6,6 +6,7 @@ using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -90,8 +91,7 @@ namespace ClassBookingRoom_Service.Services
                     throw new Exception("INVALID PASSWORD");
                 var token = CreateToken(user);
                 return token;
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 throw new Exception($"{ex.Message}");
             }
@@ -129,8 +129,40 @@ namespace ClassBookingRoom_Service.Services
             //if (campus == null || cohort == null || department == null) return false;
             existingUser.Cohort = cohort;
             existingUser.Department = department;
-            existingUser.UpdatedAt = DateTime.Now;  
+            existingUser.UpdatedAt = DateTime.Now;
             return await _baseRepo.UpdateAsync(existingUser);
+        }
+
+        public async Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query)
+        {
+            var modelList = await _baseRepo.GetAllAsync();
+            var result = modelList.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.SearchValue))
+            {
+                result = result.Where(c => c.FirstName.Contains(query.SearchValue)
+                || c.LastName.Contains(query.SearchValue)
+                );
+            }
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                result = result.Where(c => c.Status.Contains(query.Status));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Role))
+            {
+                result = result.Where(c => c.Role.Contains(query.Role));
+            }
+            if (query.DepartmentId is not null)
+            {
+                result = result.Where(c => c.DepartmentId == query.DepartmentId);
+            }
+            if (query.CohortId is not null)
+            {
+                result = result.Where(c => c.CohortId == query.CohortId);
+            }
+            var totalCount = result.Count();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            var classResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            return (modelList.Select(x => x.ToUserDTO()).ToList(), totalCount);
         }
     }
 }
