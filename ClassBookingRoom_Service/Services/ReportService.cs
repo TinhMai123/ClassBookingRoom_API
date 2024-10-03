@@ -54,7 +54,7 @@ namespace ClassBookingRoom_Service.Services
             result.Title = update.Title;
             result.Description = update.Description;
             result.Status = update.Status;
-            result.UpdatedAt = DateTime.Now;
+            result.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
         }
     }

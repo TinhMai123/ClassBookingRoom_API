@@ -50,7 +50,7 @@ namespace ClassBookingRoom_Service.Services
             {
                 return false;
             }
-            department.UpdatedAt = DateTime.Now;
+            department.UpdatedAt = DateTime.UtcNow;
             department.Name = dto.Name;
             return await _departmentRepo.UpdateAsync(department);
         }

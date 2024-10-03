@@ -55,7 +55,7 @@ namespace ClassBookingRoom_Service.Services
             {
                 return false;
             }
-            roomType.UpdatedAt = DateTime.Now;
+            roomType.UpdatedAt = DateTime.UtcNow;
             roomType.Name = update.Name;
             return await _baseRepo.UpdateAsync(roomType);
         }

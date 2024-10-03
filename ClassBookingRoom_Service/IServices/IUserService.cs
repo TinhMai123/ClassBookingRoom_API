@@ -17,6 +17,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<UserDetailResponseModel?> GetUserByEmailAsync(string email);
         Task<string?> Login(LoginRequestModel request);
         Task<List<UserResponseModel>> GetAllUser();
+        Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query);
         Task<UserDetailResponseModel?> GetById(Guid id);
         Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto);
     }

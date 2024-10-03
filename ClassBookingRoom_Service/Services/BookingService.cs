@@ -57,7 +57,7 @@ namespace ClassBookingRoom_Service.Services
             result.Status = update.Status;
             result.ActivityId = update.ActivityId;
             result.UserId = update.UserId;
-            result.UpdatedAt = DateTime.Now;
+            result.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
         }
     }
