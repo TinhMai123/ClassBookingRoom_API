@@ -20,7 +20,7 @@ namespace ClassBookingRoom_Service.Mappers
                 Name = model.Name,
                 CreateAt = model.CreateAt,
                 DeleteAt = model.DeleteAt,
-                UpdatedAt = model.UpdatedAt
+                UpdatedAt = model.UpdatedAt,
             };
         }
 

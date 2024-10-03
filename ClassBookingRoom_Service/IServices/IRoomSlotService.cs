@@ -1,4 +1,6 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.RoomSlot;
+using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,10 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface IRoomSlotService
     {
-        Task<bool> AddRoomSlotAsync(RoomSlot add);
+        Task<bool> AddRoomSlotAsync(CreateRoomSlotRequestModel add);
         Task<bool> DeleteRoomSlotAsync(int id);
-        Task<RoomSlot?> GetRoomSlot(int id);
-        Task<List<RoomSlot>> GetRoomSlots();
-        Task<bool> UpdateRoomSlotAsync(RoomSlot update);
+        Task<RoomSlotResponseModel?> GetRoomSlot(int id);
+        Task<List<RoomSlotResponseModel>> GetRoomSlots();
+        Task<bool> UpdateRoomSlotAsync(int id ,UpdateRoomSlotRequestModel update);
     }
 }
