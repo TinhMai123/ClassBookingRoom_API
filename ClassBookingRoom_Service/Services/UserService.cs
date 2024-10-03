@@ -161,8 +161,8 @@ namespace ClassBookingRoom_Service.Services
             }
             var totalCount = result.Count();
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
-            var classResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync();
-            return (modelList.Select(x => x.ToUserDTO()).ToList(), totalCount);
+            var classResult =  result.Skip(skipNumber).Take(query.PageSize).ToList();
+            return (classResult.Select(x => x.ToUserDTO()).ToList(), totalCount);
         }
     }
 }
