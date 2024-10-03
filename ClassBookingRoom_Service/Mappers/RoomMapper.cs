@@ -38,5 +38,19 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = DateTime.Now,
             };
         }
+        public static SearchRoomResponseModel ToRoomSearch(this Room dto)
+        {
+            return new SearchRoomResponseModel()
+            {
+                Id = dto.Id,
+                Capacity = dto.Capacity,
+                RoomName = model.RoomName,
+                RoomTypeId = model.RoomTypeId,
+                Status = model.Status,
+                CreateAt = model.CreateAt,
+                DeleteAt = model.DeleteAt,
+                UpdatedAt = model.UpdatedAt
+            }
+        }
     }
 }
