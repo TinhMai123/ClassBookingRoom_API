@@ -71,7 +71,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpPost("search")]
-        public async Task<ActionResult<UserDetailResponseModel>> SearchUser([FromBody]SearchUserQuery query)
+        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromBody]SearchUserQuery query)
         {
             var (users, totalCount) = await _userService.SearchUser(query);
             var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);

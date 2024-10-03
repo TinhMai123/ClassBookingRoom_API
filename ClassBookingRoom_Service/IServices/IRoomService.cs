@@ -16,6 +16,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<RoomResponseModel?> GetRoom(int id);
         Task<List<RoomResponseModel>> GetRooms();
         Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update);
-        Task<(RoomResponseModel response, int id)> SearchRoomQuery(SearchRoomQuery query);
+        Task<(List<RoomResponseModel> response, int id)> SearchRoomQuery(SearchRoomQuery query);
     }
 }
