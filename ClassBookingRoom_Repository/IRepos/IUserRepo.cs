@@ -10,7 +10,7 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IUserRepo
     {
-        Task<GetUserTypeResponseModel> GetUserTypeByEmail(string email);
+        Task<GetUserTypeResponseModel?> GetUserTypeByEmail(string email);
         Task<User?> GetUserByEmail(string email);
         Task<User?> GetById(Guid id);
         Task<List<User>> GetUserByName(string name);

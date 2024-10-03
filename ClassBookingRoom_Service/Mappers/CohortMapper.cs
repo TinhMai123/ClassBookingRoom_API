@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassBookingRoom_BusinessObject.Mappers
+namespace ClassBookingRoom_Service.Mappers
 {
     public static class CohortMapper
     {

@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Service.IServices
     {
         Task<bool> AddUserAsync(CreateUserRequestModel dto);
         Task<bool> DeleteUserAsync(int id);
-        Task<GetUserTypeResponseModel> GetUserTypeByEmailAsync(string email);
+        Task<GetUserTypeResponseModel?> GetUserTypeByEmailAsync(string email);
         Task<UserDetailResponseModel?> GetUserByEmailAsync(string email);
         Task<string?> Login(LoginRequestModel request);
         Task<List<UserResponseModel>> GetAllUser();

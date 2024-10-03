@@ -1,11 +1,11 @@
-﻿using ClassBookingRoom_BusinessObject.Mappers;
-using ClassBookingRoom_Repository;
+﻿using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Auth;
 using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -46,7 +46,7 @@ namespace ClassBookingRoom_Service.Services
             return deleted;
         }
 
-        public async Task<GetUserTypeResponseModel> GetUserTypeByEmailAsync(string email)
+        public async Task<GetUserTypeResponseModel?> GetUserTypeByEmailAsync(string email)
         {
             return await _repo.GetUserTypeByEmail(email);
 
