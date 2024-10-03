@@ -70,7 +70,7 @@ namespace ClassBookingRoom_API.Controllers
             return BadRequest();
         }
         [HttpPost("search")]
-        public async Task<ActionResult<RoomResponseModel>> SearchRoom([FromBody] SearchRoomQuery query)
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromBody] SearchRoomQuery query)
         {
             var (rooms, totalCount) = await _roomService.SearchRoomQuery(query);
             var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
