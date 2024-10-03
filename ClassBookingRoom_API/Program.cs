@@ -88,14 +88,14 @@ builder
         };
     });
 builder.Services.AddAuthorization();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder
-            .WithOrigins("http://localhost:5173", "https://fu-booking-room.vercel.app")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
+builder.Services.AddCors(options => options.AddDefaultPolicy(policyBuilder =>
+        policyBuilder
+        .WithOrigins("http://localhost:5173", "https://fu-booking-room.vercel.app")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithExposedHeaders("X-Total-Count", "X-Current-Page", "X-Total-Pages")
+        .AllowCredentials())
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
