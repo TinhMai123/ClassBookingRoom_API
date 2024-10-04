@@ -11,9 +11,9 @@ namespace ClassBookingRoom_Service.Mappers
 {
     public static class ActivityMapper
     {
-        public static ActivityResponseModel ToAcivityDTO(this Activity model)
+        public static BookingModifyHistoryResponseModel ToAcivityDTO(this Activity model)
         {
-            return new ActivityResponseModel
+            return new BookingModifyHistoryResponseModel
             {
                 DepartmentId = model.DepartmentId,
                 Id = model.Id,

@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Activity;
+using ClassBookingRoom_Repository.RequestModels.BookingModifyHistory;
 using ClassBookingRoom_Repository.ResponseModels.Activity;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Http;
@@ -6,20 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassBookingRoom_API.Controllers
 {
-    [Route("api/activities")]
+    [Route("api/booking-modify-histories")]
     [ApiController]
-    public class ActivityController : ControllerBase
+    public class BookingModifyHistoryController : ControllerBase
     {
-        private readonly IActivityService _activityService;
-        public ActivityController(IActivityService activityService)
+        private readonly IBookingModifyHistoryService _historyService;
+        public BookingModifyHistoryController(IBookingModifyHistoryService historyService)
         {
-            _activityService = activityService;
+            _historyService = historyService;
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<BookingModifyHistoryResponseModel>> GetById([FromRoute] int id)
         {
-            var activity = await _activityService.GetById(id);
+            var activity = await _historyService.Get(id);
             if (activity == null) { return NotFound(); }
             return Ok(activity);
         }
@@ -27,14 +28,14 @@ namespace ClassBookingRoom_API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetAll()
         {
-            var list = await _activityService.GetAll();
+            var list = await _historyService.Gets();
             return Ok(list);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateActivity(CreateActivityRequestModel add)
+        public async Task<ActionResult> CreateActivity(CreateBookingModifyHistoryRequestModel add)
         {
-            var result = await _activityService.CreateAsync(add);
+            var result = await _historyService.AddAsync(add);
             if (result)
             {
                 return Ok();
@@ -47,9 +48,9 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateActivityRequestModel update)
+        public async Task<ActionResult> UpdateActivity([FromRoute] int id, [FromBody] UpdateBookingModifyHistoryRequestModel update)
         {
-            var result = await _activityService.UpdateAsync(id, update);
+            var result = await _historyService.UpdateAsync(id, update);
 
             if (result)
             {
@@ -64,7 +65,7 @@ namespace ClassBookingRoom_API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteActivity([FromRoute] int id)
         {
-            var result = await _activityService.DeleteAsync(id);
+            var result = await _historyService.DeleteAsync(id);
             if (result)
             {
                 return Ok(result);
