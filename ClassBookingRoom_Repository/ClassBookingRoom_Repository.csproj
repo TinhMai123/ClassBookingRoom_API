@@ -26,8 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="RequestModels\BookingModifyHistory\" />
-    <Folder Include="ResponseModels\BookingModifyHistory\" />
   </ItemGroup>
 
 </Project>

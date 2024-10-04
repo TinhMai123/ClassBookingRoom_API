@@ -8,5 +8,6 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IBookingModifyHistoryRepo
     {
+
     }
 }

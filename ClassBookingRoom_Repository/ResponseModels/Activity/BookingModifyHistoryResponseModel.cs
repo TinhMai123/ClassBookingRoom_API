@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.ResponseModels.Activity
 {
-    public class ActivityResponseModel
+    public class BookingModifyHistoryResponseModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }

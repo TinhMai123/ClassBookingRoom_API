@@ -12,5 +12,7 @@ namespace ClassBookingRoom_Repository.RequestModels.Report
         public int RoomId { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
+        
+
     }
 }
