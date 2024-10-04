@@ -17,5 +17,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<BookingResponseModel?> GetBooking(int id);
         Task<List<BookingResponseModel>> GetBookings();
         Task<bool> UpdateBookingAsync(int id, UpdateBookingRequestModel update);
+        Task<(List<BookingResponseModel>, int totalCount)> SearchBookQuery(SearchBookHistoryQuery query);
     }
 }
