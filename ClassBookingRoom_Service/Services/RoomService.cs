@@ -12,6 +12,7 @@ using ClassBookingRoom_Repository.RequestModels.Room;
 using ClassBookingRoom_Service.Mappers;
 using ClassBookingRoom_Repository.ResponseModels.Room;
 using ClassBookingRoom_Repository.Repos;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -49,38 +50,45 @@ namespace ClassBookingRoom_Service.Services
             return rooms.Select(x => x.ToRoomDTO()).ToList(); 
         }
 
-        public async Task<(List<RoomResponseModel> response, int id)> SearchRoomQuery(SearchRoomQuery query)
-        
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomQuery(SearchRoomQuery query)
+        {
+            var modelList = await _baseRepo.GetAllAsync(); 
+            var result = modelList.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
-
-                var modelList = await _baseRepo.GetAllAsync();
-                var result = modelList.AsQueryable();
-
-                if (!string.IsNullOrWhiteSpace(query.SearchValue))
-                {
-                    result = result.Where(r => r.RoomName.Contains(query.SearchValue));
-                }
-                if (!string.IsNullOrWhiteSpace(query.Status))
-                {
-                    result = result.Where(r => r.Status.Contains(query.Status));
-                }
-
-                if (query.RoomTypeId is not null)
-                {
-                    result = result.Where(r => r.RoomTypeId == query.RoomTypeId);
-                }
-
-                if(query.MinCapacity is not null && query.MaxCapacity is not null )
-                 {
-                    result = result.Where(r => r.Capacity >= query.MinCapacity && r.Capacity <= query.MaxCapacity);
-                }
-
-                var totalCount = result.Count();
-                var skipNumber = (query.PageNumber - 1) * query.PageSize;
-                var paginatedResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
-                return ((paginatedResult.Select(x => x.ToRoomDTO()).ToList(), totalCount));
-            
+                result = result.Where(r => r.RoomName.Contains(query.SearchValue));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Status))
+            {
+                result = result.Where(r => r.Status.Contains(query.Status));
+            }
+            if (query.RoomTypeId is not null)
+            {
+                result = result.Where(r => r.RoomTypeId == query.RoomTypeId);
+            }
+            if (query.MinCapacity is not null)
+            {
+                result = result.Where(r => r.Capacity >= query.MinCapacity);
+            }
+            if (query.MaxCapacity is not null)
+            {
+                result = result.Where(r => r.Capacity <= query.MaxCapacity);
+            }
+            if (query.StartTime is not null)
+            {
+                result = result.Where(r => r.RoomSlots.Any(c => c.StartTime.CompareTo(query.StartTime) <= 0));
+            }
+            if (query.EndTime is not null)
+            {
+                result = result.Where(r => r.RoomSlots.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
+            }
+            var totalCount = await result.CountAsync(); 
+            var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
+            var paginatedResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync(); 
+            return (paginatedResult.Select(x => x.ToRoomDTO()).ToList(), totalCount);
         }
+
 
         public async Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
         {

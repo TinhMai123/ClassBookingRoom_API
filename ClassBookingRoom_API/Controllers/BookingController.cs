@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,6 +67,20 @@ namespace ClassBookingRoom_API.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+        [HttpPost("search")]
+        public async Task<ActionResult<List<BookingResponseModel>>> SearchBookQuery(SearchBookHistoryQuery query)
+        {
+            try
+            {
+                var (bookings, totalCount) = await _bookingService.SearchBookQuery(query);
+                var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
+                Response.Headers.Append("X-Total-Count", totalCount.ToString());
+                Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
+                Response.Headers.Append("X-Total-Pages", totalPages.ToString());
+                return Ok(bookings);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -59,6 +60,23 @@ namespace ClassBookingRoom_Service.Services
             result.UserId = update.UserId;
             result.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
+        }
+        public async Task<(List<BookingResponseModel>, int totalCount)> SearchBookQuery(SearchBookHistoryQuery query)
+        {
+            var modelRepo = await _baseRepo.GetAllAsync();
+            var result = modelRepo.AsQueryable();
+            if(query.StartTime is not null)
+            {
+                result = result.Where(r => r.CreateAt.CompareTo(query.StartTime)<=0);
+            }
+            if(query.EndTime is not null)
+            {
+                result = result.Where(r => r.CreateAt.CompareTo(query.StartTime) >= 0);
+            }
+            var totalCount = await result.CountAsync();
+            var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
+            var paginatedResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            return (paginatedResult.Select(x => x.ToBookingDTO()).ToList(), totalCount);
         }
     }
 }
