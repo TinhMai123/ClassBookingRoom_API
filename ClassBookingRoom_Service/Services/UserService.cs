@@ -68,7 +68,7 @@ namespace ClassBookingRoom_Service.Services
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow,
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: creds
                 );
 
