@@ -52,6 +52,7 @@ builder.Services.AddSwaggerGen(c =>
             }
         }
     );
+    c.SupportNonNullableReferenceTypes();
 });
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
@@ -67,6 +68,11 @@ builder.Services.AddScoped<IBookingModifyHistoryService, BookingModifyHistorySer
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = builder.Configuration["Google:Client_ID"];
+    googleOptions.ClientSecret = builder.Configuration["Google:Client_Secret"];
 });
 
 builder

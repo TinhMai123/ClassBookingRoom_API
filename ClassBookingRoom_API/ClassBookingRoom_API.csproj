@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	  <UserSecretsId>8e4380c2-548b-4089-b355-8610398ca861</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.6" />
