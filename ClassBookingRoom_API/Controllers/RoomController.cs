@@ -21,13 +21,6 @@ namespace ClassBookingRoom_API.Controllers
             _roomSlotService = roomSlotService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<RoomResponseModel>>> GetAll()
-        {
-            var result = await _roomService.GetRooms();
-            return Ok(result);
-        }
-
         [HttpGet("{id:int}")]
         public async Task<ActionResult<RoomResponseModel>> GetById([FromRoute] int id)
         {
@@ -72,8 +65,8 @@ namespace ClassBookingRoom_API.Controllers
             }
             return BadRequest();
         }
-        [HttpPost("search")]
-        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromBody] SearchRoomQuery query)
+        [HttpGet]
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromQuery] SearchRoomQuery query)
         {
             try
             {

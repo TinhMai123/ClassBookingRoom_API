@@ -15,12 +15,6 @@ namespace ClassBookingRoom_API.Controllers
         {
             _userService = userService;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<UserResponseModel>>> GetAllUsers()
-        {
-            var users = await _userService.GetAllUser();
-            return Ok(users);
-        }
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<UserDetailResponseModel>> GetById([FromRoute] Guid id)
         {
@@ -70,8 +64,8 @@ namespace ClassBookingRoom_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("search")]
-        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromBody]SearchUserQuery query)
+        [HttpGet]
+        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromQuery]SearchUserQuery query)
         {
             var (users, totalCount) = await _userService.SearchUser(query);
             var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
