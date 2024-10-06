@@ -16,6 +16,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> DeleteAsync(int id);
         Task<BookingModifyHistoryResponseModel?> Get(int id);
         Task<List<BookingModifyHistoryResponseModel>> Gets();
+        Task<List<BookingModifyHistoryResponseModel>> GetByBookingid(int bookingId);
         Task<bool> UpdateAsync(int id, UpdateBookingModifyHistoryRequestModel update);
     }
 }

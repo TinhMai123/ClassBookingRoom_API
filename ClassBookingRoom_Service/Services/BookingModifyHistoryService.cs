@@ -37,6 +37,13 @@ namespace ClassBookingRoom_Service.Services
             return result?.ToBookingModifyHistoryDTO();
         }
 
+        public async Task<List<BookingModifyHistoryResponseModel>> GetByBookingid(int bookingId)
+        {
+            var result = await _baseRepo.GetAllAsync();
+            result = result.Where(x => x.BookingId == bookingId).ToList();
+            return result.Select(x => x.ToBookingModifyHistoryDTO()).ToList();
+        }
+
         public async Task<List<BookingModifyHistoryResponseModel>> Gets()
         {
             var result = await _baseRepo.GetAllAsync();

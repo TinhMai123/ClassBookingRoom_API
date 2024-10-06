@@ -1,4 +1,6 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Booking;
+using ClassBookingRoom_Repository.RequestModels.BookingModifyHistory;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Services;
@@ -11,11 +13,14 @@ namespace ClassBookingRoom_API.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
+        private readonly IBookingModifyHistoryService _historyService;
         private readonly IBookingService _bookingService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IBookingModifyHistoryService historyService)
         {
             _bookingService = bookingService;
+            _historyService = historyService;
+
         }
 
         [HttpGet("{id:int}")]
@@ -79,9 +84,69 @@ namespace ClassBookingRoom_API.Controllers
                 Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
                 Response.Headers.Append("X-Total-Pages", totalPages.ToString());
                 return Ok(bookings);
+            } catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        // HISTORY
+        [HttpGet("histories/{id:int}")]
+        public async Task<ActionResult<BookingModifyHistoryResponseModel>> GetByHistoryId([FromRoute] int id)
+        {
+            var activity = await _historyService.Get(id);
+            if (activity == null) { return NotFound(); }
+            return Ok(activity);
+        }
+        [HttpGet("{bookingId:int}/histories")]
+        public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetHistoriesByBookingId([FromRoute] int bookingId)
+        {
+            var list = await _historyService.GetByBookingid(bookingId);
+            return Ok(list);
+        }
+
+        [HttpGet("histories")]
+        public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetAllHistory()
+        {
+            var list = await _historyService.Gets();
+            return Ok(list);
+        }
+
+        [HttpPost("histories")]
+        public async Task<ActionResult> CreateHistory(CreateBookingModifyHistoryRequestModel add)
+        {
+            var result = await _historyService.AddAsync(add);
+            if (result)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+
+        }
+
+        [HttpPut("histories/{id:int}")]
+        public async Task<ActionResult> UpdateHistory([FromRoute] int id, [FromBody] UpdateBookingModifyHistoryRequestModel update)
+        {
+            var result = await _historyService.UpdateAsync(id, update);
+
+            if (result)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("histories/{id:int}")]
+        public async Task<ActionResult> DeleteHistory([FromRoute] int id)
+        {
+            var result = await _historyService.DeleteAsync(id);
+            if (result)
+            {
+                return Ok(result);
+            } else
+            {
+                return BadRequest();
+            }
         }
     }
 }
-
