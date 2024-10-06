@@ -10,7 +10,7 @@ namespace ClassBookingRoom_Repository.RequestModels.Room
     {
         public string RoomName { get; set; } = string.Empty;
         public int Capacity { get; set; } = 0;
-        public string? Status { get; set; }
+        public string Status { get; set; } = string.Empty;
         public int? RoomTypeId { get; set; }
 
     }

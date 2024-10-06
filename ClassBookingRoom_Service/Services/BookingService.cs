@@ -26,7 +26,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddBookingAsync(CreateBookingRequestModel add)
         {
-            var result = await _baseRepo.AddAsync(add.ToCohortFromCreate());
+            var result = await _baseRepo.AddAsync(add.ToBookingFromCreate());
             return result;
         }
 
@@ -37,13 +37,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<BookingResponseModel?> GetBooking(int id)
         {
-            var result = await _baseRepo.GetByIdAsync(id);
+            var result = await _repo.GetBooking(id);
             return result?.ToBookingDTO();
         }
 
         public async Task<List<BookingResponseModel>> GetBookings()
         {
-            var result = await _baseRepo.GetAllAsync();
+            var result = await _repo.GetBookings();
             return result.Select(x => x.ToBookingDTO()).ToList();
         }
 

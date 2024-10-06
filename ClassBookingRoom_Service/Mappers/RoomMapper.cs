@@ -19,6 +19,7 @@ namespace ClassBookingRoom_Service.Mappers
                 Capacity = model.Capacity,
                 RoomName = model.RoomName,
                 RoomTypeId = model.RoomTypeId,
+                RoomTypeName = model.RoomType?.Name ?? "",
                 Status = model.Status,
                 CreateAt = model.CreateAt,
                 DeleteAt = model.DeleteAt,

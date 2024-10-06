@@ -14,7 +14,6 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static ReportResponseModel ToReportDTO(this Report model)
         {
-            var user = model.CreatedBy?.ToUserDTO();
             return new ReportResponseModel
             {
                 Id = model.Id,
@@ -23,8 +22,10 @@ namespace ClassBookingRoom_Service.Mappers
                 Description = model.Description,
                 Title = model.Title,
                 UpdatedAt = model.UpdatedAt,
-                CreatedBy = user,
-                CreatorId = model.CreatorId,
+                StudentId = model.CreatorId,
+                StudentFirstName = model.CreatedBy?.FirstName ?? "",
+                StudentLastName = model.CreatedBy?.LastName ?? "",
+                StudentEmail = model.CreatedBy?.Email ?? "",
                 RoomId = model.RoomId,
             };
         }

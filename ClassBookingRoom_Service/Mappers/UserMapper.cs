@@ -25,6 +25,9 @@ namespace ClassBookingRoom_Service.Mappers
                 Status = model.Status,
                 CohortId = model.CohortId,
                 DepartmentId = model.DepartmentId,
+                CreateAt = model.CreateAt,
+                DeleteAt = model.DeleteAt,
+                UpdatedAt = model.UpdatedAt
             };
         }
 

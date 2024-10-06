@@ -1,14 +1,13 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
-using ClassBookingRoom_Repository.RequestModels.Report;
-using ClassBookingRoom_Repository.RequestModels.Room;
-using ClassBookingRoom_Repository.ResponseModels.Room;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ClassBookingRoom_Repository.Repos
 {
@@ -18,36 +17,14 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public Task<bool> AddRoomAsync(CreateReportRequestModel add)
+        public async Task<Room?> GetRoom(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Rooms.Include(r => r.RoomType).SingleOrDefaultAsync(r => r.Id == id);
         }
 
-        public Task<bool> AddRoomAsync(CreateRoomRequestModel add)
+        public async Task<List<Room>> GetRooms()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteRoomAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RoomResponseModel> GetRoom(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
-        public Task<List<RoomResponseModel>> GetRooms()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
-        {
-            throw new NotImplementedException();
+            return await _context.Rooms.Include(r => r.RoomType).ToListAsync();
         }
     }
 }

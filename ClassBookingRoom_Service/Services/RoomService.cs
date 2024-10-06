@@ -38,15 +38,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<RoomResponseModel?> GetRoom(int id)
         {
-            var room = await _baseRepo.GetByIdAsync(id);
+            var room = await _repo.GetRoom(id);
             return room?.ToRoomDTO();
         }
 
-        
-
         public async Task<List<RoomResponseModel>> GetRooms()
         {
-            var rooms = await _baseRepo.GetAllAsync();
+            var rooms = await _repo.GetRooms();
             return rooms.Select(x => x.ToRoomDTO()).ToList(); 
         }
 

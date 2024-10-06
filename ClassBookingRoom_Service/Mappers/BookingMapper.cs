@@ -16,21 +16,21 @@ namespace ClassBookingRoom_Service.Mappers
 
         public static BookingResponseModel ToBookingDTO(this Booking model)
         {
-            var user = model.CreateBy?.ToUserDTO();
             return new BookingResponseModel
             {
                 Id = model.Id,
                 ActivityId = model.ActivityId,
                 Description = model.Description,
-                UserId = model.UserId,
+                StudentId = model.UserId,
                 Status = model.Status,
-                CreateBy = user,
                 UpdatedAt = model.UpdatedAt,
                 DeleteAt = model.DeleteAt,
-                CreateAt = model.CreateAt
+                CreateAt = model.CreateAt,
+                StudentFirstName = model.CreateBy?.FirstName ?? "",
+                StudentLastName = model.CreateBy?.LastName ?? "",
             };
         }
-        public static Booking ToCohortFromCreate(this CreateBookingRequestModel dto)
+        public static Booking ToBookingFromCreate(this CreateBookingRequestModel dto)
         {
             return new Booking
             {
