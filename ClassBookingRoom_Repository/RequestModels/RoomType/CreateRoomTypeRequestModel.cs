@@ -9,6 +9,5 @@ namespace ClassBookingRoom_Repository.RequestModels.RoomType
     public class CreateRoomTypeRequestModel
     {
         public string Name { get; set; } = string.Empty;
-        public int DepartmentId { get; set; }
     }
 }
