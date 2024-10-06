@@ -10,6 +10,6 @@ namespace ClassBookingRoom_Repository.RequestModels.RoomSlot
     {
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int RoomId { get; set; }
+        public int RoomId { get; set; } 
     }
 }

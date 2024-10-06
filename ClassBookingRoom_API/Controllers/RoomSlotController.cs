@@ -19,63 +19,6 @@ namespace ClassBookingRoom_API.Controllers
             _roomSlotService = roomSlotService;
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<RoomSlotResponseModel>> GetById([FromRoute] int id)
-        {
-            var activity = await _roomSlotService.GetRoomSlot(id);
-            if (activity == null) { return NotFound(); }
-            return Ok(activity);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<RoomSlotResponseModel>>> GetAll()
-        {
-            var list = await _roomSlotService.GetRoomSlots();
-            return Ok(list);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreateRoomSlot(CreateRoomSlotRequestModel add)
-        {
-            var result = await _roomSlotService.AddRoomSlotAsync(add);
-            if (result)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
-
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> UpdateRoomSlot([FromRoute] int id, [FromBody] UpdateRoomSlotRequestModel update)
-        {
-            var result = await _roomSlotService.UpdateRoomSlotAsync(id, update);
-
-            if (result)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeleteRoomSlot([FromRoute] int id)
-        {
-            var result = await _roomSlotService.DeleteRoomSlotAsync(id);
-            if (result)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
+       
     }
 }
