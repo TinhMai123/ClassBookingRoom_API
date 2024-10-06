@@ -11,11 +11,8 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IRoomRepo
     {
-        Task<bool> AddRoomAsync(CreateRoomRequestModel add);
-        Task<bool> DeleteRoomAsync(int id);
-        Task<RoomResponseModel> GetRoom(int id);
-        Task<List<RoomResponseModel>> GetRooms();
-        Task<bool> UpdateRoomAsync(int id,UpdateRoomRequestModel update);
+        Task<Room?> GetRoom(int id);
+        Task<List<Room>> GetRooms();
     }
 }
 

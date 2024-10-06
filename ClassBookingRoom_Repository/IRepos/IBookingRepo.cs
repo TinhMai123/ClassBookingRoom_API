@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IBookingRepo 
     {
+        Task<Booking?> GetBooking(int id);
+        Task<List<Booking>> GetBookings();
     }
 }

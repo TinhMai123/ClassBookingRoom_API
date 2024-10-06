@@ -8,8 +8,8 @@ namespace ClassBookingRoom_Repository.RequestModels.RoomSlot
 {
     public class CreateRoomSlotRequestModel
     {
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
-        public int RoomId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int RoomId { get; set; } 
     }
 }

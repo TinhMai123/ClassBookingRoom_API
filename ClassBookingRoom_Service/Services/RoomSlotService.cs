@@ -45,13 +45,19 @@ namespace ClassBookingRoom_Service.Services
             return result.Select(x => x.ToRoomSlotDTO()).ToList();
         }
 
+        public async Task<List<RoomSlotResponseModel>> GetRoomSlotsByRoomId(int roomId)
+        {
+            var result = await _baseRepo.GetAllAsync();
+            result = result.Where(x => x.RoomId == roomId).ToList();
+            return result.Select(x => x.ToRoomSlotDTO()).ToList();
+        }
+
         public async Task<bool> UpdateRoomSlotAsync(int id,UpdateRoomSlotRequestModel update)
         {
             var result = await _baseRepo.GetByIdAsync(id);
             if (result is null) { return false; }
             result.StartTime = update.StartTime;
             result.EndTime = update.EndTime;
-            result.RoomId = update.RoomId;
             result.UpdatedAt=DateTime.Now;
             return await _baseRepo.UpdateAsync(result);
         }

@@ -13,9 +13,11 @@ namespace ClassBookingRoom_Repository.ResponseModels.Report
         public string? Title { get; set; }
         public string? Description { get; set; }
         public int RoomId { get; set; }
-        public Guid CreatorId { get; set; }
+        public Guid StudentId { get; set; }
+        public string StudentFirstName { get; set; } = string.Empty;
+        public string StudentLastName { get; set; } = string.Empty;
+        public string StudentEmail { get; set; } = string.Empty;
         public string Status { get; set; } = "Pending";
-        public UserResponseModel? CreatedBy { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? DeleteAt { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

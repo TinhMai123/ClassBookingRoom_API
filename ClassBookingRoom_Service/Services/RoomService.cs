@@ -38,21 +38,19 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<RoomResponseModel?> GetRoom(int id)
         {
-            var room = await _baseRepo.GetByIdAsync(id);
+            var room = await _repo.GetRoom(id);
             return room?.ToRoomDTO();
         }
 
-        
-
         public async Task<List<RoomResponseModel>> GetRooms()
         {
-            var rooms = await _baseRepo.GetAllAsync();
+            var rooms = await _repo.GetRooms();
             return rooms.Select(x => x.ToRoomDTO()).ToList(); 
         }
 
         public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomQuery(SearchRoomQuery query)
         {
-            var modelList = await _baseRepo.GetAllAsync(); 
+            var modelList = await _repo.GetRooms(); 
             var result = modelList.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
@@ -77,15 +75,18 @@ namespace ClassBookingRoom_Service.Services
             }
             if (query.StartTime is not null)
             {
-                result = result.Where(r => r.RoomSlots.Any(c => c.StartTime.CompareTo(query.StartTime) <= 0));
+                result = result.Where(r => r.RoomSlots!.Any(c => c.StartTime.CompareTo(query.StartTime) <= 0));
             }
             if (query.EndTime is not null)
             {
-                result = result.Where(r => r.RoomSlots.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
+                result = result.Where(r => r.RoomSlots!.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
             }
-            var totalCount = await result.CountAsync(); 
+            var totalCount = result.Count(); 
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
-            var paginatedResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync(); 
+            var paginatedResult = result
+                .Skip(skipNumber)
+                .Take(query.PageSize)
+                .ToList(); 
             return (paginatedResult.Select(x => x.ToRoomDTO()).ToList(), totalCount);
         }
 

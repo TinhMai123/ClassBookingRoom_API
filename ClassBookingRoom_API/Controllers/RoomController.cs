@@ -1,5 +1,7 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Room;
+using ClassBookingRoom_Repository.RequestModels.RoomSlot;
 using ClassBookingRoom_Repository.ResponseModels.Room;
+using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +13,12 @@ namespace ClassBookingRoom_API.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _roomService;
+        private readonly IRoomSlotService _roomSlotService;
 
-        public RoomController(IRoomService roomService)
+        public RoomController(IRoomService roomService, IRoomSlotService roomSlotService)
         {
             _roomService = roomService;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<RoomResponseModel>>> GetAll()
-        {
-            var result = await _roomService.GetRooms();
-            return Ok(result);
+            _roomSlotService = roomSlotService;
         }
 
         [HttpGet("{id:int}")]
@@ -31,8 +28,7 @@ namespace ClassBookingRoom_API.Controllers
             if (result == null)
             {
                 return NotFound();
-            }
-            else
+            } else
             {
                 return Ok(result);
             }
@@ -69,8 +65,8 @@ namespace ClassBookingRoom_API.Controllers
             }
             return BadRequest();
         }
-        [HttpPost("search")]
-        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromBody] SearchRoomQuery query)
+        [HttpGet]
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromQuery] SearchRoomQuery query)
         {
             try
             {
@@ -80,8 +76,71 @@ namespace ClassBookingRoom_API.Controllers
                 Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
                 Response.Headers.Append("X-Total-Pages", totalPages.ToString());
                 return Ok(rooms);
+            } catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        // ROOM SLOT
+
+        [HttpGet("slots/{id:int}")]
+        public async Task<ActionResult<RoomSlotResponseModel>> GetByRoomSlotId([FromRoute] int id)
+        {
+            var activity = await _roomSlotService.GetRoomSlot(id);
+            if (activity == null) { return NotFound(); }
+            return Ok(activity);
+        }
+
+        [HttpGet("slots")]
+        public async Task<ActionResult<List<RoomSlotResponseModel>>> GetAllRoomSlot()
+        {
+            var list = await _roomSlotService.GetRoomSlots();
+            return Ok(list);
+        }
+        [HttpGet("{roomId:int}/slots")]
+        public async Task<ActionResult<List<RoomSlotResponseModel>>> GetRoomSlotsByRoomId([FromRoute]int roomId)
+        {
+            var list = await _roomSlotService.GetRoomSlotsByRoomId(roomId);
+            return Ok(list);
+        }
+
+        [HttpPost("slots")]
+        public async Task<ActionResult> CreateRoomSlot(CreateRoomSlotRequestModel add)
+        {
+            var result = await _roomSlotService.AddRoomSlotAsync(add);
+            if (result)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+
+        }
+
+        [HttpPut("slots/{id:int}")]
+        public async Task<ActionResult> UpdateRoomSlot([FromRoute] int id, [FromBody] UpdateRoomSlotRequestModel update)
+        {
+            var result = await _roomSlotService.UpdateRoomSlotAsync(id, update);
+
+            if (result)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("slots/{id:int}")]
+        public async Task<ActionResult> DeleteRoomSlot([FromRoute] int id)
+        {
+            var result = await _roomSlotService.DeleteRoomSlotAsync(id);
+            if (result)
+            {
+                return Ok(result);
+            } else
+            {
+                return BadRequest();
+            }
         }
     }
 }
