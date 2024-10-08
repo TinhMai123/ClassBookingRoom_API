@@ -9,6 +9,11 @@ using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Repository.Repos;
 using ClassBookingRoom_Service.Services;
 using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_API.Controllers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -69,11 +74,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["Google:Client_ID"];
-    googleOptions.ClientSecret = builder.Configuration["Google:Client_Secret"];
-});
 
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -93,6 +93,17 @@ builder
             )
         };
     });
+builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+       .AddCookie()
+       .AddGoogle(options =>
+       {
+           options.ClientId = builder.Configuration["Google:ClientId"];
+           options.ClientSecret = builder.Configuration["Google:ClientSecret"];
+       });
 builder.Services.AddAuthorization();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policyBuilder =>
         policyBuilder
@@ -102,6 +113,8 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policyBuilder =>
         .WithExposedHeaders("X-Total-Count", "X-Current-Page", "X-Total-Pages")
         .AllowCredentials())
 );
+builder.Services.AddHttpClient<AuthController>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -112,8 +125,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
-}
-else
+} else
 {
     app.UseSwagger();
     app.UseSwaggerUI();

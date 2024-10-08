@@ -1,9 +1,19 @@
-﻿using ClassBookingRoom_Repository.RequestModels.Auth;
+﻿using Azure.Core;
+using ClassBookingRoom_Repository.RequestModels.Auth;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Util.Store;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace ClassBookingRoom_API.Controllers
@@ -13,10 +23,20 @@ namespace ClassBookingRoom_API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public AuthController(IUserService userService)
+        private readonly IConfiguration _configuration;
+        public AuthController(IUserService userService, IConfiguration configuration)
         {
             _userService = userService;
+            _configuration = configuration;
+            if (FirebaseApp.DefaultInstance == null)
+            {
+                var googleCredentialSection = _configuration.GetSection("GoogleCredential").Get<Dictionary<string, string>>();
+                var credential = GoogleCredential.FromJson(JsonConvert.SerializeObject(googleCredentialSection));
+                FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = credential,
+                });
+            }
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
@@ -28,6 +48,21 @@ namespace ClassBookingRoom_API.Controllers
                 else return NotFound("User Not Found");
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }
+
+        [HttpPost("login-google")]
+        public async Task<ActionResult<FirebaseToken>> LoginGoogle([FromBody] LoginGoogleRequest request)
+        {
+            try
+            {
+                var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(request.AccessToken);
+                var jwtToken = _userService.LoginGoogle(decodedToken, request.Role);
+                return Ok(jwtToken);
+            } catch (FirebaseAuthException ex)
+            {
+                return Unauthorized(new { error = ex.Message });
+            }
+        }
+
         [HttpGet("get-user-info")]
         public IActionResult GetUserInfo()
         {
