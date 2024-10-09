@@ -102,7 +102,8 @@ namespace ClassBookingRoom_Service.Services
             var claims = firebaseToken.Claims;
             try
             {
-                if (claims.TryGetValue("email", out var email))
+                var email = claims.GetValueOrDefault("email");
+                if (email!=null)
                 {
                     var user = await _repo.GetUserByEmail(email.ToString()!);
                     if (user == null)
@@ -129,10 +130,11 @@ namespace ClassBookingRoom_Service.Services
                             Email = newUser.Email,
                             Password = newUser.Password
                         };
-                        return await Login(loginRequest);
+                        var login = await Login(loginRequest);
+                        return login;
                     } else
                     {
-                        if (user.Role !=  role)
+                        if (user.Role != role)
                         {
                             throw new Exception("Invalid role");
                         }
