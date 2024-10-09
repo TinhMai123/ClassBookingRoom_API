@@ -6,6 +6,7 @@ using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
+using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -83,12 +84,12 @@ namespace ClassBookingRoom_Service.Services
             {
                 if (string.IsNullOrWhiteSpace(request.Email) ||
                     string.IsNullOrWhiteSpace(request.Password))
-                    throw new Exception("INVALID INPUT");
+                    throw new Exception("Invalid input");
                 var user = await _repo.GetUserByEmail(request.Email);
                 if (user == null)
-                    throw new Exception("USER IS NOT FOUND");
+                    throw new Exception("User is not found");
                 if (!request.Password.Equals(user.Password))
-                    throw new Exception("INVALID PASSWORD");
+                    throw new Exception("Invalid password");
                 var token = CreateToken(user);
                 return token;
             } catch (Exception ex)
@@ -96,7 +97,60 @@ namespace ClassBookingRoom_Service.Services
                 throw new Exception($"{ex.Message}");
             }
         }
-
+        public async Task<string?> LoginGoogle(FirebaseToken firebaseToken, string role)
+        {
+            var claims = firebaseToken.Claims;
+            try
+            {
+                if (claims.TryGetValue("email", out var email))
+                {
+                    var user = await _repo.GetUserByEmail(email.ToString()!);
+                    if (user == null)
+                    {
+                        string fullName = claims.GetValueOrDefault("name")!.ToString()!;
+                        string firstName = "";
+                        string lastName = "";
+                        string[] nameParts = fullName.Split(' ');
+                        if (nameParts.Length >= 2)
+                        {
+                            firstName = nameParts[0];
+                            lastName = nameParts[1];
+                        }
+                        var newUser = new User
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            ProfileImageURL = claims.GetValueOrDefault("picture")!.ToString()!,
+                            Email = claims.GetValueOrDefault("email")!.ToString()!,
+                            Password = claims.GetValueOrDefault("user_id")!.ToString()!,
+                            Role = role,
+                            Status = "Unverified"
+                        };
+                        var result = await _baseRepo.AddAsync(newUser);
+                        var loginRequest = new LoginRequestModel()
+                        {
+                            Email = newUser.Email,
+                            Password = newUser.Password
+                        };
+                        return await Login(loginRequest);
+                    } else
+                    {
+                        if (user.Role !=  role)
+                        {
+                            throw new Exception("Invalid role");
+                        }
+                        var token = CreateToken(user);
+                        return token;
+                    }
+                } else
+                {
+                    throw new Exception("Invalid firebase token");
+                }
+            } catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
         public async Task<UserDetailResponseModel?> GetUserByEmailAsync(string email)
         {
             var user = await _repo.GetUserByEmail(email);
@@ -161,7 +215,7 @@ namespace ClassBookingRoom_Service.Services
             }
             var totalCount = result.Count();
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
-            var classResult =  result.Skip(skipNumber).Take(query.PageSize).ToList();
+            var classResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
             return (classResult.Select(x => x.ToUserDTO()).ToList(), totalCount);
         }
     }
