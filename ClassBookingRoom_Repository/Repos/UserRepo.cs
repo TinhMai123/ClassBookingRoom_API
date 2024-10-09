@@ -36,7 +36,7 @@ namespace ClassBookingRoom_Repository.Repos
         }
         public async Task<User?> GetUserByEmail(string email)
         {
-            return await _context.Users
+           return await _context.Users
                 .Include(x => x.Cohort)
                 .Include(x => x.Department)
                 .FirstOrDefaultAsync(c => c.Email == email);
