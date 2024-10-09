@@ -51,8 +51,6 @@ namespace ClassBookingRoom_Service.Services
         {
             var result = await _baseRepo.GetByIdAsync(id);
             if (result is null) { return false; }
-            result.Title = update.Title;
-            result.Description = update.Description;
             result.Status = update.Status;
             result.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
