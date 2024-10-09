@@ -8,8 +8,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.User
 {
     public class GetUserTypeResponseModel
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        public string FullName {  get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public string Role { get; set; } = string.Empty;

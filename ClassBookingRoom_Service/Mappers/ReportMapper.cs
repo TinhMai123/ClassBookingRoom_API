@@ -23,8 +23,7 @@ namespace ClassBookingRoom_Service.Mappers
                 Title = model.Title,
                 UpdatedAt = model.UpdatedAt,
                 StudentId = model.CreatorId,
-                StudentFirstName = model.CreatedBy?.FirstName ?? "",
-                StudentLastName = model.CreatedBy?.LastName ?? "",
+                StudentFullName = model.CreatedBy?.FullName ?? "" ,
                 StudentEmail = model.CreatedBy?.Email ?? "",
                 RoomId = model.RoomId,
             };

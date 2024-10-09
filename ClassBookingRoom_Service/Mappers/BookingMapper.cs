@@ -26,8 +26,7 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = model.UpdatedAt,
                 DeleteAt = model.DeleteAt,
                 CreateAt = model.CreateAt,
-                StudentFirstName = model.CreateBy?.FirstName ?? "",
-                StudentLastName = model.CreateBy?.LastName ?? "",
+                StudentFullName = model.CreateBy?.FullName ?? "",
             };
         }
         public static Booking ToBookingFromCreate(this CreateBookingRequestModel dto)

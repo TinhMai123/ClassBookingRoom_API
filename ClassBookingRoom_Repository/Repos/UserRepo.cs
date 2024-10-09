@@ -22,8 +22,7 @@ namespace ClassBookingRoom_Repository.Repos
             var answer = await GetUserByEmail(email);
             var user = new GetUserTypeResponseModel
             {
-                FirstName = answer.FirstName,
-                LastName = answer.LastName,
+                FullName = answer.FullName,
                 Email = answer.Email,
                 CreatedAt = answer.CreateAt,
                 Role = answer.Role,
@@ -33,7 +32,7 @@ namespace ClassBookingRoom_Repository.Repos
 
         public async Task<List<User>> GetUserByName(string name)
         {
-            return await _context.Users.Where(c => c.FirstName.Equals(name) || c.LastName.Equals(name)).ToListAsync();
+            return await _context.Users.Where(c => c.FullName.Contains(name)).ToListAsync();
         }
         public async Task<User?> GetUserByEmail(string email)
         {

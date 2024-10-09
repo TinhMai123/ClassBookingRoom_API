@@ -108,18 +108,15 @@ namespace ClassBookingRoom_Service.Services
                     if (user == null)
                     {
                         string fullName = claims.GetValueOrDefault("name")!.ToString()!;
-                        string firstName = "";
-                        string lastName = "";
                         string[] nameParts = fullName.Split(' ');
-                        if (nameParts.Length >= 2)
+/*                        if (nameParts.Length >= 2)
                         {
                             firstName = nameParts[0];
                             lastName = nameParts[1];
-                        }
+                        }*/
                         var newUser = new User
                         {
-                            FirstName = firstName,
-                            LastName = lastName,
+                            FullName = fullName,
                             ProfileImageURL = claims.GetValueOrDefault("picture")!.ToString()!,
                             Email = claims.GetValueOrDefault("email")!.ToString()!,
                             Password = claims.GetValueOrDefault("user_id")!.ToString()!,
@@ -173,8 +170,7 @@ namespace ClassBookingRoom_Service.Services
         {
             var existingUser = await _baseRepo.GetByIdAsync(id);
             if (existingUser == null) return false;
-            existingUser.FirstName = dto.FirstName;
-            existingUser.LastName = dto.LastName;
+            existingUser.FullName = dto.FullName;
             existingUser.Role = dto.Role;
             existingUser.ProfileImageURL = dto.ProfileImageURL;
             existingUser.Status = dto.Status;
@@ -193,9 +189,7 @@ namespace ClassBookingRoom_Service.Services
             var result = modelList.AsQueryable();
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
-                result = result.Where(c => c.FirstName.Contains(query.SearchValue)
-                || c.LastName.Contains(query.SearchValue)
-                );
+                result = result.Where(c => c.FullName.Contains(query.SearchValue));
             }
             if (!string.IsNullOrWhiteSpace(query.Status))
             {
