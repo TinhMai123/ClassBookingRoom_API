@@ -8,7 +8,6 @@ namespace ClassBookingRoom_Repository.RequestModels.Report
 {
     public class UpdateReportRequestModel
     {
-        
         public string Status { get; set; } = "Pending";
     }
 }
