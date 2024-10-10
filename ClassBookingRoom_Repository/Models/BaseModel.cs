@@ -11,5 +11,7 @@ namespace ClassBookingRoom_Repository.Models
         public DateTime CreateAt { get; set; } = DateTime.UtcNow;
         public DateTime? DeleteAt { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool isDeleted { get; set; } = false;
+
     }
 }

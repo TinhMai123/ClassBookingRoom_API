@@ -1,4 +1,6 @@
-﻿using ClassBookingRoom_Repository.ResponseModels.User;
+﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Booking
         public int Id { get; set; }
         public string Status { get; set; } = string.Empty;
         public Guid StudentId { get; set; }
+        public string? CohortCode { get; set; }
         public string StudentFullName { get; set; } = string.Empty;
         public string StudentEmail { get; set; } = string.Empty;
         public int ActivityId { get; set; }
@@ -19,5 +22,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Booking
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? DeleteAt { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public ICollection<RoomSlotResponseModel>? RoomSlots { get; set; }
     }
 }
