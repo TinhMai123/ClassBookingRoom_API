@@ -74,7 +74,7 @@ namespace ClassBookingRoom_API.Controllers
             return BadRequest();
         }
         [HttpPost("search")]
-        public async Task<ActionResult<List<BookingResponseModel>>> SearchBookQuery(SearchBookHistoryQuery query)
+        public async Task<ActionResult<List<BookingResponseModel>>> SearchBookQuery([FromBody]SearchBookHistoryQuery query)
         {
             try
             {
