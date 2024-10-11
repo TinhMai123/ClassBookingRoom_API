@@ -108,7 +108,7 @@ namespace ClassBookingRoom_API.Controllers
             string? email = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             if (email is null)
             {
-                return StatusCode(500);
+                return StatusCode(401);
             }
             var user = await _userService.GetUserByEmailAsync(email);
             if (user == null)
