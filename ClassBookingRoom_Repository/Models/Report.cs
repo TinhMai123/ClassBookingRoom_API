@@ -15,6 +15,7 @@ namespace ClassBookingRoom_Repository.Models
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string Status { get; set; } = "Pending";
+        public string? Response { get; set; }
         public int RoomId { get; set; }
         public Guid CreatorId { get; set; }
         public Room? Room { get; set; }
