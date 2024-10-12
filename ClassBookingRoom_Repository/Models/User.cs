@@ -19,7 +19,7 @@ namespace ClassBookingRoom_Repository.Models
         public string Status { get; set; } = string.Empty;
         public int? DepartmentId { get; set; }
         public int? CohortId { get; set; }
-        public bool IsVerify { get; set; }
+        public bool IsVerify { get; set; } = false;
         public Department? Department { get; set; }
         public Cohort? Cohort { get; set; }
         public ICollection<Report> Reports { get; set; } = [];
