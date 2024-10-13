@@ -41,6 +41,21 @@ namespace ClassBookingRoom_API.Controllers
                 });
             }
         }
+/*        [HttpPost]
+        public Task<IActionResult> SendEmail(string body)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
+            email.To.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
+            email.Subject = "Test mesage";
+            email.Body = new TextPart(TextFormat.Html) { Text = body };
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.ethereal.email", 587);
+            smtp.Authenticate("kyra.johnston@ethereal.email", "Nv6NdHeU5F3aynFtjc");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+            return Ok(body);
+        }*/
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
         {
@@ -122,20 +137,6 @@ namespace ClassBookingRoom_API.Controllers
             // If token is valid, return success response
             return Ok(user);
         }
-        [HttpPost]
-        public Task<IActionResult> SendEmail(string body)
-        {
-                var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
-                email.To.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
-                email.Subject = "Test mesage";
-                email.Body = new TextPart(TextFormat.Html) { Text = body };
-                using var smtp = new SmtpClient();
-                smtp.Connect("smtp.ethereal.email", 587);
-                smtp.Authenticate("kyra.johnston@ethereal.email", "Nv6NdHeU5F3aynFtjc");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-            return Ok();
-        }
+        
     }
 }
