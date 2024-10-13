@@ -25,9 +25,10 @@ namespace ClassBookingRoom_Service.Mappers
                 Status = model.Status,
                 CohortId = model.CohortId,
                 DepartmentId = model.DepartmentId,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
-                UpdatedAt = model.UpdatedAt
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
+                UpdatedAt = model.UpdatedAt,
+                
             };
         }
 
@@ -61,7 +62,10 @@ namespace ClassBookingRoom_Service.Mappers
                 DepartmentName = department.Name,
                 CohortCode = cohort.CohortCode,
                 DepartmentId =  model.DepartmentId,
-                CohortId = model.CohortId
+                CohortId = model.CohortId,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
+                UpdatedAt = model.UpdatedAt,
             };
         }
     }

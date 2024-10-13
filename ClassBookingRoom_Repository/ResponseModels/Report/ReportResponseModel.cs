@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_Repository.ResponseModels.User;
+﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.ResponseModels.Report
 {
-    public class ReportResponseModel
+    public class ReportResponseModel : BaseModel
     {
         public int Id { get; set; }
         public string? Title { get; set; }
@@ -17,8 +18,5 @@ namespace ClassBookingRoom_Repository.ResponseModels.Report
         public string StudentFullName { get; set; } = string.Empty;
         public string StudentEmail { get; set; } = string.Empty;
         public string Status { get; set; } = "Pending";
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime? DeleteAt { get; set; }
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

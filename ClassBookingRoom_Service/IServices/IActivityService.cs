@@ -12,8 +12,8 @@ namespace ClassBookingRoom_Service.IServices
     {
         Task<bool> CreateAsync(CreateActivityRequestModel add);
         Task<bool> DeleteAsync(int id);
-        Task<BookingModifyHistoryResponseModel?> GetById(int id);
-        Task<List<BookingModifyHistoryResponseModel>> GetAll();
+        Task<ActivityResponseModel?> GetById(int id);
+        Task<List<ActivityResponseModel>> GetAll();
         Task<bool> UpdateAsync(int id, UpdateActivityRequestModel update);
     }
 }

@@ -54,8 +54,8 @@ namespace ClassBookingRoom_Repository.Data
                 {
                     Id = -1,
                     Name = "RoomT1",
-                    CreateAt = DateTime.Now,
-                    DeleteAt = null,
+                    CreatedAt = DateTime.Now,
+                    DeletedAt = null,
                     UpdatedAt = DateTime.Now,
                 }
                 );
@@ -90,8 +90,8 @@ namespace ClassBookingRoom_Repository.Data
                 {
                     Id = -1,
                     Name = "IT",
-                    CreateAt = DateTime.Now,
-                    DeleteAt = null,
+                    CreatedAt = DateTime.Now,
+                    DeletedAt = null,
                     UpdatedAt = DateTime.Now,
 
                 });
@@ -100,8 +100,8 @@ namespace ClassBookingRoom_Repository.Data
                 new Cohort
                 {
                     Id = -1,
-                    CreateAt = DateTime.Now,
-                    DeleteAt = null,
+                    CreatedAt = DateTime.Now,
+                    DeletedAt = null,
                     UpdatedAt = DateTime.Now,
                     CohortCode = "K17"
                 }
@@ -114,8 +114,8 @@ namespace ClassBookingRoom_Repository.Data
               Id = Guid.NewGuid(),
               CohortId = null,
               DepartmentId = -1,
-              CreateAt = DateTime.Now,
-              DeleteAt = null,
+              CreatedAt = DateTime.Now,
+              DeletedAt = null,
               Email = "admin@fpt.edu.vn",
               FullName="John Doe",
               Password = "123456",
@@ -129,8 +129,8 @@ namespace ClassBookingRoom_Repository.Data
                Id = Guid.NewGuid(),
                CohortId = null,
                DepartmentId = -1,
-               CreateAt = DateTime.Now,
-               DeleteAt = null,
+               CreatedAt = DateTime.Now,
+               DeletedAt = null,
                Email = "manager@fpt.edu.vn",
                FullName = "John Doe",
                Password = "123456",
@@ -144,8 +144,8 @@ namespace ClassBookingRoom_Repository.Data
                 Id = Guid.NewGuid(),
                 CohortId = -1,
                 DepartmentId = -1,
-                CreateAt = DateTime.Now,
-                DeleteAt = null,
+                CreatedAt = DateTime.Now,
+                DeletedAt = null,
                 Email = "student@fpt.edu.vn",
                 FullName = "John Doe",
                 Password = "123456",

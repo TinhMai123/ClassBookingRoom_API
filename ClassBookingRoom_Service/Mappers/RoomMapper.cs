@@ -21,8 +21,8 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomTypeId = model.RoomTypeId,
                 RoomTypeName = model.RoomType?.Name ?? "",
                 Status = model.Status,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt
             };
         }
@@ -35,7 +35,7 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomName = dto.RoomName,
                 RoomTypeId = dto.RoomTypeId,
                 Status = dto.Status,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
             };
         }

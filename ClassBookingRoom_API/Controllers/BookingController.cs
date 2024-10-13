@@ -88,21 +88,21 @@ namespace ClassBookingRoom_API.Controllers
         }
         // HISTORY
         [HttpGet("histories/{id:int}")]
-        public async Task<ActionResult<BookingModifyHistoryResponseModel>> GetByHistoryId([FromRoute] int id)
+        public async Task<ActionResult<ActivityResponseModel>> GetByHistoryId([FromRoute] int id)
         {
             var activity = await _historyService.Get(id);
             if (activity == null) { return NotFound(); }
             return Ok(activity);
         }
         [HttpGet("{bookingId:int}/histories")]
-        public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetHistoriesByBookingId([FromRoute] int bookingId)
+        public async Task<ActionResult<List<ActivityResponseModel>>> GetHistoriesByBookingId([FromRoute] int bookingId)
         {
             var list = await _historyService.GetByBookingid(bookingId);
             return Ok(list);
         }
 
         [HttpGet("histories")]
-        public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetAllHistory()
+        public async Task<ActionResult<List<ActivityResponseModel>>> GetAllHistory()
         {
             var list = await _historyService.Gets();
             return Ok(list);

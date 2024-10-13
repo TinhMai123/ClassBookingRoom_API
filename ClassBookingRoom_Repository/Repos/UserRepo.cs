@@ -24,7 +24,7 @@ namespace ClassBookingRoom_Repository.Repos
             {
                 FullName = answer.FullName,
                 Email = answer.Email,
-                CreatedAt = answer.CreateAt,
+                CreatedAt = answer.CreatedAt,
                 Role = answer.Role,
             };
             return user;

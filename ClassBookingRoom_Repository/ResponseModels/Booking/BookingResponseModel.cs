@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.ResponseModels.Booking
 {
-    public class BookingResponseModel
+    public class BookingResponseModel : BaseModel
     {
         public int Id { get; set; }
         public string Status { get; set; } = string.Empty;
@@ -19,9 +19,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Booking
         public string StudentEmail { get; set; } = string.Empty;
         public int ActivityId { get; set; }
         public string Description { get; set; } = string.Empty;
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime? DeleteAt { get; set; }
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public ICollection<RoomSlotResponseModel>? RoomSlots { get; set; }
     }
 }

@@ -23,8 +23,8 @@ namespace ClassBookingRoom_Service.Mappers
                 ModifiedDate = model.ModifiedDate,
                 NewStatus = model.NewStatus,
                 OldStatus = model.OldStatus,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
             };
         }
@@ -38,7 +38,7 @@ namespace ClassBookingRoom_Service.Mappers
                 ModifiedDate = dto.ModifiedDate,
                 NewStatus = dto.NewStatus,
                 OldStatus = dto.OldStatus,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }

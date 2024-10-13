@@ -25,8 +25,8 @@ namespace ClassBookingRoom_Service.Mappers
                 StudentId = model.UserId,
                 Status = model.Status,
                 UpdatedAt = model.UpdatedAt,
-                DeleteAt = model.DeleteAt,
-                CreateAt = model.CreateAt,
+                DeletedAt = model.DeletedAt,
+                CreatedAt = model.CreatedAt,
                 StudentFullName = model.CreateBy?.FullName ?? "",
                 RoomSlots = room,
             };
@@ -39,7 +39,7 @@ namespace ClassBookingRoom_Service.Mappers
                 ActivityId = dto.ActivityId,
                 Description = dto.Description,
                 UserId = dto.UserId,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }
