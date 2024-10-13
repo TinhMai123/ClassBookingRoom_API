@@ -17,7 +17,9 @@ namespace ClassBookingRoom_Repository.ResponseModels.User
         public string ProfileImageURL { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public int? DepartmentId { get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
         public int? CohortId { get; set; }
+        public string CohortCode { get; set; } = string.Empty;
         public DepartmentResponseModel? Department { get; set; }
         public CohortResponseModel? Cohort { get; set; }
     }

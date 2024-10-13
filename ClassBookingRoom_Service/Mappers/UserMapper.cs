@@ -58,6 +58,8 @@ namespace ClassBookingRoom_Service.Mappers
                 Status = model.Status,
                 Cohort = cohort,
                 Department = department,
+                DepartmentName = department.Name,
+                CohortCode = cohort.CohortCode,
                 DepartmentId =  model.DepartmentId,
                 CohortId = model.CohortId
             };
