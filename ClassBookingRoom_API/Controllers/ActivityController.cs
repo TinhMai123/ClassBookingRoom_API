@@ -17,7 +17,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<BookingModifyHistoryResponseModel>> GetById([FromRoute] int id)
+        public async Task<ActionResult<ActivityResponseModel>> GetById([FromRoute] int id)
         {
             var activity = await _activityService.GetById(id);
             if (activity == null) { return NotFound(); }
@@ -25,7 +25,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookingModifyHistoryResponseModel>>> GetAll()
+        public async Task<ActionResult<List<ActivityResponseModel>>> GetAll()
         {
             var list = await _activityService.GetAll();
             return Ok(list);

@@ -1,6 +1,9 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.RoomType;
+using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.RoomType;
+using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassBookingRoom_API.Controllers
@@ -16,12 +19,12 @@ namespace ClassBookingRoom_API.Controllers
             this.roomTypeService = roomTypeService;
         }
 
-        [HttpGet]
+/*        [HttpGet]
         public async Task<ActionResult<List<RoomTypeResponseModel>>> GetAll()
         {
             var roomType = await roomTypeService.GetRoomTypes();
             return Ok(roomType);
-        }
+        }*/
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<RoomTypeResponseModel>> GetById([FromRoute] int id)
@@ -70,6 +73,16 @@ namespace ClassBookingRoom_API.Controllers
             {
                 return BadRequest();
             }
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromQuery] SearchRoomTypeQuery query)
+        {
+            var (roomTypes, totalCount) = await roomTypeService.SearchRoomType(query);
+            var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
+            Response.Headers.Append("X-Total-Count", totalCount.ToString());
+            Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
+            Response.Headers.Append("X-Total-Pages", totalPages.ToString());
+            return Ok(roomTypes);
         }
 
     }

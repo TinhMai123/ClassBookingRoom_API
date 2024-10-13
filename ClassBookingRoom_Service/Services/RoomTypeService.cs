@@ -11,6 +11,8 @@ using ClassBookingRoom_Repository.ResponseModels.RoomType;
 using ClassBookingRoom_Repository.RequestModels.RoomType;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Service.Mappers;
+using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.User;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -58,6 +60,28 @@ namespace ClassBookingRoom_Service.Services
             roomType.UpdatedAt = DateTime.UtcNow;
             roomType.Name = update.Name;
             return await _baseRepo.UpdateAsync(roomType);
+        }
+        public async Task<(List<RoomTypeResponseModel>, int)> SearchRoomType(SearchRoomTypeQuery query)
+        {
+            var modelList = await _baseRepo.GetAllAsync();
+            var result = modelList.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.SearchValue))
+            {
+                result = result.Where(c => c.Name.Contains(query.SearchValue));
+            }
+            if (!string.IsNullOrWhiteSpace(query.CohortCode))
+            {
+                result = result.Where(c => c.AllowedCohorts.Select(c=>c.CohortCode).Contains(query.CohortCode));
+            }
+            if (!string.IsNullOrWhiteSpace(query.ActivityName))
+            {
+                result = result.Where(c => c.Activities.Select(c=>c.Name).Contains(query.ActivityName));
+            }
+
+            var totalCount = result.Count();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            var classResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
+            return (classResult.Select(x => x.ToRoomTypeDTO()).ToList(), totalCount);
         }
     }
 }

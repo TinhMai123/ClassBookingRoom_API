@@ -18,8 +18,8 @@ namespace ClassBookingRoom_Service.Mappers
                 Id = model.Id,
                 CohortCode = model.CohortCode,
                 UpdatedAt = model.UpdatedAt,
-                DeleteAt = model.DeleteAt,
-                CreateAt = model.CreateAt
+                DeletedAt = model.DeletedAt,
+                CreatedAt = model.CreatedAt
             };
         }
         public static Cohort ToCohortFromCreate(this CreateCohortRequestModel dto)
@@ -27,7 +27,7 @@ namespace ClassBookingRoom_Service.Mappers
             return new Cohort
             {
                 CohortCode = dto.CohortCode,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }

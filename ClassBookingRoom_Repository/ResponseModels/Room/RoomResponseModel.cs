@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.ResponseModels.Room
 {
-    public class RoomResponseModel
+    public class RoomResponseModel : BaseModel
     {
         public int Id { get; set; }
         public string RoomName { get; set; } = string.Empty;
@@ -14,8 +15,5 @@ namespace ClassBookingRoom_Repository.ResponseModels.Room
         public string? Status { get; set; }
         public int? RoomTypeId { get; set; }
         public string RoomTypeName { get; set; } = string.Empty;
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime? DeleteAt { get; set; }
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

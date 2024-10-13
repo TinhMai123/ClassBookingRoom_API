@@ -41,7 +41,7 @@ namespace ClassBookingRoom_API.Controllers
                 });
             }
         }
-/*        [HttpPost]
+/*        [HttpPost("send-email")]
         public Task<IActionResult> SendEmail(string body)
         {
             var email = new MimeMessage();

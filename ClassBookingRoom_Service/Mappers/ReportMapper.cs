@@ -17,8 +17,8 @@ namespace ClassBookingRoom_Service.Mappers
             return new ReportResponseModel
             {
                 Id = model.Id,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
                 Description = model.Description,
                 Title = model.Title,
                 UpdatedAt = model.UpdatedAt,
@@ -35,7 +35,7 @@ namespace ClassBookingRoom_Service.Mappers
             {
                 Description = dto.Description,
                 Title = dto.Title,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 CreatorId= dto.CreatorId,
                 RoomId= dto.RoomId,

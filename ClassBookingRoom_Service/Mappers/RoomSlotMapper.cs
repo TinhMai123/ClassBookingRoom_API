@@ -19,8 +19,8 @@ namespace ClassBookingRoom_Service.Mappers
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
                 RoomId = model.RoomId,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt
             };
         }
@@ -32,7 +32,7 @@ namespace ClassBookingRoom_Service.Mappers
                 StartTime = dto.StartTime,
                 EndTime = dto.EndTime,
                 RoomId = dto.RoomId,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }

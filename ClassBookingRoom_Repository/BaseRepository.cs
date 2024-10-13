@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_Repository.Data;
+using ClassBookingRoom_Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
     {
         public readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -21,7 +22,7 @@ namespace ClassBookingRoom_Repository
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Where(x=>x.IsDeleted == false).ToListAsync();
         }
 
         public async Task<T?> GetByIdAsync(int id)
@@ -59,7 +60,9 @@ namespace ClassBookingRoom_Repository
             var entity = await GetByIdAsync(id);
             if (entity != null)
             {
-                _dbSet.Remove(entity);
+                entity.IsDeleted = true;
+                entity.DeletedAt = DateTime.Now;
+                _dbSet.Update(entity);
                 await _context.SaveChangesAsync();
                 return true;
             }

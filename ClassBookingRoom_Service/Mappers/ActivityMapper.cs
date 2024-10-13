@@ -11,15 +11,15 @@ namespace ClassBookingRoom_Service.Mappers
 {
     public static class ActivityMapper
     {
-        public static BookingModifyHistoryResponseModel ToAcivityDTO(this Activity model)
+        public static ActivityResponseModel ToAcivityDTO(this Activity model)
         {
-            return new BookingModifyHistoryResponseModel
+            return new ActivityResponseModel
             {
                 DepartmentId = model.DepartmentId,
                 Id = model.Id,
                 Name = model.Name,
-                CreateAt = model.CreateAt,
-                DeleteAt = model.DeleteAt,
+                CreatedAt = model.CreatedAt,
+                DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
             };
         }
@@ -30,7 +30,7 @@ namespace ClassBookingRoom_Service.Mappers
             {
                 Name = dto.Name,
                 DepartmentId = dto.DepartmentId,
-                CreateAt = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
         }

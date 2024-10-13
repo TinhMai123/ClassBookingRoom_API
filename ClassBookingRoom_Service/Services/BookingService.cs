@@ -67,11 +67,11 @@ namespace ClassBookingRoom_Service.Services
             var result = modelRepo.AsQueryable();
             if(query.StartTime is not null)
             {
-                result = result.Where(r => r.CreateAt.CompareTo(query.StartTime)<=0);
+                result = result.Where(r => r.CreatedAt.CompareTo(query.StartTime)<=0);
             }
             if(query.EndTime is not null)
             {
-                result = result.Where(r => r.CreateAt.CompareTo(query.StartTime) >= 0);
+                result = result.Where(r => r.CreatedAt.CompareTo(query.StartTime) >= 0);
             }
             var totalCount = await result.CountAsync();
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);

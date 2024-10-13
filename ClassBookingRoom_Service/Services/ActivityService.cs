@@ -35,13 +35,13 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.DeleteAsync(id);
         }
 
-        public async Task<List<BookingModifyHistoryResponseModel>> GetAll()
+        public async Task<List<ActivityResponseModel>> GetAll()
         {
             var activities = await _baseRepo.GetAllAsync();
             return activities.Select(x => x.ToAcivityDTO()).ToList();
         }
 
-        public async Task<BookingModifyHistoryResponseModel?> GetById(int id)
+        public async Task<ActivityResponseModel?> GetById(int id)
         {
             var activity = await _baseRepo.GetByIdAsync(id);
             return activity?.ToAcivityDTO();

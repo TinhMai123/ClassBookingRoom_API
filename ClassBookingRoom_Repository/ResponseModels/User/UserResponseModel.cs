@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.ResponseModels.User
 {
-    public class UserResponseModel
+    public class UserResponseModel : BaseModel
     {
         public Guid Id { get; set; }
         public string FullName {  get; set; } = string.Empty;
@@ -16,8 +17,5 @@ namespace ClassBookingRoom_Repository.ResponseModels.User
         public string Status { get; set; } = string.Empty;
         public int? DepartmentId { get; set; }
         public int? CohortId { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? DeletedAt { get; set; }
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }
