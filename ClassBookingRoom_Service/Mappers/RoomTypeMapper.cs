@@ -32,7 +32,5 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = DateTime.Now,
             };
         }
-
-
     }
 }

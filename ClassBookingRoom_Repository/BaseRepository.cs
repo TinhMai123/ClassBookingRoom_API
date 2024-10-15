@@ -19,7 +19,10 @@ namespace ClassBookingRoom_Repository
             _context = context;
             _dbSet = context.Set<T>();
         }
-
+        public void AttachEntity(T entity)
+        {
+            _context.Attach(entity);
+        }
         public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.Where(x=>x.IsDeleted == false).ToListAsync();

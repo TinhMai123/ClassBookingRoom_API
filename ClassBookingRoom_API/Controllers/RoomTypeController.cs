@@ -84,6 +84,29 @@ namespace ClassBookingRoom_API.Controllers
             Response.Headers.Append("X-Total-Pages", totalPages.ToString());
             return Ok(roomTypes);
         }
+        [HttpDelete("attribute")]
+        public async Task<ActionResult> RemoveRoomTypeAttribute([FromBody] RoomTypeAttributeRequestModel model)
+        {
+            try
+            {
+                await roomTypeService.RemoveRoomTypeAttribute(model);
+                return Ok("Remove successfully");
 
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+
+        }
+        [HttpPut("attribute")]
+        public async Task<ActionResult> AddRoomTypeAttribute([FromBody] RoomTypeAttributeRequestModel model)
+        {
+            try
+            {
+                await roomTypeService.AddNewRoomTypeAttribute(model);
+                return Ok("Added successfully");
+
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+
+        }
     }
 }

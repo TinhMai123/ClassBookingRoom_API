@@ -20,12 +20,18 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IRoomTypeRepo _repo;
         private readonly IBaseRepository<RoomType> _baseRepo;
+        private readonly IBaseRepository<Activity> _baseActivityRepo;
+        private readonly IBaseRepository<Cohort> _baseCohortRepo;
 
-        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo)
+        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo, 
+            IBaseRepository<Activity> baseActivityRepo, IBaseRepository<Cohort> baseCohortRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
+            _baseActivityRepo = baseActivityRepo;
+            _baseCohortRepo = baseCohortRepo;
         }
+
         public async Task<bool> AddRoomTypeAsync(CreateRoomTypeRequestModel dto)
         {
             return await _baseRepo.AddAsync(dto.ToRoomTypeFromCreate());
@@ -82,6 +88,49 @@ namespace ClassBookingRoom_Service.Services
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
             var classResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
             return (classResult.Select(x => x.ToRoomTypeDTO()).ToList(), totalCount);
+        }
+        public async Task RemoveRoomTypeAttribute(RoomTypeAttributeRequestModel model)
+        {
+            var roomType = await _baseRepo.GetByIdAsync(model.RoomTypeId);
+            if (roomType == null)
+            {
+                throw new Exception("RoomType not found");
+            }
+            var cohort = roomType.AllowedCohorts.FirstOrDefault(c => c.Id == model.CohortId);
+            if (cohort != null)
+            {
+                roomType.AllowedCohorts.Remove(cohort);
+            }
+
+            var activity = roomType.Activities.FirstOrDefault(a => a.Id == model.ActivityId);
+            if (activity != null)
+            {
+                roomType.Activities.Remove(activity);
+            }
+            await _baseRepo.UpdateAsync(roomType);
+        }
+        public async Task AddNewRoomTypeAttribute(RoomTypeAttributeRequestModel model)
+        {
+            var roomType = await _repo.GetRoomTypeByIdWithAttribute(model.RoomTypeId);
+
+            if (roomType == null)
+            {
+                throw new Exception("RoomType not found");
+            }
+
+            if (!roomType.AllowedCohorts.Any(c => c.Id == model.CohortId))
+            {
+                var cohort = new Cohort { Id = model.CohortId };
+                _baseCohortRepo.AttachEntity(cohort);
+                roomType.AllowedCohorts.Add(cohort);
+            }
+            if (!roomType.Activities.Any(a => a.Id == model.ActivityId))
+            {
+                var activity = new Activity { Id = model.ActivityId };
+                _baseActivityRepo.AttachEntity(activity);
+                roomType.Activities.Add(activity);
+            }
+            await _baseRepo.UpdateAsync(roomType);
         }
     }
 }

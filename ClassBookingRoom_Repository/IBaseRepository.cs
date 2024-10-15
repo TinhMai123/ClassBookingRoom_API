@@ -14,5 +14,6 @@ namespace ClassBookingRoom_Repository
         Task<bool> AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(int id);
+        void AttachEntity(T entity);
     }
 }

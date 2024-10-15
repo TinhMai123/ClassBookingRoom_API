@@ -8,6 +8,7 @@ using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Util.Store;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -41,21 +42,36 @@ namespace ClassBookingRoom_API.Controllers
                 });
             }
         }
-/*        [HttpPost("send-email")]
-        public Task<IActionResult> SendEmail(string body)
+        [HttpPost("send-email")]
+        public async Task<IActionResult> SendEmail(string body)
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
-            email.To.Add(MailboxAddress.Parse("kyra.johnston@ethereal.email"));
-            email.Subject = "Test mesage";
-            email.Body = new TextPart(TextFormat.Html) { Text = body };
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587);
-            smtp.Authenticate("kyra.johnston@ethereal.email", "Nv6NdHeU5F3aynFtjc");
-            smtp.Send(email);
-            smtp.Disconnect(true);
-            return Ok(body);
-        }*/
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var claims = identity.Claims;
+                var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (email != null && role != null)
+                {
+                    var message = new MimeMessage();
+                    message.From.Add(MailboxAddress.Parse("noble.hackett@ethereal.email"));
+                    message.To.Add(MailboxAddress.Parse("noble.hackett@ethereal.email"));
+                    message.Subject = "Verify ";
+                    message.Body = new TextPart(TextFormat.Html) { Text = body };
+
+                    using var smtp = new SmtpClient();
+                    await smtp.ConnectAsync("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+                    await smtp.AuthenticateAsync("noble.hackett@ethereal.email", "WMR3Jb9N17Uku69rVN");
+                    await smtp.SendAsync(message);
+                    await smtp.DisconnectAsync(true);
+
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
         {
