@@ -10,7 +10,8 @@ namespace ClassBookingRoom_Repository.Models
     {
         public int Id { get; set; }
         public Guid? UserId { get; set; }
-        public ICollection<double>? Descriptor { get; set; }
+        public ICollection<double> Descriptor { get; set; } = [];
+        public string ImageURL { get; set; } = string.Empty;
         public User? User { get; set; }
     }
 }
