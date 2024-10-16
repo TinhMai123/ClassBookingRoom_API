@@ -25,5 +25,6 @@ namespace ClassBookingRoom_Repository.Models
         public ICollection<Report> Reports { get; set; } = [];
         public ICollection<Booking> Bookings { get; set; } = [];
         public ICollection<BookingModifyHistory> BookingModifyHistories { get; set; } = [];
+        public ICollection<FaceDescriptor> FaceDescriptors { get; set; } = [];
     }
 }

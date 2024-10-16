@@ -24,6 +24,7 @@ namespace ClassBookingRoom_Repository.Data
         public DbSet<Activity> Activities { get; set; }
         public DbSet<RoomSlot> RoomSlots { get; set; }
         public DbSet<BookingModifyHistory> BookingModifyHistories { get; set; }
+        public DbSet<FaceDescriptor> FaceDescriptors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
