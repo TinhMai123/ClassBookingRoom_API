@@ -1,4 +1,7 @@
-﻿using ClassBookingRoom_Repository.Models;
+﻿using ClassBookingRoom_Repository;
+using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.Repos;
 using ClassBookingRoom_Repository.RequestModels.Booking;
 using ClassBookingRoom_Repository.RequestModels.Cohort;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
@@ -13,7 +16,6 @@ namespace ClassBookingRoom_Service.Mappers
 {
     public static class BookingMapper
     {
-
         public static BookingResponseModel ToBookingDTO(this Booking model)
         {
             var room = model.RoomSlots?.Select(c=>c.ToRoomSlotDTO()).ToList();
@@ -31,13 +33,15 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomSlots = room,
             };
         }
-        public static Booking ToBookingFromCreate(this CreateBookingRequestModel dto)
+        public static async Task<Booking> ToBookingFromCreate(this CreateBookingRequestModel dto, IRoomSlotRepo roomSlotRepo)
         {
+            var slots = await roomSlotRepo.GetRoomSlotsByIdsAsync(dto.RoomSlots);
             return new Booking
             {
                 Status = dto.Status,
                 ActivityId = dto.ActivityId,
                 Description = dto.Description,
+                RoomSlots = slots,
                 UserId = dto.UserId,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
