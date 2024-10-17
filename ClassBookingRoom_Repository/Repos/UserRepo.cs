@@ -49,5 +49,19 @@ namespace ClassBookingRoom_Repository.Repos
                 .Include(x => x.Department)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<bool> DeleteUser(Guid id)
+        {
+            var entity = await GetById(id);
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+                entity.DeletedAt = DateTime.Now;
+                _context.Update(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

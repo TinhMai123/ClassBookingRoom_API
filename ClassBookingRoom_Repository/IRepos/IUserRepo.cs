@@ -14,5 +14,6 @@ namespace ClassBookingRoom_Repository.IRepos
         Task<User?> GetUserByEmail(string email);
         Task<User?> GetById(Guid id);
         Task<List<User>> GetUserByName(string name);
+        Task<bool> DeleteUser(Guid id);
     }
 }

@@ -28,7 +28,8 @@ namespace ClassBookingRoom_Service.Mappers
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
-                
+                IsVerify = model.IsVerify,
+                IsDeleted = model.IsDeleted,  
             };
         }
 
@@ -39,11 +40,12 @@ namespace ClassBookingRoom_Service.Mappers
                 Email = dto.Email,
                 FullName = dto.FullName,
                 CohortId = dto.CohortId,
-                DepartmentId = dto.DepartmentId,       
+                DepartmentId = dto.DepartmentId,
                 Password = dto.Password,
                 ProfileImageURL = dto.ProfileImageURL,
                 Role = dto.Role,
                 Status = dto.Status,
+                IsVerify = false,
             };
         }
         public static UserDetailResponseModel ToUserDetailDTO(this User model) { 
@@ -60,6 +62,7 @@ namespace ClassBookingRoom_Service.Mappers
 /*                Cohort = cohort,
                 Department = department,*/
                 DepartmentName = department?.Name,
+                IsVerify = model.IsVerify,
                 CohortCode = cohort?.CohortCode,
                 DepartmentId =  model.DepartmentId,
                 CohortId = model.CohortId,

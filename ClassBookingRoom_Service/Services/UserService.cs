@@ -42,9 +42,9 @@ namespace ClassBookingRoom_Service.Services
             var user = dto.ToUserFromCreate();
             return await _baseRepo.AddAsync(user);
         }
-        public async Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var deleted = await _baseRepo.DeleteAsync(id);
+            var deleted = await _repo.DeleteUser(id);
             return deleted;
         }
 
