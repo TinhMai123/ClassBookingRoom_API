@@ -37,13 +37,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<List<ActivityResponseModel>> GetAll()
         {
-            var activities = await _baseRepo.GetAllAsync();
+            var activities = await _repo.GetActivities();
             return activities.Select(x => x.ToAcivityDTO()).ToList();
         }
 
         public async Task<ActivityResponseModel?> GetById(int id)
         {
-            var activity = await _baseRepo.GetByIdAsync(id);
+            var activity = await _repo.GetActivityById(id);
             return activity?.ToAcivityDTO();
         }
 

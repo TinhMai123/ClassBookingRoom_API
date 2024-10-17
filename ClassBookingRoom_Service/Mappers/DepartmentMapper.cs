@@ -18,6 +18,7 @@ namespace ClassBookingRoom_Service.Mappers
             {
                 Id = model.Id,
                 Name = model.Name,
+                Activites = model.Activities?.Select(c => c.ToAcivityDTO()).ToList(),
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,

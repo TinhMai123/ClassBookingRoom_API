@@ -14,13 +14,14 @@ namespace ClassBookingRoom_Service.Mappers
         public static ActivityResponseModel ToAcivityDTO(this Activity model)
         {
             return new ActivityResponseModel
-            {
-                DepartmentId = model.DepartmentId,
+            {        
                 Id = model.Id,
                 Name = model.Name,
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
+                Department = model.Department?.ToDepartmentDTO(),
+                RoomTypes = model.RoomTypes?.Select(c=>c.ToRoomTypeDTO()).ToList(),
             };
         }
 

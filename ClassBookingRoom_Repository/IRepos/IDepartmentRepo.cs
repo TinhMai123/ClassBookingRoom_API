@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,13 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IDepartmentRepo
     {
-/*        Task<bool> AddCampusAsync(Campus add);
-        Task<bool> DeleteCampusAsync(int id);
-        Task<Campus> GetCampus(int id);
-        Task<List<Campus>> GetCampuses();
-        Task<Campus> GetCampusByName(string name);
-        Task<bool> UpdateCampusAsync(Campus update);*/
+        /*        Task<bool> AddCampusAsync(Campus add);
+                Task<bool> DeleteCampusAsync(int id);
+                Task<Campus> GetCampus(int id);
+                Task<List<Campus>> GetCampuses();
+                Task<Campus> GetCampusByName(string name);
+                Task<bool> UpdateCampusAsync(Campus update);*/
+        Task<Department?> GetDepartmentById(int id);
+        Task<List<Department>> GetDepartments();
     }
 }

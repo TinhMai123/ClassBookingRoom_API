@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,18 @@ namespace ClassBookingRoom_Repository.Repos
     {
         public DepartmentRepo(AppDbContext context) : base(context)
         {
+        }
+        public async Task<Department?> GetDepartmentById(int id)
+        {
+            return await _context.Departments
+                .Include(c=>c.Activities)
+                .SingleOrDefaultAsync(c=>c.Id == id);
+        }
+        public async Task<List<Department>> GetDepartments()
+        {
+            return await _context.Departments
+                .Include(c => c.Activities)
+                .ToListAsync();
         }
     }
 }

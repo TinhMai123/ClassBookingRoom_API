@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 namespace ClassBookingRoom_Repository.Repos
 {
     
-        public class BookingModifyHistoryRepo : BaseRepository<BookingModifyHistory>, IActivityRepo
+        public class BookingModifyHistoryRepo : BaseRepository<BookingModifyHistory>
         {
             public BookingModifyHistoryRepo(AppDbContext context) : base(context)
             {
             }
-        }
+
+    }
     
 }
