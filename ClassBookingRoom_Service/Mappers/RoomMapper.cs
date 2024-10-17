@@ -13,6 +13,7 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static RoomResponseModel ToRoomDTO(this Room model)
         {
+            var slots = model.RoomSlots?.Select(c=>c.ToRoomSlotsFromRoomDTO()).ToList();
             return new RoomResponseModel()
             {
                 Id = model.Id,
@@ -20,6 +21,7 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomName = model.RoomName,
                 RoomTypeId = model.RoomTypeId,
                 RoomTypeName = model.RoomType?.Name ?? "",
+                RoomSlots = slots ?? [],
                 Status = model.Status,
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,

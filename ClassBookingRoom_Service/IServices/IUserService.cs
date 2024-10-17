@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Service.IServices
     public interface IUserService
     {
         Task<bool> AddUserAsync(CreateUserRequestModel dto);
-        Task<bool> DeleteUserAsync(int id);
+        Task<bool> DeleteUserAsync(Guid id);
         Task<GetUserTypeResponseModel?> GetUserTypeByEmailAsync(string email);
         Task<UserDetailResponseModel?> GetUserByEmailAsync(string email);
         Task<string?> LoginGoogle(FirebaseToken token, string role);

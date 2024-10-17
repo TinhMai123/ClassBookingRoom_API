@@ -52,7 +52,7 @@ namespace ClassBookingRoom_API.Controllers
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             try
             {

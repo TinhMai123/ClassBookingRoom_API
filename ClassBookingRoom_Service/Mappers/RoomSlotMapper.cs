@@ -36,5 +36,14 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = DateTime.Now
             };
         }
+        public static SlotsForRoomResponseModel ToRoomSlotsFromRoomDTO(this RoomSlot model)
+        {
+            return new SlotsForRoomResponseModel
+            {
+                Id = model.Id,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+            };
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.User
         public string? DepartmentName { get; set; } = string.Empty;
         public int? CohortId { get; set; }
         public string? CohortCode { get; set; } = string.Empty;
+        public bool IsVerify { get;set; } 
 /*        public DepartmentResponseModel? Department { get; set; }
         public CohortResponseModel? Cohort { get; set; }*/
     }
