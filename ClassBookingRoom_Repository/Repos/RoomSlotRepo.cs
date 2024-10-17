@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,12 @@ namespace ClassBookingRoom_Repository.Repos
         public Task<bool> UpdateRoomSlotAsync(RoomSlot update)
         {
             throw new NotImplementedException();
+        }
+        public async Task<ICollection<RoomSlot>> GetRoomSlotsByIdsAsync(ICollection<int> roomSlotIds)
+        {
+            return await _context.RoomSlots
+                                 .Where(rs => roomSlotIds.Contains(rs.Id))
+                                 .ToListAsync();
         }
     }
 }

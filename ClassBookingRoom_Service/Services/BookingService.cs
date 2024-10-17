@@ -18,15 +18,17 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IBookingRepo _repo;
         private readonly IBaseRepository<Booking> _baseRepo;
+        private readonly IRoomSlotRepo _roomSlotRepo;
 
-        public BookingService(IBookingRepo repo, IBaseRepository<Booking> baseRepo)
+        public BookingService(IBookingRepo repo, IBaseRepository<Booking> baseRepo, IRoomSlotRepo roomSlotRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
+            _roomSlotRepo = roomSlotRepo;
         }
         public async Task<bool> AddBookingAsync(CreateBookingRequestModel add)
         {
-            var result = await _baseRepo.AddAsync(add.ToBookingFromCreate());
+            var result = await _baseRepo.AddAsync(await add.ToBookingFromCreate(_roomSlotRepo));
             return result;
         }
 

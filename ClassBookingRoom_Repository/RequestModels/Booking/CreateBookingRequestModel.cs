@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.RoomSlot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +14,6 @@ namespace ClassBookingRoom_Repository.RequestModels.Booking
         public Guid UserId { get; set; }
         public int ActivityId { get; set; }
         public string Description { get; set; } = string.Empty;
+        public ICollection<int> RoomSlots { get; set; } = [];
     }
 }
