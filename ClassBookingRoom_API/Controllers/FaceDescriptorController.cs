@@ -2,14 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Service.IServices;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClassBookingRoom_Repository.RequestModels.FaceDescriptor;
+using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 namespace ClassBookingRoom_API.Controllers
 {
 
 
-    [Route("api/face_descriptor")]
+    [Route("api/face-descriptor")]
     [ApiController]
     public class FaceDescriptorController : ControllerBase
     {
@@ -21,14 +22,14 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FaceDescriptor>>> GetAll()
+        public async Task<ActionResult<List<FaceDescriptorResponseModel>>> GetAll()
         {
             var faceDescriptors = await _faceDescriptorService.GetAll();
             return Ok(faceDescriptors);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<FaceDescriptor>> GetById(int id)
+        public async Task<ActionResult<FaceDescriptorResponseModel>> GetById(int id)
         {
             var faceDescriptor = await _faceDescriptorService.GetById(id);
             if (faceDescriptor == null)
@@ -39,18 +40,16 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] FaceDescriptor faceDescriptor)
+        public async Task<ActionResult> Add([FromQuery] CreateFaceDescriptorRequestModel faceDescriptor)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _faceDescriptorService.AddAsync(faceDescriptor);
-            return CreatedAtAction(nameof(GetById), new { id = faceDescriptor.Id }, faceDescriptor);
+            try { await _faceDescriptorService.AddAsync(faceDescriptor);
+                return Ok("Added successfully"); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+           
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] FaceDescriptor faceDescriptor)
+        public async Task<ActionResult> Update(int id, [FromQuery] UpdateFaceDescriptorRequestModel faceDescriptor)
         {
             if (id != faceDescriptor.Id)
             {
@@ -75,14 +74,21 @@ namespace ClassBookingRoom_API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var faceDescriptor = await _faceDescriptorService.GetById(id);
-            if (faceDescriptor == null)
+            try {
+                var faceDescriptor = await _faceDescriptorService.GetById(id);
+                if (faceDescriptor == null)
+                {
+                    return NotFound();
+                }
+
+                await _faceDescriptorService.DeleteAsync(id);
+                return Ok("Delete Successfully");
+            }
+            catch (Exception e)
             {
-                return NotFound();
+                return BadRequest(e.Message);
             }
 
-            await _faceDescriptorService.DeleteAsync(id);
-            return NoContent();
         }
     }
 

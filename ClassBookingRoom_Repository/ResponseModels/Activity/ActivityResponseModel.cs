@@ -1,4 +1,6 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.Department;
+using ClassBookingRoom_Repository.ResponseModels.RoomType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Activity
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int DepartmentId { get; set; }
+        public DepartmentResponseModel? Department { get; set; }
+        public ICollection<RoomTypeResponseModel>? RoomTypes { get; set; } = [];
     }
 }

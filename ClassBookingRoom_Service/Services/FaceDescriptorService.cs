@@ -1,7 +1,10 @@
 ﻿using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.FaceDescriptor;
+using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +24,9 @@ namespace ClassBookingRoom_Service.Services
             _baseRepo = baseRepo;
         }
 
-        public async Task AddAsync(FaceDescriptor add)
+        public async Task AddAsync(CreateFaceDescriptorRequestModel add)
         {
-            await _baseRepo.AddAsync(add);
+            await _baseRepo.AddAsync(add.ToCreateFaceDescriptorDTO());
         }
 
         public async Task DeleteAsync(int id)
@@ -31,19 +34,21 @@ namespace ClassBookingRoom_Service.Services
             await _baseRepo.DeleteAsync(id);
         }
 
-        public async Task<List<FaceDescriptor>> GetAll()
+        public async Task<List<FaceDescriptorResponseModel>> GetAll()
         {
-           return await _baseRepo.GetAllAsync();
+           var list = await _baseRepo.GetAllAsync();
+            return list.Select(c=>c.ToFaceDescriptorDTO()).ToList();
         }
 
-        public async Task<FaceDescriptor?> GetById(int id)
+        public async Task<FaceDescriptorResponseModel?> GetById(int id)
         {
-           return await _baseRepo.GetByIdAsync(id);
+           var model = await _baseRepo.GetByIdAsync(id);
+            return model?.ToFaceDescriptorDTO() ?? null;
         }
 
-        public async Task UpdateAsync(FaceDescriptor update)
+        public async Task UpdateAsync(UpdateFaceDescriptorRequestModel update)
         {
-            await _baseRepo.UpdateAsync(update);
+            await _baseRepo.UpdateAsync(update.ToUpdateFaceDescriptorDTO());
         }
     }
 }

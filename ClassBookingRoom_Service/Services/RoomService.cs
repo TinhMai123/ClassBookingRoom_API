@@ -96,7 +96,7 @@ namespace ClassBookingRoom_Service.Services
             var room = await _baseRepo.GetByIdAsync(id);
             if (room is null) { return false; }
             room.UpdatedAt = DateTime.UtcNow;
-            room.Status = update.Status;
+            room.Status = update.Status ?? "";
             room.Capacity = update.Capacity;
             room.RoomTypeId = update.RoomTypeId;
             room.RoomName = update.RoomName;

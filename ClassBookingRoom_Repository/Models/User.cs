@@ -20,11 +20,11 @@ namespace ClassBookingRoom_Repository.Models
         public int? DepartmentId { get; set; }
         public int? CohortId { get; set; }
         public bool IsVerify { get; set; } = false;
+        public FaceDescriptor? FaceDescriptor { get; set; }
         public Department? Department { get; set; }
         public Cohort? Cohort { get; set; }
         public ICollection<Report> Reports { get; set; } = [];
         public ICollection<Booking> Bookings { get; set; } = [];
         public ICollection<BookingModifyHistory> BookingModifyHistories { get; set; } = [];
-        public ICollection<FaceDescriptor> FaceDescriptors { get; set; } = [];
     }
 }
