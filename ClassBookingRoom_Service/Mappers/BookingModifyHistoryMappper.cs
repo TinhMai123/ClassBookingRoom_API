@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static BookingModifyHistoryResponseModel ToBookingModifyHistoryDTO(this BookingModifyHistory model)
         {
-            var user = model.ModifiedBy?.ToUserDTO();
+            var user = model.ModifiedBy?.ToUserShortDTO();
             return new BookingModifyHistoryResponseModel
             {
                 Id = model.Id,

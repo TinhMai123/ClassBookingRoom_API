@@ -51,17 +51,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<bool> UpdateBookingAsync(int id, UpdateBookingRequestModel update)
         {
-            var result = await _baseRepo.GetByIdAsync(id);
-            if (result is null)
-            {
-                return false;
-            }
-            result.Description = update.Description;
-            result.Status = update.Status;
-            result.ActivityId = update.ActivityId;
-            result.UserId = update.UserId;
-            result.UpdatedAt = DateTime.UtcNow;
-            return await _baseRepo.UpdateAsync(result);
+            /*            var result = await _baseRepo.GetByIdAsync(id);
+                        if (result is null)
+                        {
+                            return false;
+                        }*/
+
+            return await _baseRepo.UpdateAsync(await update.ToBookingFromUpdate(id, _roomSlotRepo));
         }
         public async Task<(List<BookingResponseModel>, int totalCount)> SearchBookQuery(SearchBookHistoryQuery query)
         {
