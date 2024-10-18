@@ -16,10 +16,12 @@ namespace ClassBookingRoom_Service.Services
     public class BookingModifyHistoryService : IBookingModifyHistoryService
     {
         private readonly IBaseRepository<BookingModifyHistory> _baseRepo;
+        private readonly IBookingModifyHistoryRepo _repo;
 
-        public BookingModifyHistoryService(IBaseRepository<BookingModifyHistory> baseRepo)
+        public BookingModifyHistoryService(IBaseRepository<BookingModifyHistory> baseRepo, IBookingModifyHistoryRepo repo)
         {
             _baseRepo = baseRepo;
+            _repo = repo;
         }
         public async Task<bool> AddAsync(CreateBookingModifyHistoryRequestModel add)
         {
@@ -33,32 +35,31 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<BookingModifyHistoryResponseModel?> Get(int id)
         {
-            var result = await _baseRepo.GetByIdAsync(id);
+            var result = await _repo.GetBookingModifyHistoryById(id);
             return result?.ToBookingModifyHistoryDTO();
         }
 
         public async Task<List<BookingModifyHistoryResponseModel>> GetByBookingid(int bookingId)
         {
-            var result = await _baseRepo.GetAllAsync();
+            var result = await _repo.GetBookingModifyHistories();
             result = result.Where(x => x.BookingId == bookingId).ToList();
             return result.Select(x => x.ToBookingModifyHistoryDTO()).ToList();
         }
 
         public async Task<List<BookingModifyHistoryResponseModel>> Gets()
         {
-            var result = await _baseRepo.GetAllAsync();
+            var result = await _repo.GetBookingModifyHistories();
             return result.Select(x => x.ToBookingModifyHistoryDTO()).ToList();
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateBookingModifyHistoryRequestModel update)
         {
-            var result = await _baseRepo.GetByIdAsync(id);
+            var result = await _repo.GetBookingModifyHistoryById(id);
             if (result is null) { return false; }
             result.UpdatedAt = DateTime.Now;
             result.ModifiedDate = DateTime.Now;
             result.NewStatus = update.NewStatus;
             result.OldStatus = update.OldStatus;
-            result.BookingId = update.BookingId;
             return await _baseRepo.UpdateAsync(result);
         }
     }

@@ -12,5 +12,6 @@ namespace ClassBookingRoom_Repository.RequestModels.Booking
         public Guid UserId { get; set; }
         public int ActivityId { get; set; }
         public string Description { get; set; } = string.Empty;
+        public ICollection<int> RoomSlots { get; set; } = [];
     }
 }

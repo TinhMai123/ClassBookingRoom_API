@@ -14,7 +14,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.BookingModifyHistory
         public int BookingId { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid ModifiedById { get; set; }
-        public UserResponseModel? ModifiedBy { get; set; }
+        public UserShortResponseModel? ModifiedBy { get; set; }
         public string OldStatus { get; set; } = string.Empty;
         public string NewStatus { get; set; } = string.Empty;
     }

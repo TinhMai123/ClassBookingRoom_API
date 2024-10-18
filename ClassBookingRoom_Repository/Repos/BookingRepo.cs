@@ -18,12 +18,20 @@ namespace ClassBookingRoom_Repository.Repos
 
         public async Task<Booking?> GetBooking(int id)
         {
-            return await _context.Bookings.Include(b => b.CreateBy).SingleOrDefaultAsync(b => b.Id == id);
+            return await _context.Bookings
+                .Include(b => b.CreateBy)
+                .Include(b=>b.RoomSlots)
+                .Include(b=>b.Activity)
+                .SingleOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task<List<Booking>> GetBookings()
         {
-            return await _context.Bookings.Include(b => b.CreateBy).ToListAsync();
+            return await _context.Bookings
+                .Include(b => b.CreateBy)
+                .Include(b=>b.RoomSlots)
+                .Include(b=>b.Activity)
+                .ToListAsync();
         }
     }
 }

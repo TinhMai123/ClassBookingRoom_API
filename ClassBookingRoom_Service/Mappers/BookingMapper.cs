@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ClassBookingRoom_Service.Mappers
 {
@@ -45,6 +46,19 @@ namespace ClassBookingRoom_Service.Mappers
                 UserId = dto.UserId,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
+            };
+        }
+        public static async Task<Booking> ToBookingFromUpdate(this UpdateBookingRequestModel dto, int id, IRoomSlotRepo roomSlotRepo)
+        {
+            return new Booking
+            {
+                Id = id,
+                Description = dto.Description,
+                Status = dto.Status,
+                ActivityId = dto.ActivityId,
+                UserId = dto.UserId,
+                UpdatedAt = DateTime.UtcNow,
+                RoomSlots = await roomSlotRepo.GetRoomSlotsByIdsAsync(dto.RoomSlots),
             };
         }
     }

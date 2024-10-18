@@ -71,5 +71,15 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = model.UpdatedAt,
             };
         }
+        public static UserShortResponseModel ToUserShortDTO(this User model)
+        {
+            return new UserShortResponseModel
+            {
+                FullName = model.FullName,
+                Role = model.Role,
+                DepartmentName = model.Department?.Name ?? "",
+                CohortCode = model.Cohort?.CohortCode ?? "",
+            };
+        }
     }
 }
