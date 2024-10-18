@@ -18,7 +18,7 @@ namespace ClassBookingRoom_Service.Mappers
             {
                 Id = model.Id,
                 Name = model.Name,
-                Activites = model.Activities?.Select(c => c.ToAcivityDTO()).ToList(),
+                Activites = model.Activities?.Select(c => c.ToActivityShortDTO()).ToList(),
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
@@ -31,6 +31,14 @@ namespace ClassBookingRoom_Service.Mappers
                 Name = dto.Name,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
+            };
+        }
+        public static DepartmentShortResponseModel ToDepartmentShortDTO(this Department model)
+        {
+            return new DepartmentShortResponseModel()
+            {
+                Id = model.Id,
+                Name = model.Name,
             };
         }
     }

@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Activity
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public DepartmentResponseModel? Department { get; set; }
-        public ICollection<RoomTypeResponseModel>? RoomTypes { get; set; } = [];
+        public DepartmentShortResponseModel? Department { get; set; }
+        public ICollection<RoomTypeShortResponseModel>? RoomTypes { get; set; } = [];
     }
 }

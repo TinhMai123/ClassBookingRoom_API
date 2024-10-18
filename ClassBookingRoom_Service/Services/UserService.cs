@@ -17,7 +17,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace ClassBookingRoom_Service.Services
 {
     public class UserService : IUserService
@@ -75,9 +74,7 @@ namespace ClassBookingRoom_Service.Services
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
-
         }
-
         public async Task<string?> Login(LoginRequestModel request)
         {
             try
