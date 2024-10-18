@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_Repository.RequestModels.User;
+﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,11 @@ namespace ClassBookingRoom_API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
+        private readonly IFaceDescriptorService _faceDescriptorService;
+        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService)
         {
             _userService = userService;
+            _faceDescriptorService = faceDescriptorService;
         }
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<UserDetailResponseModel>> GetById([FromRoute] Guid id)
@@ -73,6 +75,72 @@ namespace ClassBookingRoom_API.Controllers
             Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
             Response.Headers.Append("X-Total-Pages", totalPages.ToString());
             return Ok(users);
+        }
+
+        // FACE DESCRIPTOR
+        [HttpGet("face")]
+        public async Task<ActionResult<List<FaceDescriptor>>> GetAll()
+        {
+            var faceDescriptors = await _faceDescriptorService.GetAll();
+            return Ok(faceDescriptors);
+        }
+
+        [HttpGet("face/{id}")]
+        public async Task<ActionResult<FaceDescriptor>> GetById(int id)
+        {
+            var faceDescriptor = await _faceDescriptorService.GetById(id);
+            if (faceDescriptor == null)
+            {
+                return NotFound();
+            }
+            return Ok(faceDescriptor);
+        }
+
+        [HttpPost("face")]
+        public async Task<ActionResult> Add([FromBody] FaceDescriptor faceDescriptor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _faceDescriptorService.AddAsync(faceDescriptor);
+            return CreatedAtAction(nameof(GetById), new { id = faceDescriptor.Id }, faceDescriptor);
+        }
+
+        [HttpPut("face/{id}")]
+        public async Task<ActionResult> Update(int id, [FromBody] FaceDescriptor faceDescriptor)
+        {
+            if (id != faceDescriptor.Id)
+            {
+                return BadRequest("ID mismatch");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingFaceDescriptor = await _faceDescriptorService.GetById(id);
+            if (existingFaceDescriptor == null)
+            {
+                return NotFound();
+            }
+
+            await _faceDescriptorService.UpdateAsync(faceDescriptor);
+            return NoContent();
+        }
+
+        [HttpDelete("face/{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var faceDescriptor = await _faceDescriptorService.GetById(id);
+            if (faceDescriptor == null)
+            {
+                return NotFound();
+            }
+
+            await _faceDescriptorService.DeleteAsync(id);
+            return NoContent();
         }
 
     }
