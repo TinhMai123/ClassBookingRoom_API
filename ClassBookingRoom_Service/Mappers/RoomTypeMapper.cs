@@ -32,5 +32,13 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = DateTime.Now,
             };
         }
+        public static RoomTypeShortResponseModel ToRoomTypeShortDTO(this RoomType model)
+        {
+            return new RoomTypeShortResponseModel()
+            {
+                Id = model.Id,
+                Name = model.Name,
+            };
+        }
     }
 }

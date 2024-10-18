@@ -1,5 +1,7 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.FaceDescriptor;
 using ClassBookingRoom_Repository.RequestModels.Report;
+using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,10 @@ namespace ClassBookingRoom_Service.IServices
 {
     public interface IFaceDescriptorService
     {
-        Task AddAsync(FaceDescriptor add);
+        Task AddAsync(CreateFaceDescriptorRequestModel add);
         Task DeleteAsync(int id);
-        Task<FaceDescriptor?> GetById(int id);
-        Task<List<FaceDescriptor>> GetAll();
-        Task UpdateAsync(FaceDescriptor update);
+        Task<FaceDescriptorResponseModel?> GetById(int id);
+        Task<List<FaceDescriptorResponseModel>> GetAll();
+        Task UpdateAsync(UpdateFaceDescriptorRequestModel update);
     }
 }

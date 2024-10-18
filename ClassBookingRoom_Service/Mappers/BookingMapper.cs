@@ -18,7 +18,7 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static BookingResponseModel ToBookingDTO(this Booking model)
         {
-            var room = model.RoomSlots?.Select(c=>c.ToRoomSlotDTO()).ToList();
+            var room = model.RoomSlots?.Select(c=>c.ToRoomSlotShortResponseDTO()).ToList();
             return new BookingResponseModel
             {
                 Id = model.Id,

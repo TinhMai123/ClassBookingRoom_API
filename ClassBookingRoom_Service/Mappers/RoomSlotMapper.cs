@@ -45,5 +45,15 @@ namespace ClassBookingRoom_Service.Mappers
                 EndTime = model.EndTime,
             };
         }
+        public static RoomSlotShortResponseModel ToRoomSlotShortResponseDTO(this RoomSlot model)
+        {
+            return new RoomSlotShortResponseModel() 
+            { 
+                Id = model.Id,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+                RoomId = model.RoomId,
+            };
+        }
     }
 }

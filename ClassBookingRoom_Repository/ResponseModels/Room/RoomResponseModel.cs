@@ -14,6 +14,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Room
         public string RoomName { get; set; } = string.Empty;
         public int Capacity { get; set; } = 0;
         public string? Status { get; set; }
+        public string Picture { get; set; } = string.Empty;
         public int? RoomTypeId { get; set; }
         public string RoomTypeName { get; set; } = string.Empty;
         public ICollection<SlotsForRoomResponseModel> RoomSlots { get; set; } = [];
