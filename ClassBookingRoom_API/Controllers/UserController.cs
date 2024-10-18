@@ -142,6 +142,31 @@ namespace ClassBookingRoom_API.Controllers
             await _faceDescriptorService.DeleteAsync(id);
             return NoContent();
         }
-
+        [HttpPut("{id:Guid}/fill-info")]
+        public async Task<IActionResult> UpdateFillInfo([FromRoute] Guid id, [FromBody] FillInfoRequestModel dto)
+        {
+            var result = await _userService.FillInfo(id, dto);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPut("{id:Guid}/status")]
+        public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] StatusRequestModel dto)
+        {
+            var result = await _userService.Status(id, dto);
+            if (result)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

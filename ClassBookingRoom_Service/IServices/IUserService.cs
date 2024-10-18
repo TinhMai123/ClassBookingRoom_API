@@ -22,5 +22,9 @@ namespace ClassBookingRoom_Service.IServices
         Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query);
         Task<UserDetailResponseModel?> GetById(Guid id);
         Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto);
+        Task<bool> FillInfo(Guid id, FillInfoRequestModel dto);
+        Task<bool> Status(Guid id, StatusRequestModel dto);
+
+
     }
 }

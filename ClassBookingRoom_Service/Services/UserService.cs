@@ -214,5 +214,28 @@ namespace ClassBookingRoom_Service.Services
             var classResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
             return (classResult.Select(x => x.ToUserDTO()).ToList(), totalCount);
         }
+
+        public async Task<bool> FillInfo(Guid id, FillInfoRequestModel dto)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            var cohort = await _cohortRepo.GetByIdAsync(dto.CohortId);
+            var department = await _departmentRepo.GetByIdAsync(dto.DepartmentId);
+            existingUser.Cohort = cohort;
+            existingUser.Department = department;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(existingUser);
+
+        }
+
+        public async Task<bool> Status(Guid id, StatusRequestModel dto)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            existingUser.Status=dto.Status;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(existingUser);
+
+        }
     }
 }

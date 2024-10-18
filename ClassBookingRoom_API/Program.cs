@@ -69,6 +69,11 @@ builder.Services.AddScoped<ICohortService, CohortService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomSlotService, RoomSlotService>();
 builder.Services.AddScoped<IBookingModifyHistoryService, BookingModifyHistoryService>();
+builder.Services.AddScoped<IFaceDescriptorService, FaceDescriptorService>();
+builder.Services.AddScoped<IFaceDescriptorRepo, FaceDescriptorRepo>();
+
+
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

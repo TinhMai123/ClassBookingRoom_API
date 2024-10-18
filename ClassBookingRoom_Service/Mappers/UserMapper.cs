@@ -71,5 +71,24 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = model.UpdatedAt,
             };
         }
+        public static User ToFillInfo(this FillInfoRequestModel dto)
+        {
+            return new User
+            {
+                CohortId = dto.CohortId,
+                DepartmentId = dto.DepartmentId,
+                UpdatedAt=DateTime.UtcNow,
+            };
+        }
+
+        public static User ToStatus(this StatusRequestModel dto)
+        {
+            return new User
+            {
+                Status = dto.Status,
+                UpdatedAt = DateTime.UtcNow,
+            };
+        }
+
     }
 }
