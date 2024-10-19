@@ -82,7 +82,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Activity");
+                    b.ToTable("Activity", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.Booking", b =>
@@ -125,7 +125,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Booking");
+                    b.ToTable("Booking", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.BookingModifyHistory", b =>
@@ -171,7 +171,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("ModifiedById");
 
-                    b.ToTable("BookingModifyHistory");
+                    b.ToTable("BookingModifyHistory", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.Cohort", b =>
@@ -199,7 +199,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cohort");
+                    b.ToTable("Cohort", (string)null);
 
                     b.HasData(
                         new
@@ -237,7 +237,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Department");
+                    b.ToTable("Department", (string)null);
 
                     b.HasData(
                         new
@@ -285,7 +285,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FaceDescriptors");
+                    b.ToTable("FaceDescriptors", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.Report", b =>
@@ -333,7 +333,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Report");
+                    b.ToTable("Report", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.Room", b =>
@@ -378,7 +378,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("Room");
+                    b.ToTable("Room", (string)null);
 
                     b.HasData(
                         new
@@ -452,7 +452,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomSlot");
+                    b.ToTable("RoomSlot", (string)null);
                 });
 
             modelBuilder.Entity("ClassBookingRoom_Repository.Models.RoomType", b =>
@@ -481,7 +481,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomType");
+                    b.ToTable("RoomType", (string)null);
 
                     b.HasData(
                         new
@@ -551,7 +551,7 @@ namespace ClassBookingRoom_Repository.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
 
                     b.HasData(
                         new
