@@ -1,23 +1,16 @@
-﻿using Azure.Core;
-using ClassBookingRoom_Repository.RequestModels.Auth;
+﻿using ClassBookingRoom_Repository.RequestModels.Auth;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
-using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Util.Store;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace ClassBookingRoom_API.Controllers
@@ -28,10 +21,12 @@ namespace ClassBookingRoom_API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-        public AuthController(IUserService userService, IConfiguration configuration)
+        private readonly IRedisService _redisService;
+        public AuthController(IUserService userService, IConfiguration configuration, IRedisService redisService)
         {
             _userService = userService;
             _configuration = configuration;
+            _redisService = redisService;
             if (FirebaseApp.DefaultInstance == null)
             {
                 var googleCredentialSection = _configuration.GetSection("GoogleCredential").Get<Dictionary<string, string>>();
@@ -43,35 +38,88 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpPost("send-email")]
-        public async Task<IActionResult> SendEmail(string body)
+        public async Task<IActionResult> SendEmail()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
+            try
             {
-                var claims = identity.Claims;
-                var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                if (email != null && role != null)
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+                if (identity != null)
                 {
-                    var message = new MimeMessage();
-                    message.From.Add(MailboxAddress.Parse("noble.hackett@ethereal.email"));
-                    message.To.Add(MailboxAddress.Parse("noble.hackett@ethereal.email"));
-                    message.Subject = "Verify ";
-                    message.Body = new TextPart(TextFormat.Html) { Text = body };
 
-                    using var smtp = new SmtpClient();
-                    await smtp.ConnectAsync("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-                    await smtp.AuthenticateAsync("noble.hackett@ethereal.email", "WMR3Jb9N17Uku69rVN");
-                    await smtp.SendAsync(message);
-                    await smtp.DisconnectAsync(true);
-
-                    return Ok();
+                    var claims = identity.Claims;
+                    var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                    var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                    if (email != null && role != null)
+                    {
+                        Random random = new Random();
+                        string verificationCode = random.Next(100000, 999999).ToString();
+                        var message = new MimeMessage();
+                        message.From.Add(MailboxAddress.Parse(_configuration["SmtpAccount:email"]));
+                        message.To.Add(MailboxAddress.Parse(email));
+                        message.Subject = "Verify Your Class Booking Room Account";
+                        message.Body = new TextPart(TextFormat.Html)
+                        {
+                            Text =
+                                 $@"
+                                <html>
+                                <body style='font-family: Arial, sans-serif;'>
+                                    <h2>Verify Your Class Booking Room Account</h2>
+                                    <p>Hello,</p>
+                                    <p>Thank you for registering your account with us. To complete your registration, 
+                                    please verify your email address using the verification code below:</p>
+                                    <div style='margin: 20px 0; font-size: 18px; font-weight: bold;'>
+                                        <span style='background-color: #f2f2f2; padding: 10px; border-radius: 5px;'>
+                                             {verificationCode}
+                                        </span>
+                                    </div>
+                                    <p>Enter this code on the verification page to complete your account setup.</p>
+                                    <p>If you did not request this verification, please ignore this email.</p>
+                                    <br/>
+                                    <p>Best regards,<br/>Class Booking Room Team</p>
+                                </body>
+                                </html>
+                            "
+                        };
+                        _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));
+                        using var smtp = new SmtpClient();
+                        await smtp.ConnectAsync("smtp.gmail.com", 465, true);
+                        await smtp.AuthenticateAsync(_configuration["SmtpAccount:email"], _configuration["SmtpAccount:password"]);
+                        await smtp.SendAsync(message);
+                        await smtp.DisconnectAsync(true);
+                        return Ok();
+                    }
                 }
+                return BadRequest();
             }
-            return BadRequest();
+            catch(Exception ex) { return StatusCode(500,ex.Message); }
         }
+        [HttpPost("verify-user")]
+        public async Task<IActionResult> VerifyUser(string email, string code)
+        {
+            try
+            {
+                var storedCode = _redisService.GetVerificationCode(email);
+                if (storedCode == code)
+                {
+                    var user = await _userService.GetUserByEmailAsync(email);
+                    if (user != null)
+                    {
+                        user.IsVerify = true;
+                        await _userService.UpdateUserAsync(user);
+                        _redisService.DeleteVerificationCode(email);
+                        return Ok("User Verified");
+                    }
+                }
 
+                return BadRequest("User Verifaction Code Incorrect");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            } 
+
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
         {
@@ -80,7 +128,8 @@ namespace ClassBookingRoom_API.Controllers
                 var token = await _userService.Login(login);
                 if (token != null) return Ok(token);
                 else return NotFound("User Not Found");
-            } catch (Exception ex) { return BadRequest(ex.Message); }
+            }
+            catch (Exception ex) { return StatusCode(500,ex.Message); }
         }
 
         [HttpPost("login-google")]
@@ -89,16 +138,17 @@ namespace ClassBookingRoom_API.Controllers
             try
             {
                 var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(request.AccessToken);
-                var jwtToken =await _userService.LoginGoogle(decodedToken, request.Role);
+                var jwtToken = await _userService.LoginGoogle(decodedToken, request.Role);
                 return Ok(jwtToken);
-            } catch (FirebaseAuthException ex)
+            }
+            catch (FirebaseAuthException ex)
             {
                 return Unauthorized(new { error = ex.Message });
             }
         }
 
         [HttpGet("get-user-info")]
-        public IActionResult GetUserInfo()
+        public async Task<IActionResult> GetUserInfo()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -109,9 +159,10 @@ namespace ClassBookingRoom_API.Controllers
                 var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
                 if (email != null && role != null)
                 {
-                    var user = _userService.GetUserByEmailAsync(email);
+                    var user = await _userService.GetUserDetailByEmailAsync(email);
                     return Ok(user);
-                } else
+                }
+                else
                 {
                     return Unauthorized();
                 }
@@ -120,7 +171,7 @@ namespace ClassBookingRoom_API.Controllers
             return Unauthorized();
         }
         [HttpGet("token")]
-        public async Task<ActionResult<UserResponseModel>> CheckToken()
+        public async Task<ActionResult<UserDetailResponseModel>> CheckToken()
         {
             Request.Headers.TryGetValue("Authorization", out var token);
             token = token.ToString().Split()[1];
@@ -144,7 +195,7 @@ namespace ClassBookingRoom_API.Controllers
             {
                 return StatusCode(401);
             }
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserDetailByEmailAsync(email);
             if (user == null)
             {
                 return BadRequest("email is in valid");
@@ -153,6 +204,6 @@ namespace ClassBookingRoom_API.Controllers
             // If token is valid, return success response
             return Ok(user);
         }
-        
+
     }
 }

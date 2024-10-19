@@ -42,7 +42,7 @@ namespace ClassBookingRoom_Repository.Repos
             throw new NotImplementedException();
         }
 
-        public async Task<RoomType> GetRoomTypeByIdWithAttribute(int id) {
+        public async Task<RoomType?> GetRoomTypeByIdWithAttribute(int id) {
             return await _context.RoomsTypes.
                 Include(c => c.AllowedCohorts).
                 Include(c => c.Activities).

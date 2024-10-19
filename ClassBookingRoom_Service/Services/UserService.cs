@@ -147,7 +147,7 @@ namespace ClassBookingRoom_Service.Services
                 throw new Exception($"{ex.Message}");
             }
         }
-        public async Task<UserDetailResponseModel?> GetUserByEmailAsync(string email)
+        public async Task<UserDetailResponseModel?> GetUserDetailByEmailAsync(string email)
         {
             var user = await _repo.GetUserByEmail(email);
             return user?.ToUserDetailDTO();
@@ -181,7 +181,25 @@ namespace ClassBookingRoom_Service.Services
             existingUser.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(existingUser);
         }
-
+        public async Task<bool> UpdateUser(Guid id, UpdateUserShortRequestModel dto)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            var cohort = await _cohortRepo.GetByIdAsync(dto.CohortId);
+            var department = await _departmentRepo.GetByIdAsync(dto.DepartmentId);
+            existingUser.Cohort = cohort;
+            existingUser.Department = department;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(existingUser);
+        }
+        public async Task<bool> UpdateUser(Guid id, string Status)
+        {
+            var existingUser = await _baseRepo.GetByIdAsync(id);
+            if (existingUser == null) return false;
+            existingUser.Status = Status;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(existingUser);
+        }
         public async Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query)
         {
             var modelList = await _baseRepo.GetAllAsync();
@@ -210,6 +228,19 @@ namespace ClassBookingRoom_Service.Services
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
             var classResult = result.Skip(skipNumber).Take(query.PageSize).ToList();
             return (classResult.Select(x => x.ToUserDTO()).ToList(), totalCount);
+        }
+        public async Task<bool> UpdateUserAsync(User user)
+        {
+            if (user != null)
+            {
+                await _baseRepo.UpdateAsync(user);
+                return true;
+            }
+            return false;
+        }
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _repo.GetUserByEmail(email);
         }
     }
 }
