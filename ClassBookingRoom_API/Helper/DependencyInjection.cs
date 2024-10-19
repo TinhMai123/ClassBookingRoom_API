@@ -22,6 +22,8 @@ namespace ClassBookingRoom_API.Helper
             services.AddTransient<IRoomSlotRepo, RoomSlotRepo>();
             services.AddTransient<IDepartmentRepo, DepartmentRepo>();
             services.AddTransient<IBookingModifyHistoryRepo, BookingModifyHistoryRepo>();
+            services.AddTransient<IFaceDescriptorRepo, FaceDescriptorRepo>();
+            services.AddTransient<IFaceDescriptorService, FaceDescriptorService>();
             return services;
             
         }
