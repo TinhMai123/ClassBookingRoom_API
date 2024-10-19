@@ -43,7 +43,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<ICollection<RoomSlot>> GetRoomSlotsByIdsAsync(ICollection<int> roomSlotIds)
         {
             return await _context.RoomSlots
-                                 .Where(rs => roomSlotIds.Contains(rs.Id))
+                                 .Where(rs => roomSlotIds.Contains(rs.Id) && rs.IsDeleted == false)
                                  .ToListAsync();
         }
     }

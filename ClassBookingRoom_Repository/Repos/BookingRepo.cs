@@ -19,6 +19,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<Booking?> GetBooking(int id)
         {
             return await _context.Bookings
+                .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
                 .Include(b=>b.RoomSlots)
                 .Include(b=>b.Activity)
@@ -28,6 +29,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<List<Booking>> GetBookings()
         {
             return await _context.Bookings
+                .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
                 .Include(b=>b.RoomSlots)
                 .Include(b=>b.Activity)

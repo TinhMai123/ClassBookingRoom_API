@@ -18,12 +18,14 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<Department?> GetDepartmentById(int id)
         {
             return await _context.Departments
+                .Where(c => c.IsDeleted == false)
                 .Include(c=>c.Activities)
                 .SingleOrDefaultAsync(c=>c.Id == id);
         }
         public async Task<List<Department>> GetDepartments()
         {
             return await _context.Departments
+                .Where(c => c.IsDeleted == false)
                 .Include(c => c.Activities)
                 .ToListAsync();
         }
