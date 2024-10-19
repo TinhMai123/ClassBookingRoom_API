@@ -18,6 +18,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<Activity?> GetActivityById(int id)
         {
             return await _context.Activities
+                .Where(c=>c.IsDeleted == false)
                 .Include(c=>c.Department)
                 .Include(c=>c.RoomTypes)
                 .SingleOrDefaultAsync(c=>c.Id==id);
@@ -25,6 +26,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<List<Activity>> GetActivities()
         {
             return await _context.Activities
+               .Where(c => c.IsDeleted == false)
                .Include(c => c.Department)
                .Include(c => c.RoomTypes).ToListAsync();
         }

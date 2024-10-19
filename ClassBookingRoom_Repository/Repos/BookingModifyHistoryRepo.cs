@@ -14,6 +14,7 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<BookingModifyHistory?> GetBookingModifyHistoryById(int id)
         {
             return await _context.BookingModifyHistories
+                .Where(c=>c.IsDeleted == false)
                 .Include(c => c.ModifiedBy)
                     .ThenInclude(c => c.Department.Name)
                 .Include(c => c.ModifiedBy)
@@ -22,7 +23,7 @@ namespace ClassBookingRoom_Repository.Repos
         }
         public async Task<List<BookingModifyHistory>> GetBookingModifyHistories()
         {
-            return await _context.BookingModifyHistories.Include(c => c.ModifiedBy).ToListAsync();
+            return await _context.BookingModifyHistories.Where(c=>c.IsDeleted == false).Include(c => c.ModifiedBy).ToListAsync();
         }
     }
 }

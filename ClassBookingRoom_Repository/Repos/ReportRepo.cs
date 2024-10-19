@@ -20,12 +20,17 @@ namespace ClassBookingRoom_Repository.Repos
 
         public async Task<Report?> GetReportById(int id)
         {
-            return await _context.Reports.Include(x => x.CreatedBy).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Reports
+                .Where(c => c.IsDeleted == false)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Report>> GetReports()
         {
-            return await _context.Reports.Include(x => x.CreatedBy).ToListAsync();
+            return await _context.Reports
+                .Where(c => c.IsDeleted == false)
+                .Include(x => x.CreatedBy).ToListAsync();
         }
     }
 }
