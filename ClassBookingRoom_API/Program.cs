@@ -74,9 +74,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddSingleton<IRedisService>(provider =>
-    new RedisService(builder.Configuration.GetConnectionString("RedisConnection")));
+/*builder.Services.AddSingleton<IRedisService>(provider =>
 
+    new RedisService(builder.Configuration.GetConnectionString("RedisConnection")));
+*/
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -97,8 +98,8 @@ builder
     });
 builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
-            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
        .AddCookie()
        .AddGoogle(options =>
