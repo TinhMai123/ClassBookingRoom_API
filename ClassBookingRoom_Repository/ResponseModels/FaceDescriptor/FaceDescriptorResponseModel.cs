@@ -10,7 +10,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.FaceDescriptor
     {
         public int Id { get; set; }
         public Guid? UserId { get; set; }
-        public ICollection<double> Descriptor { get; set; } = [];
+        public IList<double> Descriptor { get; set; } = [];
         public string ImageURL { get; set; } = string.Empty;
     }
 }
