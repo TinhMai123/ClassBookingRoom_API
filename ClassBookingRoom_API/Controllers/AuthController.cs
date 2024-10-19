@@ -21,12 +21,12 @@ namespace ClassBookingRoom_API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-        private readonly IRedisService _redisService;
-        public AuthController(IUserService userService, IConfiguration configuration, IRedisService redisService)
+/*        private readonly IRedisService _redisService;*/
+        public AuthController(IUserService userService, IConfiguration configuration/*, IRedisService redisService*/)
         {
             _userService = userService;
             _configuration = configuration;
-            _redisService = redisService;
+           /* _redisService = redisService;*/
             if (FirebaseApp.DefaultInstance == null)
             {
                 var googleCredentialSection = _configuration.GetSection("GoogleCredential").Get<Dictionary<string, string>>();
@@ -81,7 +81,7 @@ namespace ClassBookingRoom_API.Controllers
                                 </html>
                             "
                         };
-                        _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));
+                       /* _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));*/
                         using var smtp = new SmtpClient();
                         await smtp.ConnectAsync("smtp.gmail.com", 465, true);
                         await smtp.AuthenticateAsync(_configuration["SmtpAccount:email"], _configuration["SmtpAccount:password"]);
@@ -99,7 +99,7 @@ namespace ClassBookingRoom_API.Controllers
         {
             try
             {
-                var storedCode = _redisService.GetVerificationCode(email);
+                var storedCode = "123456"; /*_redisService.GetVerificationCode(email);*/
                 if (storedCode == code)
                 {
                     var user = await _userService.GetUserByEmailAsync(email);
@@ -107,7 +107,7 @@ namespace ClassBookingRoom_API.Controllers
                     {
                         user.IsVerify = true;
                         await _userService.UpdateUserAsync(user);
-                        _redisService.DeleteVerificationCode(email);
+                       /* _redisService.DeleteVerificationCode(email);*/
                         return Ok("User Verified");
                     }
                 }
