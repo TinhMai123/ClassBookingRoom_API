@@ -38,7 +38,7 @@ namespace ClassBookingRoom_API.Controllers
         {
             try
             {
-                var user = await _userService.GetUserByEmailAsync(email);
+                var user = await _userService.GetUserDetailByEmailAsync(email);
                 return user != null ? Ok(user) : NotFound("Can't find the email");
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }
@@ -74,6 +74,46 @@ namespace ClassBookingRoom_API.Controllers
             Response.Headers.Append("X-Total-Pages", totalPages.ToString());
             return Ok(users);
         }
+        [HttpPut("{id}/department-cohort")]
+        public async Task<IActionResult> UpdateDepartmentAndCohort([FromRoute] Guid id, [FromBody] UpdateUserShortRequestModel dto)
+        {
+            try {
+                var result = await _userService.UpdateUser(id, dto);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
 
+        }
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, string Status)
+        {
+            try
+            {
+                var result = await _userService.UpdateUser(id, Status);
+                if (result)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
     }
 }
