@@ -88,7 +88,7 @@ namespace ClassBookingRoom_API.Controllers
                 var result = await _bookingService.AcceptBooking(id);
                 if (result)
                 {
-                    return Ok();
+                    return Ok("Booking accepted successfully");
                 }
                 return BadRequest();
             } catch (Exception ex)
@@ -104,7 +104,7 @@ namespace ClassBookingRoom_API.Controllers
                 var result = await _bookingService.DenyBooking(id, response);
                 if (result)
                 {
-                    return Ok();
+                    return Ok("Booking denied successfully");
                 }
                 return BadRequest();
             } catch (Exception ex)

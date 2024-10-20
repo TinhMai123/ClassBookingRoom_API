@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,7 +72,39 @@ namespace ClassBookingRoom_API.Controllers
                 return BadRequest();
             }
         }
-        
+        [HttpPut("{id:int}/accept")]
+        public async Task<ActionResult> AcceptReport([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _reportService.AcceptReport(id);
+                if (result)
+                {
+                    return Ok("Report accepted successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPut("{id:int}/deny")]
+        public async Task<ActionResult> DenyReport([FromRoute] int id, [FromBody] string response)
+        {
+            try
+            {
+                var result = await _reportService.DenyReport(id, response);
+                if (result)
+                {
+                    return Ok("Report denied successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
 
     }
 }
