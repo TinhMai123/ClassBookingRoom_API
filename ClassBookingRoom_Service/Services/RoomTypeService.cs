@@ -111,7 +111,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task AddNewRoomTypeAttribute(RoomTypeAttributeRequestModel model)
         {
-            var roomType = await _repo.GetRoomTypeByIdWithAttribute(model.RoomTypeId);
+            var roomType = await _repo.GetRoomTypeById(model.RoomTypeId);
 
             if (roomType == null)
             {

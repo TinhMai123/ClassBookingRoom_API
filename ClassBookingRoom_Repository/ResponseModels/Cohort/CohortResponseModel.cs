@@ -10,6 +10,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Cohort
     public class CohortResponseModel : BaseModel
     {
         public int Id { get; set; }
-        public string? CohortCode { get; set; }
+        public string CohortCode { get; set; } = string.Empty;
     }
 }

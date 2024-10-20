@@ -13,13 +13,17 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static RoomTypeResponseModel ToRoomTypeDTO(this RoomType model)
         {
+            var allowedCohorts = model.AllowedCohorts.Select(c => c.ToCohortDTO()).ToList();
+            var allowedActivities = model.Activities.Select(a => a.ToActivityShortDTO()).ToList();
             return new RoomTypeResponseModel()
             {
                 Id = model.Id,
                 Name = model.Name,
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
-                UpdatedAt = model.UpdatedAt
+                UpdatedAt = model.UpdatedAt,
+                AllowedCohorts = allowedCohorts,
+                AllowedActivities = allowedActivities
             };
 
         }
