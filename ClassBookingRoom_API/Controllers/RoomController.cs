@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Room;
 using ClassBookingRoom_Repository.RequestModels.RoomSlot;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
+using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.Room;
 using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using ClassBookingRoom_Service.IServices;
@@ -147,6 +148,12 @@ namespace ClassBookingRoom_API.Controllers
         public async Task<ActionResult<List<BookingResponseModel>>> GetBookingsByRoomId([FromRoute] int roomId)
         {
             var list = await _roomService.GetBookingsByRoomId(roomId);
+            return Ok(list);
+        }
+        [HttpGet("{roomId:int}/reports")]
+        public async Task<ActionResult<List<ReportResponseModel>>> GetReportsByRoomId([FromRoute] int roomId)
+        {
+            var list = await _roomService.GetReportsByRoomId(roomId);
             return Ok(list);
         }
     }

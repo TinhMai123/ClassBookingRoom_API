@@ -11,5 +11,6 @@ namespace ClassBookingRoom_Repository.IRepos
     {
         Task<Report?> GetReportById(int id);
         Task<List<Report>> GetReports();
+        Task<List<Report>> GetReportsByRoomId(int roomId);
     }
 }

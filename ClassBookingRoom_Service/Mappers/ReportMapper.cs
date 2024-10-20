@@ -26,7 +26,8 @@ namespace ClassBookingRoom_Service.Mappers
                 StudentFullName = model.CreatedBy?.FullName ?? "" ,
                 StudentEmail = model.CreatedBy?.Email ?? "",
                 RoomId = model.RoomId,
-                Status = model.Status
+                Status = model.Status,
+                RoomName = model.Room?.RoomName ?? "",
             };
         }
         public static Report CreateReportFromDTO(this CreateReportRequestModel dto)
