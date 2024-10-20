@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_Repository;
+﻿using Azure;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Auth;
@@ -272,6 +273,19 @@ namespace ClassBookingRoom_Service.Services
             user.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(user);
 
+        }
+
+        public async Task<bool> Deactiviate(Guid id, string note)
+        {
+            var user = await _baseRepo.GetByIdAsync(id);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.Status = "Inactive";
+            user.Note = note;
+            user.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(user);
         }
     }
 }

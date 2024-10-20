@@ -3,6 +3,7 @@ using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassBookingRoom_API.Controllers
@@ -114,6 +115,24 @@ namespace ClassBookingRoom_API.Controllers
             }
 
         }
+
+        [HttpPut("{id:int}/deactivate")]
+        public async Task<ActionResult> DenyBooking([FromRoute] Guid id, [FromBody] string note)
+        {
+            try
+            {
+                var result = await _userService.Deactiviate(id, note);
+                if (result)
+                {
+                    return Ok("User deativated successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // FACE DESCRIPTOR
         [HttpGet("face")]
         public async Task<ActionResult<List<FaceDescriptorResponseModel>>> GetAll()
