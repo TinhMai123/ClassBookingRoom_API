@@ -35,8 +35,8 @@ namespace ClassBookingRoom_Service.Mappers
             {
                 Description = dto.Description,
                 Title = dto.Title,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
                 CreatorId= dto.CreatorId,
                 RoomId= dto.RoomId,
             };

@@ -16,6 +16,7 @@ namespace ClassBookingRoom_Service.IServices
         Task AddAsync(CreateFaceDescriptorRequestModel add);
         Task DeleteAsync(int id);
         Task<FaceDescriptorResponseModel?> GetById(int id);
+        Task<FaceDescriptorResponseModel?> GetByUserId(Guid userId);
         Task<List<FaceDescriptorResponseModel>> GetAll();
         Task UpdateAsync(UpdateFaceDescriptorRequestModel update);
     }

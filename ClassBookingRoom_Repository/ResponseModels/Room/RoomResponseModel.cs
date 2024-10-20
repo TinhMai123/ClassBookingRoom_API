@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Room
         public int? RoomTypeId { get; set; }
         public string RoomTypeName { get; set; } = string.Empty;
         public ICollection<SlotsForRoomResponseModel> RoomSlots { get; set; } = [];
+        public int NumOfPendingBooking { get; set; } = 0;
     }
 }

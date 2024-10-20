@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ClassBookingRoom_Repository.Models
 {
     [Table("BookingModifyHistory")]
-    public class BookingModifyHistory : BaseModel
+    public class BookingModifyHistory
     {
         public int Id { get; set; }
         public int BookingId { get; set; }

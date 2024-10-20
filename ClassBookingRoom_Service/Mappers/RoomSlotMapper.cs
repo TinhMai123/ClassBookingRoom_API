@@ -32,8 +32,8 @@ namespace ClassBookingRoom_Service.Mappers
                 StartTime = dto.StartTime,
                 EndTime = dto.EndTime,
                 RoomId = dto.RoomId,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
         public static SlotsForRoomResponseModel ToRoomSlotsFromRoomDTO(this RoomSlot model)

@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Repository.RequestModels.User
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public string ProfileImageURL { get; set; } = string.Empty;
-        public string Status { get; set; } = "Unverified";
+        public string Status { get; set; } = "Active";
         public int? DepartmentId { get; set; }
         public int? CohortId { get; set; }
     }

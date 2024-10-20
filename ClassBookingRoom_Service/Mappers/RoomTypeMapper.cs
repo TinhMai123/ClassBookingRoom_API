@@ -28,8 +28,8 @@ namespace ClassBookingRoom_Service.Mappers
             return new RoomType()
             {
                 Name = dto.Name,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
         }
         public static RoomTypeShortResponseModel ToRoomTypeShortDTO(this RoomType model)

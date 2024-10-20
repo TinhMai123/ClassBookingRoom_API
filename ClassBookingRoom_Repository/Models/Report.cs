@@ -12,8 +12,8 @@ namespace ClassBookingRoom_Repository.Models
     public class Report : BaseModel
     {
         public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? Description { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public string Status { get; set; } = "Pending";
         public string? Response { get; set; }
         public int RoomId { get; set; }

@@ -171,7 +171,7 @@ namespace ClassBookingRoom_API.Controllers
             return Unauthorized();
         }
         [HttpGet("token")]
-        public async Task<ActionResult<UserDetailResponseModel>> CheckToken()
+        public async Task<ActionResult<UserResponseModel>> CheckToken()
         {
             Request.Headers.TryGetValue("Authorization", out var token);
             token = token.ToString().Split()[1];

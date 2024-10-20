@@ -13,7 +13,20 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static RoomResponseModel ToRoomDTO(this Room model)
         {
-            var slots = model.RoomSlots?.Select(c=>c.ToRoomSlotsFromRoomDTO()).ToList();
+            var slots = model.RoomSlots?.Select(c => c.ToRoomSlotsFromRoomDTO()).ToList();
+            var bookings = new List<Booking>();
+            foreach (RoomSlot slot in model.RoomSlots)
+            {
+                foreach (Booking booking in slot.Bookings)
+                {
+                    if (bookings.FirstOrDefault(x => x.Id == booking.Id) is null)
+                    {
+                        bookings.Add(booking);
+                    }
+                }
+
+            }
+            var numOfPendingBooking = bookings.Count;
             return new RoomResponseModel()
             {
                 Id = model.Id,
@@ -26,7 +39,8 @@ namespace ClassBookingRoom_Service.Mappers
                 Status = model.Status,
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
-                UpdatedAt = model.UpdatedAt
+                UpdatedAt = model.UpdatedAt,
+                NumOfPendingBooking = numOfPendingBooking,
             };
         }
 
@@ -39,8 +53,8 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomTypeId = dto.RoomTypeId,
                 Picture = dto.Picture,
                 Status = dto.Status,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
         }
     }

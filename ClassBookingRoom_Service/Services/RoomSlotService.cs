@@ -58,7 +58,7 @@ namespace ClassBookingRoom_Service.Services
             if (result is null) { return false; }
             result.StartTime = update.StartTime;
             result.EndTime = update.EndTime;
-            result.UpdatedAt=DateTime.Now;
+            result.UpdatedAt=DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
         }
     }

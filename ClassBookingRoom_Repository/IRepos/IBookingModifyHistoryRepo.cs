@@ -11,5 +11,8 @@ namespace ClassBookingRoom_Repository.IRepos
     {
         Task<BookingModifyHistory?> GetBookingModifyHistoryById(int id);
         Task<List<BookingModifyHistory>> GetBookingModifyHistories();
+        Task<bool> AddAsync(BookingModifyHistory entity);
+        Task<bool> UpdateAsync(BookingModifyHistory entity);
+        Task<bool> DeleteAsync(int id);
     }
 }

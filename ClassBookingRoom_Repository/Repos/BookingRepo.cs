@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Repository.Repos
 {
-    public class BookingRepo : BaseRepository<Booking> , IBookingRepo
+    public class BookingRepo : BaseRepository<Booking>, IBookingRepo
     {
         public BookingRepo(AppDbContext context) : base(context)
         {
@@ -21,8 +21,9 @@ namespace ClassBookingRoom_Repository.Repos
             return await _context.Bookings
                 .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
-                .Include(b=>b.RoomSlots)
-                .Include(b=>b.Activity)
+                .ThenInclude(u => u.Department)
+                .Include(b => b.RoomSlots)
+                .Include(b => b.Activity)
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
 
@@ -31,8 +32,9 @@ namespace ClassBookingRoom_Repository.Repos
             return await _context.Bookings
                 .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
-                .Include(b=>b.RoomSlots)
-                .Include(b=>b.Activity)
+                .ThenInclude(u => u.Department)
+                .Include(b => b.RoomSlots)
+                .Include(b => b.Activity)
                 .ToListAsync();
         }
     }

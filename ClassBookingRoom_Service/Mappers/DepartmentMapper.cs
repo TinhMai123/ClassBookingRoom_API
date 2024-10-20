@@ -29,8 +29,8 @@ namespace ClassBookingRoom_Service.Mappers
             return new Department
             {
                 Name = dto.Name,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
         public static DepartmentShortResponseModel ToDepartmentShortDTO(this Department model)

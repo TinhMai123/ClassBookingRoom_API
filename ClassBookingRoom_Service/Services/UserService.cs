@@ -4,6 +4,7 @@ using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Auth;
 using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
+using ClassBookingRoom_Service.Helpers;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
 using FirebaseAdmin.Auth;
@@ -100,18 +101,12 @@ namespace ClassBookingRoom_Service.Services
             try
             {
                 var email = claims.GetValueOrDefault("email");
-                if (email!=null)
+                if (email != null)
                 {
                     var user = await _repo.GetUserByEmail(email.ToString()!);
                     if (user == null)
                     {
                         string fullName = claims.GetValueOrDefault("name")!.ToString()!;
-                        string[] nameParts = fullName.Split(' ');
-/*                        if (nameParts.Length >= 2)
-                        {
-                            firstName = nameParts[0];
-                            lastName = nameParts[1];
-                        }*/
                         var newUser = new User
                         {
                             FullName = fullName,
@@ -119,7 +114,8 @@ namespace ClassBookingRoom_Service.Services
                             Email = claims.GetValueOrDefault("email")!.ToString()!,
                             Password = claims.GetValueOrDefault("user_id")!.ToString()!,
                             Role = role,
-                            Status = "Unverified"
+                            Status = "Active",
+                            VerifyToken = EmailVerificationHelper.GenerateVerificationToken(email.ToString()!)
                         };
                         var result = await _baseRepo.AddAsync(newUser);
                         var loginRequest = new LoginRequestModel()
@@ -147,22 +143,22 @@ namespace ClassBookingRoom_Service.Services
                 throw new Exception($"{ex.Message}");
             }
         }
-        public async Task<UserDetailResponseModel?> GetUserDetailByEmailAsync(string email)
+        public async Task<UserResponseModel?> GetUserDetailByEmailAsync(string email)
         {
             var user = await _repo.GetUserByEmail(email);
-            return user?.ToUserDetailDTO();
+            return user?.ToUserDTO();
         }
 
         public async Task<List<UserResponseModel>> GetAllUser()
         {
-            var modelList = await _baseRepo.GetAllAsync();
+            var modelList = await _repo.GetAllUser();
             return modelList.Select(x => x.ToUserDTO()).ToList();
         }
 
-        public async Task<UserDetailResponseModel?> GetById(Guid id)
+        public async Task<UserResponseModel?> GetById(Guid id)
         {
             var user = await _repo.GetById(id);
-            return user?.ToUserDetailDTO();
+            return user?.ToUserDTO();
         }
 
         public async Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto)

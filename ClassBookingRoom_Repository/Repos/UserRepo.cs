@@ -65,5 +65,14 @@ namespace ClassBookingRoom_Repository.Repos
             }
             return false;
         }
+
+        public async Task<List<User>> GetAllUser()
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false)
+                .Include(x => x.Cohort)
+                .Include(x => x.Department)
+                .ToListAsync();
+        }
     }
 }

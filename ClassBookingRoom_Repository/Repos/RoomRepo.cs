@@ -22,9 +22,9 @@ namespace ClassBookingRoom_Repository.Repos
             var room = await _context.Rooms
                 .Where(c => c.IsDeleted == false)
                 .Include(r => r.RoomType)
-                .Include(r => r.RoomSlots)
+                .Include(r => r.RoomSlots.Where(s => s.IsDeleted == false))
+                .ThenInclude(s => s.Bookings.Where(c => c.IsDeleted == false && c.Status == "Pending"))
                 .SingleOrDefaultAsync(r => r.Id == id);
-
             if (room != null)
             {
                 // Filter RoomType if necessary
@@ -43,9 +43,10 @@ namespace ClassBookingRoom_Repository.Repos
         public async Task<List<Room>> GetRooms()
         {
             return await _context.Rooms
-                .Where(c=>c.IsDeleted == false)
+                .Where(c => c.IsDeleted == false)
                 .Include(r => r.RoomType)
-                .Include(r => r.RoomSlots)
+                .Include(r => r.RoomSlots.Where(s => s.IsDeleted == false))
+                .ThenInclude(s => s.Bookings.Where(c => c.IsDeleted == false && c.Status == "Pending"))
                 .ToListAsync();
         }
     }

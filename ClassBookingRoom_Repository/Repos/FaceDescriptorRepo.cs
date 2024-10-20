@@ -1,6 +1,8 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,11 @@ namespace ClassBookingRoom_Repository.Repos
     {
         public FaceDescriptorRepo(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<FaceDescriptor?> GetByUserId(Guid userId)
+        {
+            return await _context.FaceDescriptors.SingleOrDefaultAsync(x => x.UserId == userId);
         }
     }
 }
