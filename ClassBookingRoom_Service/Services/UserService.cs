@@ -128,9 +128,13 @@ namespace ClassBookingRoom_Service.Services
                         return login;
                     } else
                     {
+                        if (user.Status == "Inactive")
+                        {
+                            throw new Exception("User is suspended.");
+                        }
                         if (user.Role != role)
                         {
-                            throw new Exception("Invalid role");
+                            throw new Exception("Invalid role.");
                         }
                         var token = CreateToken(user);
                         return token;
