@@ -158,11 +158,6 @@ namespace ClassBookingRoom_API.Controllers
         [HttpPut("face/{id:int}")]
         public async Task<ActionResult> Update(int id, [FromQuery] UpdateFaceDescriptorRequestModel faceDescriptor)
         {
-            if (id != faceDescriptor.Id)
-            {
-                return BadRequest("ID mismatch");
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

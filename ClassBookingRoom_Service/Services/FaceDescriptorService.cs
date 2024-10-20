@@ -54,7 +54,7 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task UpdateAsync(UpdateFaceDescriptorRequestModel update)
         {
-            await _baseRepo.UpdateAsync(update.ToUpdateFaceDescriptorDTO());
+            await _baseRepo.UpdateAsync(update.ToUpdateFaceDescriptor());
         }
     }
 }

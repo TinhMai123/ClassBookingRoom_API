@@ -30,11 +30,10 @@ namespace ClassBookingRoom_Service.Mappers
                 Descriptor = model.Descriptor,
             };
         }
-        public static FaceDescriptor ToUpdateFaceDescriptorDTO(this UpdateFaceDescriptorRequestModel dto)
+        public static FaceDescriptor ToUpdateFaceDescriptor(this UpdateFaceDescriptorRequestModel dto)
         {
             return new FaceDescriptor()
             {
-                Id = dto.Id,
                 ImageURL = dto.ImageURL,
                 Descriptor = dto.Descriptor,
             };
