@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using MimeKit;
 using MimeKit.Text;
 using Newtonsoft.Json;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -21,12 +22,12 @@ namespace ClassBookingRoom_API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-/*        private readonly IRedisService _redisService;*/
+        /*        private readonly IRedisService _redisService;*/
         public AuthController(IUserService userService, IConfiguration configuration/*, IRedisService redisService*/)
         {
             _userService = userService;
             _configuration = configuration;
-           /* _redisService = redisService;*/
+            /* _redisService = redisService;*/
             if (FirebaseApp.DefaultInstance == null)
             {
                 var googleCredentialSection = _configuration.GetSection("GoogleCredential").Get<Dictionary<string, string>>();
@@ -81,7 +82,7 @@ namespace ClassBookingRoom_API.Controllers
                                 </html>
                             "
                         };
-                       /* _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));*/
+                        /* _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));*/
                         using var smtp = new SmtpClient();
                         await smtp.ConnectAsync("smtp.gmail.com", 465, true);
                         await smtp.AuthenticateAsync(_configuration["SmtpAccount:email"], _configuration["SmtpAccount:password"]);
@@ -91,35 +92,87 @@ namespace ClassBookingRoom_API.Controllers
                     }
                 }
                 return BadRequest();
-            }
-            catch(Exception ex) { return StatusCode(500,ex.Message); }
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
         }
-        [HttpPost("verify-user")]
-        public async Task<IActionResult> VerifyUser(string email, string code)
+        [HttpPost("{userId:Guid}/send-verification-email")]
+        public async Task<IActionResult> SendVerificationEmail([FromRoute] Guid userId)
+        {
+
+            try
+            {
+                var user = await _userService.GetById(userId);
+                if (user == null)
+                {
+                    return BadRequest("User not found.");
+                }
+                if (user.IsVerify)
+                {
+                    return BadRequest("User is already verified.");
+                }
+                Random random = new Random();
+                var newVerificationToken = random.Next(100000, 999999).ToString();
+                var updateTokenResult = await _userService.UpdateVerifyToken(userId, newVerificationToken);
+                if (!updateTokenResult)
+                {
+                    return StatusCode(500, "Failed to update verification token");
+                }
+                var message = new MimeMessage();
+                message.From.Add(MailboxAddress.Parse(_configuration["SmtpAccount:email"]));
+                message.To.Add(MailboxAddress.Parse(user.Email));
+                message.Subject = "Verify Your Class Booking Room Account";
+                message.Body = new TextPart(TextFormat.Html)
+                {
+                    Text =
+                         $@"
+                                <html>
+                                <body style='font-family: Arial, sans-serif;'>
+                                    <h2>Verify Your Class Booking Room Account</h2>
+                                    <p>Hello,</p>
+                                    <p>Thank you for registering your account with us. To complete your registration, 
+                                    please verify your email address using the verification code below:</p>
+                                    <div style='margin: 20px 0; font-size: 18px; font-weight: bold;'>
+                                        <span style='background-color: #f2f2f2; padding: 10px; border-radius: 5px;'>
+                                             {newVerificationToken}
+                                        </span>
+                                    </div>
+                                    <p>Enter this code on the verification page to complete your account setup.</p>
+                                    <p>If you did not request this verification, please ignore this email.</p>
+                                    <br/>
+                                    <p>Best regards,<br/>Class Booking Room Team</p>
+                                </body>
+                                </html>
+                            "
+                };
+                /* _redisService.SetVerificationCode(email, verificationCode, TimeSpan.FromMinutes(5));*/
+                using var smtp = new SmtpClient();
+                await smtp.ConnectAsync("smtp.gmail.com", 465, true);
+                await smtp.AuthenticateAsync(_configuration["SmtpAccount:email"], _configuration["SmtpAccount:password"]);
+                await smtp.SendAsync(message);
+                await smtp.DisconnectAsync(true);
+                return Ok("Verification email sent successfully.");
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
+        }
+
+        [HttpPost("{userId:Guid}/verify")]
+        public async Task<IActionResult> VerifyUser([FromRoute] Guid userId, [FromBody] string verifyToken)
         {
             try
             {
-                var storedCode = "123456"; /*_redisService.GetVerificationCode(email);*/
-                if (storedCode == code)
+                bool result = await _userService.VerifyUser(userId, verifyToken);
+                if (result)
                 {
-                    var user = await _userService.GetUserByEmailAsync(email);
-                    if (user != null)
-                    {
-                        user.IsVerify = true;
-                        await _userService.UpdateUserAsync(user);
-                       /* _redisService.DeleteVerificationCode(email);*/
-                        return Ok("User Verified");
-                    }
+                    return Ok("User is verified successfully");
+                } else
+                {
+                    return BadRequest("Incorrect verification code provided");
                 }
 
-                return BadRequest("User Verifaction Code Incorrect");
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
-            } 
-
+                return BadRequest(ex.Message);
+            }
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel login)
         {
@@ -128,8 +181,7 @@ namespace ClassBookingRoom_API.Controllers
                 var token = await _userService.Login(login);
                 if (token != null) return Ok(token);
                 else return NotFound("User Not Found");
-            }
-            catch (Exception ex) { return StatusCode(500,ex.Message); }
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
         }
 
         [HttpPost("login-google")]
@@ -140,8 +192,7 @@ namespace ClassBookingRoom_API.Controllers
                 var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(request.AccessToken);
                 var jwtToken = await _userService.LoginGoogle(decodedToken, request.Role);
                 return Ok(jwtToken);
-            }
-            catch (FirebaseAuthException ex)
+            } catch (FirebaseAuthException ex)
             {
                 return Unauthorized(new { error = ex.Message });
             }
@@ -161,8 +212,7 @@ namespace ClassBookingRoom_API.Controllers
                 {
                     var user = await _userService.GetUserDetailByEmailAsync(email);
                     return Ok(user);
-                }
-                else
+                } else
                 {
                     return Unauthorized();
                 }

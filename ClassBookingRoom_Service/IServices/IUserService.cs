@@ -27,5 +27,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> UpdateUser(Guid id, UpdateUserShortRequestModel dto);
         Task<bool> UpdateUser(Guid id, string Status);
         Task<bool> UpdateUserAsync(User user);
+        Task<bool> VerifyUser(Guid id, string verifyToken);
+        Task<bool> UpdateVerifyToken(Guid id, string verifyToken);
     }
 }

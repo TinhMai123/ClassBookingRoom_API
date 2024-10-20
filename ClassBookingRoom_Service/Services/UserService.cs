@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Management;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,7 +117,6 @@ namespace ClassBookingRoom_Service.Services
                             Password = claims.GetValueOrDefault("user_id")!.ToString()!,
                             Role = role,
                             Status = "Active",
-                            VerifyToken = EmailVerificationHelper.GenerateVerificationToken(email.ToString()!)
                         };
                         var result = await _baseRepo.AddAsync(newUser);
                         var loginRequest = new LoginRequestModel()
@@ -237,6 +238,36 @@ namespace ClassBookingRoom_Service.Services
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _repo.GetUserByEmail(email);
+        }
+
+        public async Task<bool> VerifyUser(Guid id, string verifyToken)
+        {
+            var user = await _repo.GetById(id);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            if (user.VerifyToken == verifyToken)
+            {
+                user.IsVerify = true;
+                await _baseRepo.UpdateAsync(user);
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateVerifyToken(Guid id, string verifyToken)
+        {
+            var user = await _repo.GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+            user.VerifyToken = verifyToken;
+            user.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(user);
+
         }
     }
 }
