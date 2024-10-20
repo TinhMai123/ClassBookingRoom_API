@@ -129,6 +129,7 @@ namespace ClassBookingRoom_Service.Services
             room.Capacity = update.Capacity;
             room.RoomTypeId = update.RoomTypeId;
             room.RoomName = update.RoomName;
+            room.Picture = update.Picture;
             return await _baseRepo.UpdateAsync(room); 
         }
 
