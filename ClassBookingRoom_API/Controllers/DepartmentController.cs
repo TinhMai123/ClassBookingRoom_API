@@ -82,6 +82,12 @@ namespace ClassBookingRoom_API.Controllers
             var list = await _activityService.GetAll();
             return Ok(list);
         }
+        [HttpGet("{departmentId:int}/activities")]
+        public async Task<ActionResult<List<ActivityResponseModel>>> GetActivitiesByDepartmentId([FromRoute] int departmentId)
+        {
+            var list = await _departmentService.GetActivitiesByDepartmentId(departmentId);
+            return Ok(list);
+        }
 
         [HttpPost("activities")]
         public async Task<ActionResult> CreateActivity(CreateActivityRequestModel add)
