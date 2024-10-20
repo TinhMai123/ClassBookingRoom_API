@@ -1,5 +1,6 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Room;
 using ClassBookingRoom_Repository.RequestModels.RoomSlot;
+using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Room;
 using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using ClassBookingRoom_Service.IServices;
@@ -96,7 +97,7 @@ namespace ClassBookingRoom_API.Controllers
             return Ok(list);
         }
         [HttpGet("{roomId:int}/slots")]
-        public async Task<ActionResult<List<RoomSlotResponseModel>>> GetRoomSlotsByRoomId([FromRoute]int roomId)
+        public async Task<ActionResult<List<RoomSlotResponseModel>>> GetRoomSlotsByRoomId([FromRoute] int roomId)
         {
             var list = await _roomSlotService.GetRoomSlotsByRoomId(roomId);
             return Ok(list);
@@ -141,6 +142,12 @@ namespace ClassBookingRoom_API.Controllers
             {
                 return BadRequest();
             }
+        }
+        [HttpGet("{roomId:int}/bookings")]
+        public async Task<ActionResult<List<BookingResponseModel>>> GetBookingsByRoomId([FromRoute] int roomId)
+        {
+            var list = await _roomService.GetBookingsByRoomId(roomId);
+            return Ok(list);
         }
     }
 }
