@@ -22,7 +22,7 @@ namespace ClassBookingRoom_Service.Mappers
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
                 Department = model.Department?.ToDepartmentShortDTO(),
-                RoomTypes = model.RoomTypes?.Select(c=>c.ToRoomTypeShortDTO()).ToList(),
+/*                RoomTypes = model.RoomTypes?.Select(c=>c.ToRoomTypeShortDTO()).ToList(),*/
             };
         }
 

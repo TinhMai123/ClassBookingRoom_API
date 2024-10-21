@@ -15,6 +15,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.Activity
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
         public DepartmentShortResponseModel? Department { get; set; }
-        public ICollection<RoomTypeShortResponseModel>? RoomTypes { get; set; } = [];
+/*        public ICollection<RoomTypeShortResponseModel>? RoomTypes { get; set; } = [];*/
     }
 }
