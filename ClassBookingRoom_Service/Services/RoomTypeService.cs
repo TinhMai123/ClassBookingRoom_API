@@ -111,7 +111,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task RemoveCohort(int id, int cohortId)
         {
-            var roomType = await _baseRepo.GetByIdAsync(id);
+            var roomType = await _repo.GetRoomTypeById(id);
             if (roomType == null)
             {
                 throw new Exception("RoomType not found");
@@ -126,7 +126,7 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task RemoveActivity(int id, int activityId)
         {
-            var roomType = await _baseRepo.GetByIdAsync(id);
+            var roomType = await _repo.GetRoomTypeById(id);
             if (roomType == null)
             {
                 throw new Exception("RoomType not found");
