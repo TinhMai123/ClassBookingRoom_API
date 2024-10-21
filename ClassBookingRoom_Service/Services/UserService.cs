@@ -1,9 +1,11 @@
-﻿using ClassBookingRoom_Repository;
+﻿using Azure;
+using ClassBookingRoom_Repository;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Auth;
 using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.User;
+using ClassBookingRoom_Service.Helpers;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
 using FirebaseAdmin.Auth;
@@ -14,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Management;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,18 +104,12 @@ namespace ClassBookingRoom_Service.Services
             try
             {
                 var email = claims.GetValueOrDefault("email");
-                if (email!=null)
+                if (email != null)
                 {
                     var user = await _repo.GetUserByEmail(email.ToString()!);
                     if (user == null)
                     {
                         string fullName = claims.GetValueOrDefault("name")!.ToString()!;
-                        string[] nameParts = fullName.Split(' ');
-/*                        if (nameParts.Length >= 2)
-                        {
-                            firstName = nameParts[0];
-                            lastName = nameParts[1];
-                        }*/
                         var newUser = new User
                         {
                             FullName = fullName,
@@ -119,7 +117,7 @@ namespace ClassBookingRoom_Service.Services
                             Email = claims.GetValueOrDefault("email")!.ToString()!,
                             Password = claims.GetValueOrDefault("user_id")!.ToString()!,
                             Role = role,
-                            Status = "Unverified"
+                            Status = "Active",
                         };
                         var result = await _baseRepo.AddAsync(newUser);
                         var loginRequest = new LoginRequestModel()
@@ -131,9 +129,13 @@ namespace ClassBookingRoom_Service.Services
                         return login;
                     } else
                     {
+                        if (user.Status == "Inactive")
+                        {
+                            throw new Exception("User is suspended.");
+                        }
                         if (user.Role != role)
                         {
-                            throw new Exception("Invalid role");
+                            throw new Exception("Invalid role.");
                         }
                         var token = CreateToken(user);
                         return token;
@@ -147,22 +149,22 @@ namespace ClassBookingRoom_Service.Services
                 throw new Exception($"{ex.Message}");
             }
         }
-        public async Task<UserDetailResponseModel?> GetUserDetailByEmailAsync(string email)
+        public async Task<UserResponseModel?> GetUserDetailByEmailAsync(string email)
         {
             var user = await _repo.GetUserByEmail(email);
-            return user?.ToUserDetailDTO();
+            return user?.ToUserDTO();
         }
 
         public async Task<List<UserResponseModel>> GetAllUser()
         {
-            var modelList = await _baseRepo.GetAllAsync();
+            var modelList = await _repo.GetAllUser();
             return modelList.Select(x => x.ToUserDTO()).ToList();
         }
 
-        public async Task<UserDetailResponseModel?> GetById(Guid id)
+        public async Task<UserResponseModel?> GetById(Guid id)
         {
             var user = await _repo.GetById(id);
-            return user?.ToUserDetailDTO();
+            return user?.ToUserDTO();
         }
 
         public async Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto)
@@ -241,6 +243,49 @@ namespace ClassBookingRoom_Service.Services
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _repo.GetUserByEmail(email);
+        }
+
+        public async Task<bool> VerifyUser(Guid id, string verifyToken)
+        {
+            var user = await _repo.GetById(id);
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+            if (user.VerifyToken == verifyToken)
+            {
+                user.IsVerify = true;
+                await _baseRepo.UpdateAsync(user);
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateVerifyToken(Guid id, string verifyToken)
+        {
+            var user = await _repo.GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+            user.VerifyToken = verifyToken;
+            user.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(user);
+
+        }
+
+        public async Task<bool> Deactiviate(Guid id, string note)
+        {
+            var user = await _baseRepo.GetByIdAsync(id);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.Status = "Inactive";
+            user.Note = note;
+            user.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(user);
         }
     }
 }

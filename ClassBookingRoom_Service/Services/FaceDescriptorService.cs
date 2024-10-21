@@ -46,9 +46,15 @@ namespace ClassBookingRoom_Service.Services
             return model?.ToFaceDescriptorDTO() ?? null;
         }
 
+        public async Task<FaceDescriptorResponseModel?> GetByUserId(Guid userId)
+        {
+            var model = await _repo.GetByUserId(userId);
+            return model?.ToFaceDescriptorDTO() ?? null;
+        }
+
         public async Task UpdateAsync(UpdateFaceDescriptorRequestModel update)
         {
-            await _baseRepo.UpdateAsync(update.ToUpdateFaceDescriptorDTO());
+            await _baseRepo.UpdateAsync(update.ToUpdateFaceDescriptor());
         }
     }
 }

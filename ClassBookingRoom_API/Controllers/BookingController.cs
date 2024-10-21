@@ -35,23 +35,23 @@ namespace ClassBookingRoom_API.Controllers
                     return NotFound();
                 }
                 return Ok(result);
-            }catch(Exception ex) { return StatusCode(500, ex.Message); }
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
 
         }
 
         [HttpGet]
         public async Task<ActionResult<List<BookingResponseModel>>> GetAll()
         {
-            try {
+            try
+            {
                 var result = await _bookingService.GetBookings();
                 return Ok(result);
-            }
-            catch(Exception ex) { return StatusCode(500, ex.Message); }
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<BookingResponseModel>> CreateCohort([FromBody] CreateBookingRequestModel dto)
+        public async Task<ActionResult<BookingResponseModel>> CreateBooking([FromBody] CreateBookingRequestModel dto)
         {
             try
             {
@@ -59,29 +59,58 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok(result);
-                }
-                else return BadRequest("Inputting Incorrectly");
-            }
-            catch(Exception ex) { return StatusCode(500, ex.Message); }
- 
+                } else return BadRequest("Inputting Incorrectly");
+            } catch (Exception ex) { return StatusCode(500, ex.Message); }
+
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<BookingResponseModel>> UpdateCohort([FromRoute] int id, [FromBody] UpdateBookingRequestModel update)
+        public async Task<ActionResult<BookingResponseModel>> UpdateBooking([FromRoute] int id, [FromBody] UpdateBookingRequestModel update)
         {
-            try {
+            try
+            {
                 var result = await _bookingService.UpdateBookingAsync(id, update);
                 if (result)
                 {
                     return Ok();
                 }
                 return BadRequest();
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
+        }
+        [HttpPut("{id:int}/accept")]
+        public async Task<ActionResult> AcceptBooking([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _bookingService.AcceptBooking(id);
+                if (result)
+                {
+                    return Ok("Booking accepted successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPut("{id:int}/deny")]
+        public async Task<ActionResult> DenyBooking([FromRoute] int id, [FromBody] string response)
+        {
+            try
+            {
+                var result = await _bookingService.DenyBooking(id, response);
+                if (result)
+                {
+                    return Ok("Booking denied successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpDelete("{id:int}")]
@@ -95,15 +124,14 @@ namespace ClassBookingRoom_API.Controllers
                     return Ok();
                 }
                 return BadRequest();
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
 
         }
         [HttpPost("search")]
-        public async Task<ActionResult<List<BookingResponseModel>>> SearchBookQuery([FromBody]SearchBookHistoryQuery query)
+        public async Task<ActionResult<List<BookingResponseModel>>> SearchBookQuery([FromBody] SearchBookHistoryQuery query)
         {
             try
             {
@@ -124,8 +152,7 @@ namespace ClassBookingRoom_API.Controllers
                 var activity = await _historyService.Get(id);
                 if (activity == null) { return NotFound(); }
                 return Ok(activity);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -138,8 +165,7 @@ namespace ClassBookingRoom_API.Controllers
             {
                 var list = await _historyService.GetByBookingid(bookingId);
                 return Ok(list);
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -153,8 +179,7 @@ namespace ClassBookingRoom_API.Controllers
             {
                 var list = await _historyService.Gets();
                 return Ok(list);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -170,13 +195,11 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok();
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -194,13 +217,11 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok();
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -216,13 +237,11 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok(result);
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }

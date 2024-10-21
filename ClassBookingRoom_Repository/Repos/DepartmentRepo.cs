@@ -19,14 +19,14 @@ namespace ClassBookingRoom_Repository.Repos
         {
             return await _context.Departments
                 .Where(c => c.IsDeleted == false)
-                .Include(c=>c.Activities)
-                .SingleOrDefaultAsync(c=>c.Id == id);
+                .Include(c => c.Activities.Where(a => a.IsDeleted == false))
+                .SingleOrDefaultAsync(c => c.Id == id);
         }
         public async Task<List<Department>> GetDepartments()
         {
             return await _context.Departments
                 .Where(c => c.IsDeleted == false)
-                .Include(c => c.Activities)
+                .Include(c => c.Activities.Where(a => a.IsDeleted == false))
                 .ToListAsync();
         }
     }

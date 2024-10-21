@@ -27,8 +27,8 @@ namespace ClassBookingRoom_Service.Mappers
             return new Cohort
             {
                 CohortCode = dto.CohortCode,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
     }

@@ -16,9 +16,11 @@ namespace ClassBookingRoom_Repository.Models
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public string ProfileImageURL { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public string Status { get; set; } = "Active";
         public int? DepartmentId { get; set; }
         public int? CohortId { get; set; }
+        public string? Note { get; set; }
+        public string? VerifyToken { get; set; }
         public bool IsVerify { get; set; } = false;
         public FaceDescriptor? FaceDescriptor { get; set; }
         public Department? Department { get; set; }

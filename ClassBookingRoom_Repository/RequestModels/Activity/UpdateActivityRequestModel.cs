@@ -8,7 +8,7 @@ namespace ClassBookingRoom_Repository.RequestModels.Activity
 {
     public class UpdateActivityRequestModel
     {
-        public string? Name { get; set; }
-        public int DepartmentId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
     }
 }

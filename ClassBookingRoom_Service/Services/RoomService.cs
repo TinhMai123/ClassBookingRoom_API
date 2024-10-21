@@ -13,18 +13,22 @@ using ClassBookingRoom_Service.Mappers;
 using ClassBookingRoom_Repository.ResponseModels.Room;
 using ClassBookingRoom_Repository.Repos;
 using Microsoft.EntityFrameworkCore;
+using ClassBookingRoom_Repository.ResponseModels.Booking;
+using ClassBookingRoom_Repository.ResponseModels.Report;
 
 namespace ClassBookingRoom_Service.Services
 {
     public class RoomService : IRoomService
     {
         private readonly IRoomRepo _repo;
+        private readonly IReportRepo _reportRepo;
         private readonly IBaseRepository<Room> _baseRepo;
 
-        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo)
+        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IReportRepo reportRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
+            _reportRepo = reportRepo;
         }
         public async Task<bool> AddRoomAsync(CreateRoomRequestModel dto)
         {
@@ -34,6 +38,31 @@ namespace ClassBookingRoom_Service.Services
         public async Task<bool> DeleteRoomAsync(int id)
         {
             return await _baseRepo.DeleteAsync(id);
+        }
+
+        public async Task<List<BookingResponseModel>> GetBookingsByRoomId(int roomId)
+        {
+            var room = await _repo.GetRoom(roomId);
+            var slots = room.RoomSlots?.Select(c => c.ToRoomSlotsFromRoomDTO()).ToList();
+            var bookings = new List<Booking>();
+            foreach (RoomSlot slot in room.RoomSlots)
+            {
+                foreach (Booking booking in slot.Bookings)
+                {
+                    if (bookings.FirstOrDefault(x => x.Id == booking.Id) is null)
+                    {
+                        bookings.Add(booking);
+                    }
+                }
+
+            }
+            return bookings.Select(booking => booking.ToBookingDTO()).ToList();
+        }
+
+        public async Task<List<ReportResponseModel>> GetReportsByRoomId(int roomId)
+        {
+            var reports = await _reportRepo.GetReportsByRoomId(roomId);
+            return reports.Select(x => x.ToReportDTO()).ToList();
         }
 
         public async Task<RoomResponseModel?> GetRoom(int id)
@@ -100,6 +129,7 @@ namespace ClassBookingRoom_Service.Services
             room.Capacity = update.Capacity;
             room.RoomTypeId = update.RoomTypeId;
             room.RoomName = update.RoomName;
+            room.Picture = update.Picture;
             return await _baseRepo.UpdateAsync(room); 
         }
 

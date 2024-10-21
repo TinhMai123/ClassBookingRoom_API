@@ -29,7 +29,9 @@ namespace ClassBookingRoom_Service.Mappers
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
                 IsVerify = model.IsVerify,
-                IsDeleted = model.IsDeleted,  
+                IsDeleted = model.IsDeleted,
+                CohortCode = model.Cohort?.CohortCode ?? "",
+                DepartmentName = model.Department?.Name ?? ""
             };
         }
 
@@ -48,29 +50,7 @@ namespace ClassBookingRoom_Service.Mappers
                 IsVerify = false,
             };
         }
-        public static UserDetailResponseModel ToUserDetailDTO(this User model) { 
-            var cohort = model.Cohort?.ToCohortDTO();
-            var department = model.Department?.ToDepartmentDTO();
-            return new UserDetailResponseModel
-            {
-                Email = model.Email,
-                Id = model.Id,
-                FullName = model.FullName,
-                ProfileImageURL = model.ProfileImageURL,
-                Role = model.Role,
-                Status = model.Status,
-/*                Cohort = cohort,
-                Department = department,*/
-                DepartmentName = department?.Name,
-                IsVerify = model.IsVerify,
-                CohortCode = cohort?.CohortCode,
-                DepartmentId =  model.DepartmentId,
-                CohortId = model.CohortId,
-                CreatedAt = model.CreatedAt,
-                DeletedAt = model.DeletedAt,
-                UpdatedAt = model.UpdatedAt,
-            };
-        }
+
         public static UserShortResponseModel ToUserShortDTO(this User model)
         {
             return new UserShortResponseModel

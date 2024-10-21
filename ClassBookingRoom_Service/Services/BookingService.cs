@@ -63,11 +63,11 @@ namespace ClassBookingRoom_Service.Services
         {
             var modelRepo = await _baseRepo.GetAllAsync();
             var result = modelRepo.AsQueryable();
-            if(query.StartTime is not null)
+            if (query.StartTime is not null)
             {
-                result = result.Where(r => r.CreatedAt.CompareTo(query.StartTime)<=0);
+                result = result.Where(r => r.CreatedAt.CompareTo(query.StartTime) <= 0);
             }
-            if(query.EndTime is not null)
+            if (query.EndTime is not null)
             {
                 result = result.Where(r => r.CreatedAt.CompareTo(query.StartTime) >= 0);
             }
@@ -75,6 +75,31 @@ namespace ClassBookingRoom_Service.Services
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
             var paginatedResult = await result.Skip(skipNumber).Take(query.PageSize).ToListAsync();
             return (paginatedResult.Select(x => x.ToBookingDTO()).ToList(), totalCount);
+        }
+
+        public async Task<bool> AcceptBooking(int id)
+        {
+            var booking = await _baseRepo.GetByIdAsync(id);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found");
+            }
+            booking.Status = "Accepted";
+            booking.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(booking);
+        }
+
+        public async Task<bool> DenyBooking(int id, string response)
+        {
+            var booking = await _baseRepo.GetByIdAsync(id);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found");
+            }
+            booking.Status = "Denied";
+            booking.Response = response;
+            booking.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(booking);
         }
     }
 }

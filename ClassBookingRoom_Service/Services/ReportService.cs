@@ -11,6 +11,7 @@ using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Service.Mappers;
+using Azure;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -54,6 +55,31 @@ namespace ClassBookingRoom_Service.Services
             result.Status = update.Status;
             result.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(result);
+        }
+
+        public async Task<bool> AcceptReport(int id)
+        {
+            var report = await _baseRepo.GetByIdAsync(id);
+            if (report == null)
+            {
+                throw new Exception("Report not found");
+            }
+            report.Status = "Accepted";
+            report.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(report);
+        }
+
+        public async Task<bool> DenyReport(int id, string response)
+        {
+            var report = await _baseRepo.GetByIdAsync(id);
+            if (report == null)
+            {
+                throw new Exception("Report not found");
+            }
+            report.Status = "Denied";
+            report.Response = response;
+            report.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(report);
         }
     }
 

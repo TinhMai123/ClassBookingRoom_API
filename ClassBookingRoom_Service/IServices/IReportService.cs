@@ -15,5 +15,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<ReportResponseModel?> GetById(int id);
         Task<List<ReportResponseModel>> GetAll();
         Task<bool> UpdateAsync(int id,UpdateReportRequestModel update);
+        Task<bool> AcceptReport(int id);
+        Task<bool> DenyReport(int id, string response);
     }
 }

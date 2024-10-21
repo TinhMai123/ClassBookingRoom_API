@@ -75,7 +75,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromQuery] SearchRoomTypeQuery query)
+        public async Task<ActionResult<List<RoomTypeResponseModel>>> SearchRoomType([FromQuery] SearchRoomTypeQuery query)
         {
             var (roomTypes, totalCount) = await roomTypeService.SearchRoomType(query);
             var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
@@ -84,29 +84,47 @@ namespace ClassBookingRoom_API.Controllers
             Response.Headers.Append("X-Total-Pages", totalPages.ToString());
             return Ok(roomTypes);
         }
-        [HttpDelete("attribute")]
-        public async Task<ActionResult> RemoveRoomTypeAttribute([FromBody] RoomTypeAttributeRequestModel model)
+        [HttpDelete("{id:int}/cohort")]
+        public async Task<ActionResult> RemoveRoomTypeCohort([FromRoute]int id, [FromBody]int cohortId)
         {
             try
             {
-                await roomTypeService.RemoveRoomTypeAttribute(model);
+                await roomTypeService.RemoveCohort(id, cohortId);
                 return Ok("Remove successfully");
 
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
-
         }
-        [HttpPut("attribute")]
-        public async Task<ActionResult> AddRoomTypeAttribute([FromBody] RoomTypeAttributeRequestModel model)
+        [HttpPut("{id:int}/cohort")]
+        public async Task<ActionResult> AddRoomTypeCohort([FromRoute] int id, [FromBody] int cohortId)
         {
             try
             {
-                await roomTypeService.AddNewRoomTypeAttribute(model);
+                await roomTypeService.AddCohort(id, cohortId);
                 return Ok("Added successfully");
 
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        [HttpDelete("{id:int}/activity")]
+        public async Task<ActionResult> RemoveRoomTypeActivity([FromRoute] int id, [FromBody] int activityId)
+        {
+            try
+            {
+                await roomTypeService.RemoveActivity(id, activityId);
+                return Ok("Remove successfully");
 
+            } catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        [HttpPut("{id:int}/activity")]
+        public async Task<ActionResult> AddRoomTypeActivity([FromRoute] int id, [FromBody] int activityId)
+        {
+            try
+            {
+                await roomTypeService.AddActivity(id, activityId);
+                return Ok("Added successfully");
+
+            } catch (Exception ex) { return BadRequest(ex.Message); }
         }
     }
 }

@@ -1,5 +1,9 @@
 ﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
+using ClassBookingRoom_Repository.ResponseModels.Booking;
+using ClassBookingRoom_Repository.ResponseModels.Cohort;
 using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
+using ClassBookingRoom_Repository.ResponseModels.RoomType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +20,8 @@ namespace ClassBookingRoom_Repository.ResponseModels.Room
         public string? Status { get; set; }
         public string Picture { get; set; } = string.Empty;
         public int? RoomTypeId { get; set; }
-        public string RoomTypeName { get; set; } = string.Empty;
+        public RoomTypeResponseModel? RoomType { get; set; }
         public ICollection<SlotsForRoomResponseModel> RoomSlots { get; set; } = [];
+        public int NumOfPendingBooking { get; set; } = 0;
     }
 }

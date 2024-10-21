@@ -14,6 +14,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Report
         public string? Title { get; set; }
         public string? Description { get; set; }
         public int RoomId { get; set; }
+        public string RoomName { get; set; } = string.Empty;
         public Guid StudentId { get; set; }
         public string StudentFullName { get; set; } = string.Empty;
         public string StudentEmail { get; set; } = string.Empty;

@@ -17,6 +17,7 @@ namespace ClassBookingRoom_Service.Mappers
             {        
                 Id = model.Id,
                 Name = model.Name,
+                Code = model.Code,
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
@@ -30,17 +31,19 @@ namespace ClassBookingRoom_Service.Mappers
             return new Activity
             {
                 Name = dto.Name,
+                Code = dto.Code,
                 DepartmentId = dto.DepartmentId,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
-        public static ActivityShortResponseModel ToActivityShortDTO(this Activity activity)
+        public static ActivityShortResponseModel ToActivityShortDTO(this Activity model)
         {
             return new ActivityShortResponseModel()
             {
-                Id = activity.Id,
-                Name = activity.Name ?? "",
+                Id = model.Id,
+                Name = model.Name,
+                Code = model.Code,
             };
         }
     }

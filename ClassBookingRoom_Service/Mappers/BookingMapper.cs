@@ -6,6 +6,7 @@ using ClassBookingRoom_Repository.RequestModels.Booking;
 using ClassBookingRoom_Repository.RequestModels.Cohort;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Cohort;
+using ClassBookingRoom_Service.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,12 @@ namespace ClassBookingRoom_Service.Mappers
                 DeletedAt = model.DeletedAt,
                 CreatedAt = model.CreatedAt,
                 StudentFullName = model.CreateBy?.FullName ?? "",
+                ActivityCode = model.Activity?.Code ?? "",
+                ActivityName = model.Activity?.Name ?? "",
+                DepartmentId = model.CreateBy?.DepartmentId,
+                DepartmentName = model.CreateBy?.Department?.Name ?? "",
                 RoomSlots = room,
+                Code = model.Code,
             };
         }
         public static async Task<Booking> ToBookingFromCreate(this CreateBookingRequestModel dto, IRoomSlotRepo roomSlotRepo)
@@ -39,13 +45,14 @@ namespace ClassBookingRoom_Service.Mappers
             var slots = await roomSlotRepo.GetRoomSlotsByIdsAsync(dto.RoomSlots);
             return new Booking
             {
+                Code = CodeGeneratetor.GenerateBookingCode(),
                 Status = dto.Status,
                 ActivityId = dto.ActivityId,
                 Description = dto.Description,
                 RoomSlots = slots,
                 UserId = dto.UserId,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             };
         }
         public static async Task<Booking> ToBookingFromUpdate(this UpdateBookingRequestModel dto, int id, IRoomSlotRepo roomSlotRepo)

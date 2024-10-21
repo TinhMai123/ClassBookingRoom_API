@@ -2,6 +2,7 @@
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Department;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
 using ClassBookingRoom_Repository.ResponseModels.Department;
 using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
@@ -17,11 +18,13 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IBaseRepository<Department> _baseRepo;
         private readonly IDepartmentRepo _repo;
+        private readonly IActivityRepo _activityRepo;
 
-        public DepartmentService(IBaseRepository<Department> baseRepo, IDepartmentRepo repo)
+        public DepartmentService(IBaseRepository<Department> baseRepo, IDepartmentRepo repo, IActivityRepo activityRepo)
         {
             _baseRepo = baseRepo;
             _repo = repo;
+            _activityRepo = activityRepo;
         }
 
         public Task<bool> Create(CreateDepartmentRequestModel dto)
@@ -32,6 +35,12 @@ namespace ClassBookingRoom_Service.Services
         public Task<bool> Delete(int id)
         {
             return _baseRepo.DeleteAsync(id);
+        }
+
+        public async Task<List<ActivityResponseModel>> GetActivitiesByDepartmentId(int departmentId)
+        {
+            var activities =  await _activityRepo.GetActivitiesByDepartmentId(departmentId);
+            return activities.Select(a => a.ToAcivityDTO()).ToList();
         }
 
         public async Task<List<DepartmentResponseModel>> GetAll()

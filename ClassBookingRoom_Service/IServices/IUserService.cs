@@ -17,15 +17,19 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> DeleteUserAsync(Guid id);
         Task<GetUserTypeResponseModel?> GetUserTypeByEmailAsync(string email);
         Task<User?> GetUserByEmailAsync(string email);
-        Task<UserDetailResponseModel?> GetUserDetailByEmailAsync(string email);
+        Task<UserResponseModel?> GetUserDetailByEmailAsync(string email);
         Task<string?> LoginGoogle(FirebaseToken token, string role);
         Task<string?> Login(LoginRequestModel request);
         Task<List<UserResponseModel>> GetAllUser();
         Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query);
-        Task<UserDetailResponseModel?> GetById(Guid id);
+        Task<UserResponseModel?> GetById(Guid id);
         Task<bool> UpdateUser(Guid id, UpdateUserRequestModel dto);
         Task<bool> UpdateUser(Guid id, UpdateUserShortRequestModel dto);
         Task<bool> UpdateUser(Guid id, string Status);
         Task<bool> UpdateUserAsync(User user);
+        Task<bool> VerifyUser(Guid id, string verifyToken);
+        Task<bool> UpdateVerifyToken(Guid id, string verifyToken);
+        Task<bool> Deactiviate(Guid id, string note);
+
     }
 }

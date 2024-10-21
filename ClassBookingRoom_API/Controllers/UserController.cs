@@ -1,6 +1,9 @@
-﻿using ClassBookingRoom_Repository.RequestModels.User;
+﻿using ClassBookingRoom_Repository.RequestModels.FaceDescriptor;
+using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassBookingRoom_API.Controllers
@@ -10,13 +13,14 @@ namespace ClassBookingRoom_API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UserController(IUserService userService)
+        private readonly IFaceDescriptorService _faceDescriptorService;
+        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService)
         {
             _userService = userService;
+            _faceDescriptorService = faceDescriptorService;
         }
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult<UserDetailResponseModel>> GetById([FromRoute] Guid id)
+        public async Task<ActionResult<UserResponseModel>> GetById([FromRoute] Guid id)
         {
             var users = await _userService.GetById(id);
             return Ok(users);
@@ -34,7 +38,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpGet("by-email")]
-        public async Task<ActionResult<UserDetailResponseModel>> GetUserTypeByEmail(string email)
+        public async Task<ActionResult<UserResponseModel>> GetUserTypeByEmail(string email)
         {
             try
             {
@@ -51,8 +55,8 @@ namespace ClassBookingRoom_API.Controllers
                 return Ok("Add user succesfully");
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(Guid id)
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteUser([FromRoute]Guid id)
         {
             try
             {
@@ -65,7 +69,7 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult<List<UserDetailResponseModel>>> SearchUser([FromQuery]SearchUserQuery query)
+        public async Task<ActionResult<List<UserResponseModel>>> SearchUser([FromQuery] SearchUserQuery query)
         {
             var (users, totalCount) = await _userService.SearchUser(query);
             var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
@@ -74,27 +78,25 @@ namespace ClassBookingRoom_API.Controllers
             Response.Headers.Append("X-Total-Pages", totalPages.ToString());
             return Ok(users);
         }
-        [HttpPut("{id}/department-cohort")]
+        [HttpPut("{id:Guid}/department-cohort")]
         public async Task<IActionResult> UpdateDepartmentAndCohort([FromRoute] Guid id, [FromBody] UpdateUserShortRequestModel dto)
         {
-            try {
+            try
+            {
                 var result = await _userService.UpdateUser(id, dto);
                 if (result)
                 {
                     return Ok();
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            catch(Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
         }
-        [HttpPut("{id}/status")]
+        [HttpPut("{id:Guid}/status")]
         public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, string Status)
         {
             try
@@ -103,15 +105,109 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok();
-                }
-                else
+                } else
                 {
                     return BadRequest();
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+
+        }
+
+        [HttpPut("{id:int}/deactivate")]
+        public async Task<ActionResult> DenyBooking([FromRoute] Guid id, [FromBody] string note)
+        {
+            try
+            {
+                var result = await _userService.Deactiviate(id, note);
+                if (result)
+                {
+                    return Ok("User deativated successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        // FACE DESCRIPTOR
+        [HttpGet("face")]
+        public async Task<ActionResult<List<FaceDescriptorResponseModel>>> GetAll()
+        {
+            var faceDescriptors = await _faceDescriptorService.GetAll();
+            return Ok(faceDescriptors);
+        }
+
+        [HttpGet("face/{id:int}")]
+        public async Task<ActionResult<FaceDescriptorResponseModel>> GetById(int id)
+        {
+            var faceDescriptor = await _faceDescriptorService.GetById(id);
+            if (faceDescriptor == null)
+            {
+                return NotFound();
+            }
+            return Ok(faceDescriptor);
+        }
+
+        [HttpGet("{userId:Guid}/face")]
+        public async Task<ActionResult<FaceDescriptorResponseModel>> GetByUserId(Guid userId)
+        {
+            var faceDescriptor = await _faceDescriptorService.GetByUserId(userId);
+            if (faceDescriptor == null)
+            {
+                return NotFound();
+            }
+            return Ok(faceDescriptor);
+        }
+
+        [HttpPost("face")]
+        public async Task<ActionResult> Add([FromQuery] CreateFaceDescriptorRequestModel faceDescriptor)
+        {
+            try
+            {
+                await _faceDescriptorService.AddAsync(faceDescriptor);
+                return Ok("Added successfully");
+            } catch (Exception ex) { return BadRequest(ex.Message); }
+
+        }
+
+        [HttpPut("face/{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromQuery] UpdateFaceDescriptorRequestModel faceDescriptor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingFaceDescriptor = await _faceDescriptorService.GetById(id);
+            if (existingFaceDescriptor == null)
+            {
+                return NotFound();
+            }
+
+            await _faceDescriptorService.UpdateAsync(faceDescriptor);
+            return NoContent();
+        }
+
+        [HttpDelete("face/{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var faceDescriptor = await _faceDescriptorService.GetById(id);
+                if (faceDescriptor == null)
+                {
+                    return NotFound();
+                }
+
+                await _faceDescriptorService.DeleteAsync(id);
+                return Ok("Delete Successfully");
+            } catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
         }

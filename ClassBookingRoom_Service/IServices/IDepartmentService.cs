@@ -1,4 +1,5 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.Department;
+using ClassBookingRoom_Repository.ResponseModels.Activity;
 using ClassBookingRoom_Repository.ResponseModels.Department;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<DepartmentResponseModel?> GetById(int id);
         Task<List<DepartmentResponseModel>> GetAll();
         Task<bool> Update(int id, UpdateDepartmentRequestModel dto);
+        Task<List<ActivityResponseModel>> GetActivitiesByDepartmentId(int departmentId);
     }
 }

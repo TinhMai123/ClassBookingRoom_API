@@ -23,7 +23,7 @@ namespace ClassBookingRoom_Service.Services
         private readonly IBaseRepository<Activity> _baseActivityRepo;
         private readonly IBaseRepository<Cohort> _baseCohortRepo;
 
-        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo, 
+        public RoomTypeService(IRoomTypeRepo repo, IBaseRepository<RoomType> baseRepo,
             IBaseRepository<Activity> baseActivityRepo, IBaseRepository<Cohort> baseCohortRepo)
         {
             _repo = repo;
@@ -52,7 +52,7 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<List<RoomTypeResponseModel>> GetRoomTypes()
         {
-            var rooms =await _baseRepo.GetAllAsync();
+            var rooms = await _baseRepo.GetAllAsync();
             return rooms.Select(x => x.ToRoomTypeDTO()).ToList();
         }
 
@@ -77,11 +77,11 @@ namespace ClassBookingRoom_Service.Services
             }
             if (!string.IsNullOrWhiteSpace(query.CohortCode))
             {
-                result = result.Where(c => c.AllowedCohorts.Select(c=>c.CohortCode).Contains(query.CohortCode));
+                result = result.Where(c => c.AllowedCohorts.Select(c => c.CohortCode).Contains(query.CohortCode));
             }
             if (!string.IsNullOrWhiteSpace(query.ActivityName))
             {
-                result = result.Where(c => c.Activities.Select(c=>c.Name).Contains(query.ActivityName));
+                result = result.Where(c => c.Activities.Select(c => c.Name).Contains(query.ActivityName));
             }
 
             var totalCount = result.Count();
@@ -109,24 +109,66 @@ namespace ClassBookingRoom_Service.Services
             }
             await _baseRepo.UpdateAsync(roomType);
         }
-        public async Task AddNewRoomTypeAttribute(RoomTypeAttributeRequestModel model)
+        public async Task RemoveCohort(int id, int cohortId)
         {
-            var roomType = await _repo.GetRoomTypeByIdWithAttribute(model.RoomTypeId);
+            var roomType = await _baseRepo.GetByIdAsync(id);
+            if (roomType == null)
+            {
+                throw new Exception("RoomType not found");
+            }
+            var cohort = roomType.AllowedCohorts.FirstOrDefault(c => c.Id == cohortId);
+            if (cohort != null)
+            {
+                roomType.AllowedCohorts.Remove(cohort);
+            }
+            await _baseRepo.UpdateAsync(roomType);
+        }
+
+        public async Task RemoveActivity(int id, int activityId)
+        {
+            var roomType = await _baseRepo.GetByIdAsync(id);
+            if (roomType == null)
+            {
+                throw new Exception("RoomType not found");
+            }
+
+            var activity = roomType.Activities.FirstOrDefault(a => a.Id == activityId);
+            if (activity != null)
+            {
+                roomType.Activities.Remove(activity);
+            }
+            await _baseRepo.UpdateAsync(roomType);
+        }
+
+        public async Task AddCohort(int id, int cohortId)
+        {
+            var roomType = await _repo.GetRoomTypeById(id);
 
             if (roomType == null)
             {
                 throw new Exception("RoomType not found");
             }
 
-            if (!roomType.AllowedCohorts.Any(c => c.Id == model.CohortId))
+            if (!roomType.AllowedCohorts.Any(c => c.Id == cohortId))
             {
-                var cohort = new Cohort { Id = model.CohortId };
+                var cohort = new Cohort { Id = cohortId };
                 _baseCohortRepo.AttachEntity(cohort);
                 roomType.AllowedCohorts.Add(cohort);
             }
-            if (!roomType.Activities.Any(a => a.Id == model.ActivityId))
+            await _baseRepo.UpdateAsync(roomType);
+        }
+
+        public async Task AddActivity(int id, int activityId)
+        {
+            var roomType = await _repo.GetRoomTypeById(id);
+
+            if (roomType == null)
             {
-                var activity = new Activity { Id = model.ActivityId };
+                throw new Exception("RoomType not found");
+            }
+            if (!roomType.Activities.Any(a => a.Id == activityId))
+            {
+                var activity = new Activity { Id = activityId };
                 _baseActivityRepo.AttachEntity(activity);
                 roomType.Activities.Add(activity);
             }
