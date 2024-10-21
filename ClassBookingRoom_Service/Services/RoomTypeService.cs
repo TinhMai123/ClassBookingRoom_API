@@ -46,13 +46,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<RoomTypeResponseModel?> GetRoomType(int id)
         {
-            var roomType = await _baseRepo.GetByIdAsync(id);
+            var roomType = await _repo.GetRoomTypeById(id);
             return roomType?.ToRoomTypeDTO();
         }
 
         public async Task<List<RoomTypeResponseModel>> GetRoomTypes()
         {
-            var rooms = await _baseRepo.GetAllAsync();
+            var rooms = await _repo.GetRoomTypes();
             return rooms.Select(x => x.ToRoomTypeDTO()).ToList();
         }
 
@@ -69,7 +69,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<(List<RoomTypeResponseModel>, int)> SearchRoomType(SearchRoomTypeQuery query)
         {
-            var modelList = await _baseRepo.GetAllAsync();
+            var modelList = await _repo.GetRoomTypes();
             var result = modelList.AsQueryable();
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
@@ -148,13 +148,12 @@ namespace ClassBookingRoom_Service.Services
             {
                 throw new Exception("RoomType not found");
             }
-
-            if (!roomType.AllowedCohorts.Any(c => c.Id == cohortId))
+            var cohort = await _baseCohortRepo.GetByIdAsync(cohortId);
+            if (cohort == null)
             {
-                var cohort = new Cohort { Id = cohortId };
-                _baseCohortRepo.AttachEntity(cohort);
-                roomType.AllowedCohorts.Add(cohort);
+                throw new Exception("Cohort not found");
             }
+            roomType.AllowedCohorts.Add(cohort);
             await _baseRepo.UpdateAsync(roomType);
         }
 
@@ -166,12 +165,12 @@ namespace ClassBookingRoom_Service.Services
             {
                 throw new Exception("RoomType not found");
             }
-            if (!roomType.Activities.Any(a => a.Id == activityId))
+            var activity = await _baseActivityRepo.GetByIdAsync(activityId);
+            if (activity == null)
             {
-                var activity = new Activity { Id = activityId };
-                _baseActivityRepo.AttachEntity(activity);
-                roomType.Activities.Add(activity);
+                throw new Exception("Activity not found");
             }
+            roomType.Activities.Add(activity);
             await _baseRepo.UpdateAsync(roomType);
         }
     }

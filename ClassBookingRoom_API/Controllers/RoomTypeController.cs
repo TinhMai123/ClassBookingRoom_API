@@ -85,7 +85,7 @@ namespace ClassBookingRoom_API.Controllers
             return Ok(roomTypes);
         }
         [HttpDelete("{id:int}/cohort")]
-        public async Task<ActionResult> RemoveRoomTypeCohort([FromRoute]int id, [FromBody]int cohortId)
+        public async Task<ActionResult> RemoveRoomTypeCohort([FromRoute]int id, [FromQuery] int cohortId)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace ClassBookingRoom_API.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpDelete("{id:int}/activity")]
-        public async Task<ActionResult> RemoveRoomTypeActivity([FromRoute] int id, [FromBody] int activityId)
+        public async Task<ActionResult> RemoveRoomTypeActivity([FromRoute] int id, [FromQuery] int activityId)
         {
             try
             {
