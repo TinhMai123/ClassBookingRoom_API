@@ -28,6 +28,7 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomId = model.RoomId,
                 Status = model.Status,
                 RoomName = model.Room?.RoomName ?? "",
+                Response = model.Response
             };
         }
         public static Report CreateReportFromDTO(this CreateReportRequestModel dto)
