@@ -96,32 +96,13 @@ namespace ClassBookingRoom_API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         [HttpPut("{id:Guid}/status")]
-        public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, string Status)
+        public async Task<ActionResult> DenyBooking([FromRoute] Guid id, [FromBody] UpdateUserStatusRequest request)
         {
             try
             {
-                var result = await _userService.UpdateUser(id, Status);
-                if (result)
-                {
-                    return Ok();
-                } else
-                {
-                    return BadRequest();
-                }
-            } catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-
-        }
-
-        [HttpPut("{id:Guid}/deactivate")]
-        public async Task<ActionResult> DenyBooking([FromRoute] Guid id, [FromBody] string note)
-        {
-            try
-            {
-                var result = await _userService.Deactiviate(id, note);
+                var result = await _userService.UpdateUserStatus(id, request);
                 if (result)
                 {
                     return Ok("User deativated successfully");

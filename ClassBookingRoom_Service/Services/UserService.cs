@@ -282,15 +282,15 @@ namespace ClassBookingRoom_Service.Services
 
         }
 
-        public async Task<bool> Deactiviate(Guid id, string note)
+        public async Task<bool> UpdateUserStatus(Guid id, UpdateUserStatusRequest request)
         {
             var user = await _baseRepo.GetByIdAsync(id);
             if (user == null)
             {
                 throw new Exception("User not found");
             }
-            user.Status = "Inactive";
-            user.Note = note;
+            user.Status = request.Status;
+            user.Note = request.Note;
             user.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(user);
         }
