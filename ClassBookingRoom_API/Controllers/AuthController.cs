@@ -192,7 +192,7 @@ namespace ClassBookingRoom_API.Controllers
                 var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(request.AccessToken);
                 var jwtToken = await _userService.LoginGoogle(decodedToken, request.Role);
                 return Ok(jwtToken);
-            } catch (FirebaseAuthException ex)
+            } catch (Exception ex)
             {
                 return Unauthorized(new { error = ex.Message });
             }
