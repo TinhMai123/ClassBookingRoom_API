@@ -11,5 +11,6 @@ namespace ClassBookingRoom_Repository.IRepos
     public interface IFaceDescriptorRepo
     {
         Task<FaceDescriptor?> GetByUserId(Guid userId);
+        Task<IEnumerable<FaceDescriptor>> GetAllFaceDescriptors();
     }
 }

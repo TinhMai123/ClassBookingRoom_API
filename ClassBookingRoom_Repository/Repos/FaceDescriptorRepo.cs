@@ -17,6 +17,11 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
+        public async Task<IEnumerable<FaceDescriptor>> GetAllFaceDescriptors()
+        {
+            return await _context.FaceDescriptors.Include(f => f.User).ToListAsync();
+        }
+
         public async Task<FaceDescriptor?> GetByUserId(Guid userId)
         {
             return await _context.FaceDescriptors.SingleOrDefaultAsync(x => x.UserId == userId);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.ResponseModels.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.FaceDescriptor
         public Guid? UserId { get; set; }
         public IList<double> Descriptor { get; set; } = [];
         public string ImageURL { get; set; } = string.Empty;
+        public UserResponseModel? User { get; set; }
     }
 }
