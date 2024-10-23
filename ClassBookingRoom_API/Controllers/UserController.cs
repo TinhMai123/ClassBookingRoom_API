@@ -116,7 +116,7 @@ namespace ClassBookingRoom_API.Controllers
 
         }
 
-        [HttpPut("{id:int}/deactivate")]
+        [HttpPut("{id:Guid}/deactivate")]
         public async Task<ActionResult> DenyBooking([FromRoute] Guid id, [FromBody] string note)
         {
             try
