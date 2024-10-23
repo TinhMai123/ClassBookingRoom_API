@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ClassBookingRoom_Service.Helpers
 {
-    public class EmailVerificationHelper
+    public class EmailHelper
     {
         public static string GenerateVerificationToken(string email)
         {
@@ -17,6 +17,16 @@ namespace ClassBookingRoom_Service.Helpers
                     .Replace("/", "")
                     .Replace("=", "");
             }
+        }
+        public static bool IsCompanyEmail(string email, string companyDomain)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+
+            email = email.ToLower();
+            return email.EndsWith("@" + companyDomain.ToLower());
         }
     }
 }

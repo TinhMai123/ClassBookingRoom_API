@@ -89,6 +89,10 @@ namespace ClassBookingRoom_Service.Services
                 var user = await _repo.GetUserByEmail(request.Email);
                 if (user == null)
                     throw new Exception("User is not found");
+                if (user.Status == "Inactive")
+                {
+                    throw new Exception("User is suspended.");
+                }
                 if (!request.Password.Equals(user.Password))
                     throw new Exception("Invalid password");
                 var token = CreateToken(user);
@@ -109,6 +113,8 @@ namespace ClassBookingRoom_Service.Services
                     var user = await _repo.GetUserByEmail(email.ToString()!);
                     if (user == null)
                     {
+                        //CREATE NEW USER
+                        bool isVerify = (role == "Student" && EmailHelper.IsCompanyEmail(email.ToString(), "fpt.edu.vn"));
                         string fullName = claims.GetValueOrDefault("name")!.ToString()!;
                         var newUser = new User
                         {
@@ -118,6 +124,7 @@ namespace ClassBookingRoom_Service.Services
                             Password = claims.GetValueOrDefault("user_id")!.ToString()!,
                             Role = role,
                             Status = "Active",
+                            IsVerify = isVerify
                         };
                         var result = await _baseRepo.AddAsync(newUser);
                         var loginRequest = new LoginRequestModel()
