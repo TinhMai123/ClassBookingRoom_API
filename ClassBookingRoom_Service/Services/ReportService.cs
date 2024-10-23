@@ -81,6 +81,12 @@ namespace ClassBookingRoom_Service.Services
             report.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(report);
         }
+
+        public async Task<IEnumerable<ReportResponseModel>> GetReportsByUserId(Guid userId)
+        {
+            var list = await _reportRepo.GetReports();
+            return list.Where(x => x.CreatorId == userId).Select(x => x.ToReportDTO()).ToList();
+        }
     }
 
 }

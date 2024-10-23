@@ -14,6 +14,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> DeleteAsync(int id);
         Task<ReportResponseModel?> GetById(int id);
         Task<List<ReportResponseModel>> GetAll();
+        Task<IEnumerable<ReportResponseModel>> GetReportsByUserId(Guid userId);
         Task<bool> UpdateAsync(int id,UpdateReportRequestModel update);
         Task<bool> AcceptReport(int id);
         Task<bool> DenyReport(int id, string response);
