@@ -31,7 +31,8 @@ namespace ClassBookingRoom_Service.Mappers
                 IsVerify = model.IsVerify,
                 IsDeleted = model.IsDeleted,
                 CohortCode = model.Cohort?.CohortCode ?? "",
-                DepartmentName = model.Department?.Name ?? ""
+                DepartmentName = model.Department?.Name ?? "",
+                Note = model.Note,
             };
         }
 
