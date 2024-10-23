@@ -159,7 +159,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPost("face")]
-        public async Task<ActionResult> Add([FromQuery] CreateFaceDescriptorRequestModel faceDescriptor)
+        public async Task<ActionResult> Add([FromBody] CreateFaceDescriptorRequestModel faceDescriptor)
         {
             try
             {
@@ -170,7 +170,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("face/{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromQuery] UpdateFaceDescriptorRequestModel faceDescriptor)
+        public async Task<ActionResult> Update(int id, [FromBody] UpdateFaceDescriptorRequestModel faceDescriptor)
         {
             if (!ModelState.IsValid)
             {
