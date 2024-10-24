@@ -61,7 +61,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<(List<BookingResponseModel>, int totalCount)> SearchBookQuery(SearchBookHistoryQuery query)
         {
-            var modelRepo = await _baseRepo.GetAllAsync();
+            var modelRepo = await _repo.GetBookings();
             var result = modelRepo.AsQueryable();
             if (query.StartTime is not null)
             {

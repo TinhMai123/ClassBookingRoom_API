@@ -20,7 +20,8 @@ namespace ClassBookingRoom_Service.Mappers
     {
         public static BookingResponseModel ToBookingDTO(this Booking model)
         {
-            var room = model.RoomSlots?.Select(c=>c.ToRoomSlotShortResponseDTO()).ToList();
+            var slots = model.RoomSlots?.Select(c => c.ToRoomSlotShortResponseDTO()).ToList();
+            var room = model.RoomSlots.First().Room;
             return new BookingResponseModel
             {
                 Id = model.Id,
@@ -32,11 +33,14 @@ namespace ClassBookingRoom_Service.Mappers
                 DeletedAt = model.DeletedAt,
                 CreatedAt = model.CreatedAt,
                 StudentFullName = model.CreateBy?.FullName ?? "",
+                CohortCode = model.CreateBy?.Cohort?.CohortCode ?? "",
                 ActivityCode = model.Activity?.Code ?? "",
                 ActivityName = model.Activity?.Name ?? "",
                 DepartmentId = model.CreateBy?.DepartmentId,
                 DepartmentName = model.CreateBy?.Department?.Name ?? "",
-                RoomSlots = room,
+                RoomSlots = slots,
+                RoomId = room.Id,
+                RoomName = room.RoomName,
                 Code = model.Code,
             };
         }

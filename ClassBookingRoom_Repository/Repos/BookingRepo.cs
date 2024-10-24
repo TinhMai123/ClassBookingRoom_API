@@ -21,8 +21,10 @@ namespace ClassBookingRoom_Repository.Repos
             return await _context.Bookings
                 .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
-                .ThenInclude(u => u.Department)
+                .Include(b => b.CreateBy.Department)
+                .Include(b => b.CreateBy.Cohort)
                 .Include(b => b.RoomSlots)
+                .ThenInclude(s => s.Room)
                 .Include(b => b.Activity)
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
@@ -32,8 +34,10 @@ namespace ClassBookingRoom_Repository.Repos
             return await _context.Bookings
                 .Where(c => c.IsDeleted == false)
                 .Include(b => b.CreateBy)
-                .ThenInclude(u => u.Department)
+                .Include(b => b.CreateBy.Department)
+                .Include(b => b.CreateBy.Cohort)
                 .Include(b => b.RoomSlots)
+                .ThenInclude(s => s.Room)
                 .Include(b => b.Activity)
                 .ToListAsync();
         }
