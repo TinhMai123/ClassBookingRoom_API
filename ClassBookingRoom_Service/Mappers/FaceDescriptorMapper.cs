@@ -28,7 +28,7 @@ namespace ClassBookingRoom_Service.Mappers
                 UserId = model.UserId,
                 ImageURL = model.ImageURL,
                 Descriptor = model.Descriptor,
-                User = model.User.ToUserDTO()
+                User = model.User?.ToUserDTO()
             };
         }
         public static FaceDescriptor ToUpdateFaceDescriptor(this UpdateFaceDescriptorRequestModel dto)

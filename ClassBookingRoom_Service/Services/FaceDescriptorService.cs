@@ -36,13 +36,13 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<List<FaceDescriptorResponseModel>> GetAll()
         {
-           var list = await _repo.GetAllFaceDescriptors();
-            return list.Select(c=>c.ToFaceDescriptorDTO()).ToList();
+            var list = await _repo.GetAllFaceDescriptors();
+            return list.Select(c => c.ToFaceDescriptorDTO()).ToList();
         }
 
         public async Task<FaceDescriptorResponseModel?> GetById(int id)
         {
-           var model = await _baseRepo.GetByIdAsync(id);
+            var model = await _baseRepo.GetByIdAsync(id);
             return model?.ToFaceDescriptorDTO() ?? null;
         }
 
