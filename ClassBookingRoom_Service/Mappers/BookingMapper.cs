@@ -33,6 +33,7 @@ namespace ClassBookingRoom_Service.Mappers
                 DeletedAt = model.DeletedAt,
                 CreatedAt = model.CreatedAt,
                 StudentFullName = model.CreateBy?.FullName ?? "",
+                StudentEmail = model.CreateBy?.Email ?? "",
                 CohortCode = model.CreateBy?.Cohort?.CohortCode ?? "",
                 ActivityCode = model.Activity?.Code ?? "",
                 ActivityName = model.Activity?.Name ?? "",
