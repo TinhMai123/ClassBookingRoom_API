@@ -1,5 +1,6 @@
 ﻿using ClassBookingRoom_Repository.RequestModels.FaceDescriptor;
 using ClassBookingRoom_Repository.RequestModels.User;
+using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.User;
@@ -16,11 +17,13 @@ namespace ClassBookingRoom_API.Controllers
         private readonly IUserService _userService;
         private readonly IReportService _reportService;
         private readonly IFaceDescriptorService _faceDescriptorService;
-        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService, IReportService reportService)
+        private readonly IBookingService _bookingService;
+        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService, IReportService reportService, IBookingService bookingService)
         {
             _userService = userService;
             _faceDescriptorService = faceDescriptorService;
             _reportService = reportService;
+            _bookingService = bookingService;
         }
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<UserResponseModel>> GetById([FromRoute] Guid id)
@@ -128,6 +131,20 @@ namespace ClassBookingRoom_API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("{id:Guid}/bookings")]
+        public async Task<ActionResult<IEnumerable<BookingResponseModel>>> GetBookingsByUserId([FromRoute] Guid id)
+        {
+            try
+            {
+                var result = await _bookingService.GetBookingsByUserId(id);
+                return Ok(result);
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // FACE DESCRIPTOR
         [HttpGet("face")]
         public async Task<ActionResult<List<FaceDescriptorResponseModel>>> GetAll()

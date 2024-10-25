@@ -48,7 +48,11 @@ namespace ClassBookingRoom_Service.Services
             var result = await _repo.GetBookings();
             return result.Select(x => x.ToBookingDTO()).ToList();
         }
-
+        public async Task<List<BookingResponseModel>> GetBookingsByUserId(Guid userId)
+        {
+            var result = await _repo.GetBookings();
+            return result.Where(b => b.CreateBy.Id == userId).Select(x => x.ToBookingDTO()).ToList();
+        }
         public async Task<bool> UpdateBookingAsync(int id, UpdateBookingRequestModel update)
         {
             /*            var result = await _baseRepo.GetByIdAsync(id);
