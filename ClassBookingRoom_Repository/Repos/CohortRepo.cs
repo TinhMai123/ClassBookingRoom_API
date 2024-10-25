@@ -1,6 +1,7 @@
 ﻿using ClassBookingRoom_Repository.Data;
 using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
-        public Task<Cohort> GetCohortByCode(string code)
+        public async Task<Cohort?> GetCohortByCode(string code)
         {
-            throw new NotImplementedException();
+            return await _context.Cohorts.SingleOrDefaultAsync(c => c.CohortCode.ToLower().Equals(code.ToLower()));
         }
 
     }

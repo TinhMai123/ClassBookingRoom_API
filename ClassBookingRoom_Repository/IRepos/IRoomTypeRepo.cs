@@ -9,7 +9,7 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface IRoomTypeRepo
     {
-        Task<RoomType> GetRoomTypeByName(string name);
+        Task<RoomType?> GetRoomTypeByName(string name);
         Task<RoomType?> GetRoomTypeById(int id);
         Task<List<RoomType>> GetRoomTypes();
     }

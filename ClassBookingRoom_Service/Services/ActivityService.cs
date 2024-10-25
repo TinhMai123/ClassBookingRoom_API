@@ -1,15 +1,9 @@
-﻿using ClassBookingRoom_Repository.IRepos;
-using ClassBookingRoom_Repository;
-using ClassBookingRoom_Service.IServices;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ClassBookingRoom_Repository;
+using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.Models;
 using ClassBookingRoom_Repository.RequestModels.Activity;
 using ClassBookingRoom_Repository.ResponseModels.Activity;
+using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
 
 namespace ClassBookingRoom_Service.Services
@@ -27,7 +21,10 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<bool> CreateAsync(CreateActivityRequestModel add)
         {
-            return await _baseRepo.AddAsync(add.ToActivityFromCreate());
+            var activity = await _repo.GetActivityByCode(add.Code);
+            if
+                (activity == null) { return await _baseRepo.AddAsync(add.ToActivityFromCreate()); }
+            return false;
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -49,8 +46,9 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<bool> UpdateAsync(int id, UpdateActivityRequestModel update)
         {
-            var activity =await _baseRepo.GetByIdAsync(id);
-            if (activity is null) { return false; }
+            var activity = await _baseRepo.GetByIdAsync(id);
+            var code = await _repo.GetActivityByCode(update.Code);
+            if (activity is null || code != null) { return false; }
             activity.Name = update.Name;
             activity.Code = update.Code;
             activity.UpdatedAt = DateTime.UtcNow;

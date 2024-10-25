@@ -27,14 +27,16 @@ namespace ClassBookingRoom_Service.Services
             _activityRepo = activityRepo;
         }
 
-        public Task<bool> Create(CreateDepartmentRequestModel dto)
+        public async Task<bool> Create(CreateDepartmentRequestModel dto)
         {
-            return _baseRepo.AddAsync(dto.ToDepartmentFromCreate());
+            var check = await _repo.GetDepartmentByName(dto.Name);
+            if(check == null) { return await _baseRepo.AddAsync(dto.ToDepartmentFromCreate()); }
+            return false;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            return _baseRepo.DeleteAsync(id);
+            return await _baseRepo.DeleteAsync(id);
         }
 
         public async Task<List<ActivityResponseModel>> GetActivitiesByDepartmentId(int departmentId)
@@ -58,7 +60,8 @@ namespace ClassBookingRoom_Service.Services
         public async Task<bool> Update(int id, UpdateDepartmentRequestModel dto)
         {
             var department = await _baseRepo.GetByIdAsync(id);
-            if (department == null)
+            var name = await _repo.GetDepartmentByName(dto.Name);
+            if (department == null || name !=null)
             {
                 return false;
             }

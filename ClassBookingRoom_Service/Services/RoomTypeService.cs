@@ -34,7 +34,9 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<bool> AddRoomTypeAsync(CreateRoomTypeRequestModel dto)
         {
-            return await _baseRepo.AddAsync(dto.ToRoomTypeFromCreate());
+            var check = _repo.GetRoomTypeByName(dto.Name);
+            if(check == null) { return await _baseRepo.AddAsync(dto.ToRoomTypeFromCreate()); }
+            return false;
         }
 
         public async Task<bool> DeleteRoomTypeAsync(int id)
@@ -59,7 +61,8 @@ namespace ClassBookingRoom_Service.Services
         public async Task<bool> UpdateRoomTypeAsync(int id, UpdateRoomTypeRequestModel update)
         {
             var roomType = await _baseRepo.GetByIdAsync(id);
-            if (roomType is null)
+            var check = await _repo.GetRoomTypeByName(update.Name);
+            if (roomType is null || check != null)
             {
                 return false;
             }
