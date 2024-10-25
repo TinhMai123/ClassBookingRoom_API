@@ -57,6 +57,7 @@ namespace ClassBookingRoom_Service.Mappers
                 Description = dto.Description,
                 RoomSlots = slots,
                 UserId = dto.UserId,
+                BookingDate = dto.BookingDate,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
