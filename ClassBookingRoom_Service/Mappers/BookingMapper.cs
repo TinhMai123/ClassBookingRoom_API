@@ -43,6 +43,7 @@ namespace ClassBookingRoom_Service.Mappers
                 RoomId = room.Id,
                 RoomName = room.RoomName,
                 Code = model.Code,
+                BookingDate = model.BookingDate,
             };
         }
         public static async Task<Booking> ToBookingFromCreate(this CreateBookingRequestModel dto, IRoomSlotRepo roomSlotRepo)

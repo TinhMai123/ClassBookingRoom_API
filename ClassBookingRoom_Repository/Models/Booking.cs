@@ -18,6 +18,7 @@ namespace ClassBookingRoom_Repository.Models
         public User? CreateBy { get; set; }
         public string Description { get; set; } = string.Empty;
         public string? Response { get; set; }
+        public DateTime BookingDate { get; set; } = DateTime.Now;
         public ICollection<RoomSlot>? RoomSlots { get; set; }
         public Activity? Activity { get; set; }
     }

@@ -27,6 +27,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Booking
         public string? Response { get; set; }
         public int RoomId { get; set; }
         public string RoomName { get; set; } = string.Empty;
+        public DateTime BookingDate { get; set; } = DateTime.Now;
         public ICollection<RoomSlotShortResponseModel>? RoomSlots { get; set; }
     }
 }
