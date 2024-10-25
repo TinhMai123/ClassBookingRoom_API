@@ -11,7 +11,7 @@ namespace ClassBookingRoom_Service.Helpers
         public static string GenerateBookingCode()
         {
             string prefix = "BOK";
-            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string timestamp = DateTime.Now.ToString("yyyyMMdd");
             Random random = new Random();
             int randomNumber = random.Next(1000, 9999);
             string orderCode = $"{prefix}-{timestamp}-{randomNumber}";

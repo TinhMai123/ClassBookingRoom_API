@@ -22,13 +22,15 @@ namespace ClassBookingRoom_Service.Services
     {
         private readonly IRoomRepo _repo;
         private readonly IReportRepo _reportRepo;
+        private readonly IBookingRepo _bookRepo;
         private readonly IBaseRepository<Room> _baseRepo;
 
-        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IReportRepo reportRepo)
+        public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IReportRepo reportRepo, IBookingRepo bookRepo)
         {
             _repo = repo;
             _baseRepo = baseRepo;
             _reportRepo = reportRepo;
+            _bookRepo = bookRepo;
         }
         public async Task<bool> AddRoomAsync(CreateRoomRequestModel dto)
         {
@@ -42,21 +44,8 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<List<BookingResponseModel>> GetBookingsByRoomId(int roomId)
         {
-            var room = await _repo.GetRoom(roomId);
-            var slots = room.RoomSlots?.Select(c => c.ToRoomSlotsFromRoomDTO()).ToList();
-            var bookings = new List<Booking>();
-            foreach (RoomSlot slot in room.RoomSlots)
-            {
-                foreach (Booking booking in slot.Bookings)
-                {
-                    if (bookings.FirstOrDefault(x => x.Id == booking.Id) is null)
-                    {
-                        bookings.Add(booking);
-                    }
-                }
-
-            }
-            return bookings.Select(booking => booking.ToBookingDTO()).ToList();
+            var bookings = await _bookRepo.GetBookings();
+            return bookings.Select(booking => booking.ToBookingDTO()).Where(b => b.RoomId == roomId).ToList();
         }
 
         public async Task<List<ReportResponseModel>> GetReportsByRoomId(int roomId)
