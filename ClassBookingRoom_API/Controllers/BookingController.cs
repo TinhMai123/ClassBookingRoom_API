@@ -7,6 +7,7 @@ using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ClassBookingRoom_API.Controllers
 {
@@ -16,12 +17,13 @@ namespace ClassBookingRoom_API.Controllers
     {
         private readonly IBookingModifyHistoryService _historyService;
         private readonly IBookingService _bookingService;
+        private readonly IUserService _userService;
 
-        public BookingController(IBookingService bookingService, IBookingModifyHistoryService historyService)
+        public BookingController(IBookingService bookingService, IBookingModifyHistoryService historyService, IUserService userService)
         {
             _bookingService = bookingService;
             _historyService = historyService;
-
+            _userService = userService;
         }
 
         [HttpGet("{id:int}")]
@@ -89,6 +91,54 @@ namespace ClassBookingRoom_API.Controllers
                 if (result)
                 {
                     return Ok("Booking accepted successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPut("{id:int}/cancel")]
+        public async Task<ActionResult> CancelBooking([FromRoute] int id)
+        {
+            Request.Headers.TryGetValue("Authorization", out var token);
+            token = token.ToString().Split()[1];
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return BadRequest("Authorization header is missing or invalid.");
+            }
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                return BadRequest("Token has expired.");
+            }
+            string? email = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (email is null)
+            {
+                return StatusCode(401);
+            }
+            var user = await _userService.GetUserDetailByEmailAsync(email);
+            if (user == null)
+            {
+                return BadRequest("email is in valid");
+            }
+
+            try
+            {
+                var booking = await _bookingService.GetBooking(id);
+                if (booking == null)
+                {
+                    return BadRequest("Booking not found");
+                }
+                if (booking.StudentId != user.Id)
+                {
+                    return BadRequest("Only owner can cancel this booking");
+                }
+                var result = await _bookingService.CancelBooking(id);
+                if (result)
+                {
+                    return Ok("Booking cancelled successfully");
                 }
                 return BadRequest();
             } catch (Exception ex)

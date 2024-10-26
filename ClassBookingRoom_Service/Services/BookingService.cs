@@ -93,6 +93,18 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.UpdateAsync(booking);
         }
 
+        public async Task<bool> CancelBooking(int id)
+        {
+            var booking = await _baseRepo.GetByIdAsync(id);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found");
+            }
+            booking.Status = "Cancelled";
+            booking.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(booking);
+        }
+
         public async Task<bool> DenyBooking(int id, string response)
         {
             var booking = await _baseRepo.GetByIdAsync(id);
