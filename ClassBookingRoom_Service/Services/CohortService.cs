@@ -28,7 +28,9 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddCohortAsync(CreateCohortRequestModel add)
         {
-            return await _baseRepo.AddAsync(add.ToCohortFromCreate());
+            var code = await _repo.GetCohortByCode(add.CohortCode);
+            if (code == null) { return await _baseRepo.AddAsync(add.ToCohortFromCreate()); }
+            return false;
         }
 
         public async Task<bool> DeleteCohortAsync(int id)
@@ -51,7 +53,8 @@ namespace ClassBookingRoom_Service.Services
         public async Task<bool> UpdateCohortAsync(int id, UpdateCohortRequestModel update)
         {
             var result = await _baseRepo.GetByIdAsync(id);
-            if (result is null){return false;}
+            var code = await _repo.GetCohortByCode(update.CohortCode);
+            if (result is null || code != null){return false;}
             result.UpdatedAt = DateTime.UtcNow;
             result.CohortCode = update.CohortCode;
             return await _baseRepo.UpdateAsync(result);

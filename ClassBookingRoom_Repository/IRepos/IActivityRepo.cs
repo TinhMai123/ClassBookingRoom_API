@@ -12,5 +12,6 @@ namespace ClassBookingRoom_Repository.IRepos
         Task<Activity?> GetActivityById(int id);
         Task<List<Activity>> GetActivities();
         Task<List<Activity>> GetActivitiesByDepartmentId(int departmentId);
+        Task<Activity?> GetActivityByCode(string code);
     }
 }

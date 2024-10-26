@@ -29,5 +29,12 @@ namespace ClassBookingRoom_Repository.Repos
                 .Include(c => c.Activities.Where(a => a.IsDeleted == false))
                 .ToListAsync();
         }
+        public async Task<Department?> GetDepartmentByName(string name)
+        {
+            return await _context.Departments
+            .Where(c => c.IsDeleted == false)
+            .Include(c => c.Activities.Where(a => a.IsDeleted == false))
+            .SingleOrDefaultAsync(c => c.Name.ToLower().Equals(name.ToLower()));
+        }
     }
 }

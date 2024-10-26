@@ -37,10 +37,6 @@ namespace ClassBookingRoom_Repository.Repos
                     await _context.SaveChangesAsync();
                 }*/
 
-        public Task<RoomType> GetRoomTypeByName(string name)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<List<RoomType>> GetRoomTypes()
         {
             return await _context.RoomsTypes.
@@ -55,6 +51,12 @@ namespace ClassBookingRoom_Repository.Repos
                 Include(c => c.Activities.Where(c => c.IsDeleted == false)).
                 FirstOrDefaultAsync(c => c.Id == id);
         }
-
+        public async Task<RoomType?> GetRoomTypeByName(string name)
+        {
+            return await _context.RoomsTypes.
+                Include(c => c.AllowedCohorts.Where(c => c.IsDeleted == false)).
+                Include(c => c.Activities.Where(c => c.IsDeleted == false)).
+                FirstOrDefaultAsync(c => c.Name.ToLower().Equals(name.ToLower()));
+        }
     }
 }

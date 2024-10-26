@@ -17,5 +17,6 @@ namespace ClassBookingRoom_Repository.IRepos
                 Task<bool> UpdateCampusAsync(Campus update);*/
         Task<Department?> GetDepartmentById(int id);
         Task<List<Department>> GetDepartments();
+        Task<Department?> GetDepartmentByName(string name);
     }
 }

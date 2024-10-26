@@ -9,6 +9,6 @@ namespace ClassBookingRoom_Repository.IRepos
 {
     public interface ICohortRepo
     {
-        Task<Cohort> GetCohortByCode(string code);
+        Task<Cohort?> GetCohortByCode(string code);
     }
 }

@@ -30,7 +30,13 @@ namespace ClassBookingRoom_Repository.Repos
                .Include(c => c.Department)
                .Include(c => c.RoomTypes).ToListAsync();
         }
-
+        public async Task<Activity?> GetActivityByCode(string code)
+        {
+            return await _context.Activities
+               .Where(c => c.IsDeleted == false)
+               .Include(c => c.Department)
+               .Include(c => c.RoomTypes).SingleOrDefaultAsync(c=>c.Code.ToLower().Equals(code.ToLower()));
+        }
         public async Task<List<Activity>> GetActivitiesByDepartmentId(int departmentId)
         {
             return await _context.Activities
