@@ -19,18 +19,44 @@ namespace ClassBookingRoom_Service.Services
         private readonly IBookingRepo _repo;
         private readonly IBaseRepository<Booking> _baseRepo;
         private readonly IRoomSlotRepo _roomSlotRepo;
+        private readonly INotificationService _notificationService;
+        private readonly IUserRepo _userRepo;
+        private readonly IRoomRepo _roomRepo;
+        private readonly IBaseRepository<RoomSlot> _baseSlotRepo;
 
-        public BookingService(IBookingRepo repo, IBaseRepository<Booking> baseRepo, IRoomSlotRepo roomSlotRepo)
+        public BookingService(IBookingRepo repo,
+                IBaseRepository<Booking> baseRepo,
+                IRoomSlotRepo roomSlotRepo,
+                INotificationService notificationService,
+                IUserRepo userRepo,
+                IRoomRepo roomRepo,
+                IBaseRepository<RoomSlot> baseSlotRepo
+            )
         {
             _repo = repo;
             _baseRepo = baseRepo;
             _roomSlotRepo = roomSlotRepo;
+            _notificationService = notificationService;
+            _userRepo = userRepo;
+            _roomRepo = roomRepo;
+            _baseSlotRepo = baseSlotRepo;
         }
         public async Task<bool> AddBookingAsync(CreateBookingRequestModel add)
         {
             var result = await _baseRepo.AddAsync(await add.ToBookingFromCreate(_roomSlotRepo));
+            if (result)
+            {
+                var student = await _userRepo.GetById(add.UserId);
+                var roomSlot = await _baseSlotRepo.GetByIdAsync(add.RoomSlots.First());
+                var room = await _roomRepo.GetRoom(roomSlot!.RoomId);
+                if (student != null)
+                {
+                    await _notificationService.NotifyManager("A student has successfully booked a room.", $"Student Name: {student.FullName}\r\nRoom: {room.RoomName}\r");
+                }
+            }
             return result;
         }
+
 
         public async Task<bool> DeleteBookingAsync(int id)
         {
