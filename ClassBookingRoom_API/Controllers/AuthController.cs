@@ -38,6 +38,7 @@ namespace ClassBookingRoom_API.Controllers
                 });
             }
         }
+
         [HttpPost("send-email")]
         public async Task<IActionResult> SendEmail()
         {
@@ -183,6 +184,7 @@ namespace ClassBookingRoom_API.Controllers
                 else return NotFound("User Not Found");
             } catch (Exception ex) { return StatusCode(500, ex.Message); }
         }
+      
 
         [HttpPost("login-google")]
         public async Task<ActionResult<FirebaseToken>> LoginGoogle([FromBody] LoginGoogleRequest request)
