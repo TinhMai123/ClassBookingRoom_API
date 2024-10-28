@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_Repository.Repos;
+﻿using ClassBookingRoom_Repository.IRepos;
+using ClassBookingRoom_Repository.Repos;
 using ClassBookingRoom_Service.IServices;
 using Expo.Server.Client;
 using Expo.Server.Models;
@@ -12,9 +13,9 @@ namespace ClassBookingRoom_Service.Services
 {
     public class NotificationService : INotificationService
     {
-        private readonly UserRepo _userRepo;
+        private readonly IUserRepo _userRepo;
 
-        public NotificationService(UserRepo userRepo)
+        public NotificationService(IUserRepo userRepo)
         {
             _userRepo = userRepo;
         }

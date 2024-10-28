@@ -146,7 +146,7 @@ namespace ClassBookingRoom_API.Controllers
         }
 
         [HttpPut("{id:Guid}/push-token")]
-        public async Task<ActionResult<IEnumerable<BookingResponseModel>>> UpdateUserPushToken([FromRoute] Guid id, [FromBody] string pushToken)
+        public async Task<ActionResult> UpdateUserPushToken([FromRoute] Guid id, [FromBody] string pushToken)
         {
             try
             {
