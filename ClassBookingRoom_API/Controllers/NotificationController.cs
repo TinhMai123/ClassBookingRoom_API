@@ -19,7 +19,7 @@ namespace ClassBookingRoom_API.Controllers
         {
             try
             {
-                var result = await _notificationService.NotifyManager();
+                var result = await _notificationService.NotifyManager("Test Notification", "This is a test push notification");
                 if (result) return Ok();
                 else return StatusCode(500, "Failed");
             } catch (Exception ex) { return StatusCode(500, ex.Message); }
