@@ -145,6 +145,19 @@ namespace ClassBookingRoom_API.Controllers
             }
         }
 
+        [HttpPut("{id:Guid}/push-token")]
+        public async Task<ActionResult<IEnumerable<BookingResponseModel>>> UpdateUserPushToken([FromRoute] Guid id, [FromBody] string pushToken)
+        {
+            try
+            {
+                await _userService.UpdatePushToken(id, pushToken);
+                return Ok();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         // FACE DESCRIPTOR
         [HttpGet("face")]
         public async Task<ActionResult<List<FaceDescriptorResponseModel>>> GetAll()

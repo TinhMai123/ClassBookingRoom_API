@@ -21,6 +21,7 @@ namespace ClassBookingRoom_Repository.Models
         public int? CohortId { get; set; }
         public string? Note { get; set; }
         public string? VerifyToken { get; set; }
+        public string? PushToken { get; set; }
         public bool IsVerify { get; set; } = false;
         public FaceDescriptor? FaceDescriptor { get; set; }
         public Department? Department { get; set; }

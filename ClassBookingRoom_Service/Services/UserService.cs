@@ -279,7 +279,17 @@ namespace ClassBookingRoom_Service.Services
             user.VerifyToken = verifyToken;
             user.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(user);
-
+        }
+        public async Task<bool> UpdatePushToken(Guid id, string pushToken)
+        {
+            var user = await _repo.GetById(id);
+            if (user == null)
+            {
+                return false;
+            }
+            user.PushToken = pushToken;
+            user.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(user);
         }
 
         public async Task<bool> UpdateUserStatus(Guid id, UpdateUserStatusRequest request)

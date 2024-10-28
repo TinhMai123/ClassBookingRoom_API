@@ -29,6 +29,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> UpdateUserAsync(User user);
         Task<bool> VerifyUser(Guid id, string verifyToken);
         Task<bool> UpdateVerifyToken(Guid id, string verifyToken);
+        Task<bool> UpdatePushToken(Guid id, string pushToken);
         Task<bool> UpdateUserStatus(Guid id, UpdateUserStatusRequest request);
 
     }
