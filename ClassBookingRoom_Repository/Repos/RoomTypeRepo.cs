@@ -53,10 +53,11 @@ namespace ClassBookingRoom_Repository.Repos
         }
         public async Task<RoomType?> GetRoomTypeByName(string name)
         {
-            return await _context.RoomsTypes.
-                Include(c => c.AllowedCohorts.Where(c => c.IsDeleted == false)).
-                Include(c => c.Activities.Where(c => c.IsDeleted == false)).
-                FirstOrDefaultAsync(c => c.Name.ToLower().Equals(name.ToLower()));
+            return await _context.RoomsTypes
+                .Where(r => r.IsDeleted ==  false)
+                .Include(c => c.AllowedCohorts.Where(c => c.IsDeleted == false))
+                .Include(c => c.Activities.Where(c => c.IsDeleted == false))
+                .FirstOrDefaultAsync(c => c.Name.ToLower().Equals(name.ToLower()));
         }
     }
 }
