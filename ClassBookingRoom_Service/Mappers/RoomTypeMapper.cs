@@ -22,6 +22,7 @@ namespace ClassBookingRoom_Service.Mappers
                 CreatedAt = model.CreatedAt,
                 DeletedAt = model.DeletedAt,
                 UpdatedAt = model.UpdatedAt,
+                IsDeleted = model.IsDeleted,
                 AllowedCohorts = allowedCohorts,
                 AllowedActivities = allowedActivities
             };
