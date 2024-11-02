@@ -31,6 +31,16 @@ namespace ClassBookingRoom_Service.Mappers
                 User = model.User?.ToUserDTO()
             };
         }
+        public static FaceDescriptorShortResponse ToFaceDescriptorShortResponse(this FaceDescriptor model)
+        {
+            return new FaceDescriptorShortResponse()
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                ImageURL = model.ImageURL,
+                Descriptor = model.Descriptor,
+            };
+        }
         public static FaceDescriptor ToUpdateFaceDescriptor(this UpdateFaceDescriptorRequestModel dto)
         {
             return new FaceDescriptor()

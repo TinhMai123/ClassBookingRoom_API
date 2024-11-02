@@ -41,5 +41,21 @@ namespace ClassBookingRoom_Repository.Repos
                 .Include(b => b.Activity)
                 .ToListAsync();
         }
+
+        public async Task<List<Booking>> GetRecentBookingsByRoomId(int roomId)
+        {
+            return await _context.Bookings
+               .Where(c => c.IsDeleted == false
+               && c.BookingDate.Date == DateTime.Today.Date)
+               .Include(b => b.CreateBy)
+               .Include(b => b.CreateBy.Department)
+               .Include(b => b.CreateBy.FaceDescriptor)
+               .Include(b => b.CreateBy.Cohort)
+               .Include(b => b.RoomSlots)
+               .ThenInclude(s => s.Room)
+               .Where(b => b.RoomSlots.First().Room.Id == roomId)
+               .Include(b => b.Activity)
+               .ToListAsync();
+        }
     }
 }

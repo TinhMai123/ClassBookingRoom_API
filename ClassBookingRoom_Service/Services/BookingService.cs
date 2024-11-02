@@ -143,5 +143,11 @@ namespace ClassBookingRoom_Service.Services
             booking.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(booking);
         }
+
+        public async Task<List<BookingDetailResponse>> GetRecentBookingsByRoomId(int roomId)
+        {
+            var result = await _repo.GetRecentBookingsByRoomId(roomId);
+            return result.Select(x => x.ToBookingDetailResponse()).ToList();
+        }
     }
 }

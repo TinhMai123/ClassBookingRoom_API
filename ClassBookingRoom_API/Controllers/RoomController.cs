@@ -16,11 +16,13 @@ namespace ClassBookingRoom_API.Controllers
     {
         private readonly IRoomService _roomService;
         private readonly IRoomSlotService _roomSlotService;
+        private readonly IBookingService _bookingService;
 
-        public RoomController(IRoomService roomService, IRoomSlotService roomSlotService)
+        public RoomController(IRoomService roomService, IRoomSlotService roomSlotService, IBookingService bookingService)
         {
             _roomService = roomService;
             _roomSlotService = roomSlotService;
+            _bookingService = bookingService;
         }
 
         [HttpGet("{id:int}")]
@@ -148,6 +150,12 @@ namespace ClassBookingRoom_API.Controllers
         public async Task<ActionResult<List<BookingResponseModel>>> GetBookingsByRoomId([FromRoute] int roomId)
         {
             var list = await _roomService.GetBookingsByRoomId(roomId);
+            return Ok(list);
+        }
+        [HttpGet("{roomId:int}/today-bookings")]
+        public async Task<ActionResult<List<BookingResponseModel>>> GetTodayBookingsByRoomId([FromRoute] int roomId)
+        {
+            var list = await _bookingService.GetRecentBookingsByRoomId(roomId);
             return Ok(list);
         }
         [HttpGet("{roomId:int}/reports")]
