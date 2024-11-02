@@ -226,6 +226,10 @@ namespace ClassBookingRoom_API.Controllers
         public async Task<ActionResult<UserResponseModel>> CheckToken()
         {
             Request.Headers.TryGetValue("Authorization", out var token);
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return BadRequest("Authorization header is missing or invalid.");
+            }
             token = token.ToString().Split()[1];
             // Here goes your token validation logic
             if (string.IsNullOrWhiteSpace(token))
@@ -250,7 +254,7 @@ namespace ClassBookingRoom_API.Controllers
             var user = await _userService.GetUserDetailByEmailAsync(email);
             if (user == null)
             {
-                return BadRequest("email is in valid");
+                return BadRequest("Email is in valid");
             }
 
             // If token is valid, return success response
