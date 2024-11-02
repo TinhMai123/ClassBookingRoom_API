@@ -31,5 +31,9 @@ namespace ClassBookingRoom_Service.Mappers
                 UpdatedAt = DateTime.UtcNow
             };
         }
+        public static CohortShortResponseModel ToCohortShortDTO(this Cohort model)
+        {
+            return new CohortShortResponseModel { Id = model.Id, CohortCode = model.CohortCode };
+        }
     }
 }
