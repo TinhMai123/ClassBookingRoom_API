@@ -11,5 +11,6 @@ namespace ClassBookingRoom_Repository.IRepos
     {
         Task<Booking?> GetBooking(int id);
         Task<List<Booking>> GetBookings();
+        Task<List<Booking>> GetRecentBookingsByRoomId(int roomId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using ClassBookingRoom_Repository.RequestModels.Booking;
+﻿using ClassBookingRoom_Repository.Models;
+using ClassBookingRoom_Repository.RequestModels.Booking;
 using ClassBookingRoom_Repository.RequestModels.Cohort;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Cohort;
@@ -19,8 +20,10 @@ namespace ClassBookingRoom_Service.IServices
         Task<List<BookingResponseModel>> GetBookingsByUserId(Guid userId);
         Task<bool> UpdateBookingAsync(int id, UpdateBookingRequestModel update);
         Task<(List<BookingResponseModel>, int totalCount)> SearchBookQuery(SearchBookHistoryQuery query);
+        Task<List<BookingDetailResponse>> GetRecentBookingsByRoomId(int roomId);
         Task<bool> AcceptBooking(int id);
         Task<bool> CancelBooking(int id);
+        Task<bool> CheckInBooking(int id);
         Task<bool> DenyBooking(int id, string note);
     }
 }

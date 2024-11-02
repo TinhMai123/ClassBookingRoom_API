@@ -46,6 +46,35 @@ namespace ClassBookingRoom_Service.Mappers
                 BookingDate = model.BookingDate,
             };
         }
+        public static BookingDetailResponse ToBookingDetailResponse(this Booking model)
+        {
+            var slots = model.RoomSlots?.Select(c => c.ToRoomSlotShortResponseDTO()).ToList();
+            var room = model.RoomSlots.First().Room;
+            return new BookingDetailResponse
+            {
+                Id = model.Id,
+                ActivityId = model.ActivityId,
+                Description = model.Description,
+                StudentId = model.UserId,
+                Status = model.Status,
+                UpdatedAt = model.UpdatedAt,
+                DeletedAt = model.DeletedAt,
+                CreatedAt = model.CreatedAt,
+                StudentFullName = model.CreateBy?.FullName ?? "",
+                StudentEmail = model.CreateBy?.Email ?? "",
+                CohortCode = model.CreateBy?.Cohort?.CohortCode ?? "",
+                ActivityCode = model.Activity?.Code ?? "",
+                ActivityName = model.Activity?.Name ?? "",
+                DepartmentId = model.CreateBy?.DepartmentId,
+                DepartmentName = model.CreateBy?.Department?.Name ?? "",
+                RoomSlots = slots,
+                RoomId = room.Id,
+                RoomName = room.RoomName,
+                Code = model.Code,
+                BookingDate = model.BookingDate,
+                FaceDescriptor = model.CreateBy.FaceDescriptor.ToFaceDescriptorShortResponse()
+            };
+        }
         public static async Task<Booking> ToBookingFromCreate(this CreateBookingRequestModel dto, IRoomSlotRepo roomSlotRepo)
         {
             var slots = await roomSlotRepo.GetRoomSlotsByIdsAsync(dto.RoomSlots);

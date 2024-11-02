@@ -143,5 +143,23 @@ namespace ClassBookingRoom_Service.Services
             booking.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(booking);
         }
+
+        public async Task<List<BookingDetailResponse>> GetRecentBookingsByRoomId(int roomId)
+        {
+            var result = await _repo.GetRecentBookingsByRoomId(roomId);
+            return result.Select(x => x.ToBookingDetailResponse()).ToList();
+        }
+
+        public async Task<bool> CheckInBooking(int id)
+        {
+            var booking = await _baseRepo.GetByIdAsync(id);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found");
+            }
+            booking.Status = "Checked-in";
+            booking.UpdatedAt = DateTime.UtcNow;
+            return await _baseRepo.UpdateAsync(booking);
+        }
     }
 }
