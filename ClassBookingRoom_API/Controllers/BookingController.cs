@@ -98,6 +98,24 @@ namespace ClassBookingRoom_API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPut("{id:int}/check-in")]
+        public async Task<ActionResult> CheckInBooking([FromRoute] int id)
+        {
+            try
+            {
+                var result = await _bookingService.CheckInBooking(id);
+                if (result)
+                {
+                    return Ok("Booking accepted successfully");
+                }
+                return BadRequest();
+            } catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPut("{id:int}/cancel")]
         public async Task<ActionResult> CancelBooking([FromRoute] int id)
         {

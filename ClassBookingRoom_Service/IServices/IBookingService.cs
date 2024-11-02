@@ -23,6 +23,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<List<BookingDetailResponse>> GetRecentBookingsByRoomId(int roomId);
         Task<bool> AcceptBooking(int id);
         Task<bool> CancelBooking(int id);
+        Task<bool> CheckInBooking(int id);
         Task<bool> DenyBooking(int id, string note);
     }
 }
