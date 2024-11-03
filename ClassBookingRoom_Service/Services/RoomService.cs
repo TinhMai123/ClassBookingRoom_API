@@ -112,8 +112,8 @@ namespace ClassBookingRoom_Service.Services
                 .Any(c => c.BookingDate.CompareTo(query.BookingDate) == 0)));
             }
             
-            result = result.Where(r=>r.RoomSlots!.Any(c=>c.Bookings!.Any(c => c.Status.ToUpper().Equals("CANCEL") || c.Status == null || c.Status.ToUpper().Equals("DENIED")))
-                || r.RoomSlots!.All(c => c.Bookings == null));
+/*            result = result.Where(r=>r.RoomSlots!.Any(c=>c.Bookings!.Any(c => c.Status.ToUpper().Equals("CANCEL") || c.Status == null || c.Status.ToUpper().Equals("DENIED")))
+                || r.RoomSlots!.All(c => c.Bookings == null));*/
             var totalCount = result.Count(); 
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
             var paginatedResult = result
