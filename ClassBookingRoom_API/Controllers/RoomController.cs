@@ -153,7 +153,7 @@ namespace ClassBookingRoom_API.Controllers
             return Ok(list);
         }
         [HttpGet("{roomId:int}/today-bookings")]
-        public async Task<ActionResult<List<BookingResponseModel>>> GetTodayBookingsByRoomId([FromRoute] int roomId)
+        public async Task<ActionResult<List<BookingDetailResponse>>> GetTodayBookingsByRoomId([FromRoute] int roomId)
         {
             var list = await _bookingService.GetRecentBookingsByRoomId(roomId);
             return Ok(list);
