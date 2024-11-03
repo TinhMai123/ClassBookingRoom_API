@@ -98,22 +98,35 @@ namespace ClassBookingRoom_Service.Services
             {
                 result = result.Where(r => r.Capacity <= query.MaxCapacity);
             }
-            if (query.StartTime is not null)
+            /*            if (query.StartTime is not null)
+                        {
+                            result = result.Where(r => r.RoomSlots!.Any(c => c.StartTime.CompareTo(query.StartTime) <= 0));
+                        }
+                        if (query.EndTime is not null)
+                        {
+                            result = result.Where(r => r.RoomSlots!.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
+                        }
+                        if (query.BookingDate is not null)
+                        {
+                            result = result.Where(r => r.RoomSlots!.Any(c => c.Bookings!
+                            .Any(c => c.BookingDate.CompareTo(query.BookingDate) == 0)));
+                        }*/
+
+            if (query.BookingDate is not null && (query.StartTime is not null || query.EndTime is not null))
             {
-                result = result.Where(r => r.RoomSlots!.Any(c => c.StartTime.CompareTo(query.StartTime) <= 0));
+                result = result.Where(r =>
+                    r.RoomSlots!.Any(slot =>
+                        slot.EndTime <= query.EndTime &&
+                        slot.StartTime >= query.StartTime &&
+                        (
+                            slot.Bookings == null ||  slot.Bookings.Any(b =>
+                                b.BookingDate != query.BookingDate &&
+                                (b.Status != "Accepted" && b.Status != "Check-in")
+                            )
+                        )
+                    )
+                );
             }
-            if (query.EndTime is not null)
-            {
-                result = result.Where(r => r.RoomSlots!.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
-            }
-            if (query.BookingDate is not null)
-            {
-                result = result.Where(r => r.RoomSlots!.Any(c => c.Bookings!
-                .Any(c => c.BookingDate.CompareTo(query.BookingDate) == 0)));
-            }
-            
-/*            result = result.Where(r=>r.RoomSlots!.Any(c=>c.Bookings!.Any(c => c.Status.ToUpper().Equals("CANCEL") || c.Status == null || c.Status.ToUpper().Equals("DENIED")))
-                || r.RoomSlots!.All(c => c.Bookings == null));*/
             var totalCount = result.Count(); 
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
             var paginatedResult = result
