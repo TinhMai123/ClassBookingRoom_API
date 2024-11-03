@@ -44,9 +44,11 @@ namespace ClassBookingRoom_Repository.Repos
         {
             return await _context.Rooms
                 .Where(c => c.IsDeleted == false)
-                .Include(r => r.RoomType)
-                .Include(r => r.RoomSlots.Where(s => s.IsDeleted == false))
-                .ThenInclude(s => s.Bookings.Where(c => c.IsDeleted == false && c.Status == "Pending"))
+                .Include(r => r.RoomType).ThenInclude(r=>r.AllowedCohorts).Where(s=>s.IsDeleted == false)
+                .Include(r => r.RoomSlots!.Where(s => s.IsDeleted == false))
+                .ThenInclude(s => s.Bookings!.Where(c => c.IsDeleted == false))
+                .Include(r=>r.RoomType!.Activities)
+                .Where(c => c.IsDeleted == false)
                 .ToListAsync();
         }
     }

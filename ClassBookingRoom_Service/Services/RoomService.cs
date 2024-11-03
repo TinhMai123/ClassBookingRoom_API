@@ -24,7 +24,6 @@ namespace ClassBookingRoom_Service.Services
         private readonly IReportRepo _reportRepo;
         private readonly IBookingRepo _bookRepo;
         private readonly IBaseRepository<Room> _baseRepo;
-
         public RoomService(IRoomRepo repo, IBaseRepository<Room> baseRepo, IReportRepo reportRepo, IBookingRepo bookRepo)
         {
             _repo = repo;
@@ -79,6 +78,14 @@ namespace ClassBookingRoom_Service.Services
             {
                 result = result.Where(r => r.Status.Contains(query.Status));
             }
+            if (!string.IsNullOrEmpty(query.ActivityCode))
+            {
+                result = result.Where(c => c.RoomType!.Activities.Any(c=>c.Code.Equals(query.ActivityCode)));
+            }
+            if (!string.IsNullOrWhiteSpace(query.CohortCode))
+            {
+                result = result.Where(r => r.RoomType!.AllowedCohorts.Any(c=>c.CohortCode!.Equals(query.CohortCode)));
+            }
             if (query.RoomTypeId is not null)
             {
                 result = result.Where(r => r.RoomTypeId == query.RoomTypeId);
@@ -99,6 +106,14 @@ namespace ClassBookingRoom_Service.Services
             {
                 result = result.Where(r => r.RoomSlots!.Any(c => c.EndTime.CompareTo(query.EndTime) >= 0));
             }
+            if (query.BookingDate is not null)
+            {
+                result = result.Where(r => r.RoomSlots!.Any(c => c.Bookings!
+                .Any(c => c.BookingDate.CompareTo(query.BookingDate) == 0)));
+            }
+            
+            result = result.Where(r=>r.RoomSlots!.Any(c=>c.Bookings!.Any(c => c.Status.ToUpper().Equals("CANCEL") || c.Status == null || c.Status.ToUpper().Equals("DENIED")))
+                || r.RoomSlots!.All(c => c.Bookings == null));
             var totalCount = result.Count(); 
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
             var paginatedResult = result
@@ -106,9 +121,7 @@ namespace ClassBookingRoom_Service.Services
                 .Take(query.PageSize)
                 .ToList(); 
             return (paginatedResult.Select(x => x.ToRoomDTO()).ToList(), totalCount);
-        }
-
-
+        }     
         public async Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
         {
             var room = await _baseRepo.GetByIdAsync(id);

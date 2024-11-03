@@ -14,6 +14,6 @@ namespace ClassBookingRoom_Repository.ResponseModels.RoomType
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public ICollection<ActivityShortResponseModel> AllowedActivities { get; set; } = [];
-        public ICollection<CohortResponseModel> AllowedCohorts { get; set; } = [];
+        public ICollection<CohortShortResponseModel> AllowedCohorts { get; set; } = [];
     }
 }
