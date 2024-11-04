@@ -122,7 +122,7 @@ namespace ClassBookingRoom_Service.Services
             if (query.BookingDate is not null && (query.StartTime is not null || query.EndTime is not null))
             {
                 result = result.Where(r =>
-                    r.RoomSlots == null ||  r.RoomSlots.Any(slot =>
+                    r.RoomSlots == null || r.RoomSlots.Count == 0 || r.RoomSlots.Any(slot =>
                         slot.EndTime <= query.EndTime &&
                         slot.StartTime >= query.StartTime &&
                         (
