@@ -78,13 +78,13 @@ namespace ClassBookingRoom_Service.Services
             {
                 result = result.Where(r => r.Status.Contains(query.Status));
             }
-            if (!string.IsNullOrEmpty(query.ActivityCode))
+            if (query.ActivityId is not null)
             {
-                result = result.Where(c => c.RoomType!.Activities.Any(c=>c.Code.Equals(query.ActivityCode)));
+                result = result.Where(c => c.RoomType!.Activities.Any(c=>c.Id == query.ActivityId));
             }
-            if (!string.IsNullOrWhiteSpace(query.CohortCode))
+            if (query.CohortId is not null)
             {
-                result = result.Where(r => r.RoomType!.AllowedCohorts.Any(c=>c.CohortCode!.Equals(query.CohortCode)));
+                result = result.Where(r => r.RoomType!.AllowedCohorts.Any(c=>c.Id == query.CohortId));
             }
             if (query.RoomTypeId is not null)
             {

@@ -11,8 +11,10 @@ namespace ClassBookingRoom_Repository.RequestModels.Room
         public string SearchValue { get; set; } = string.Empty;
         public int? RoomTypeId { get; set; }
         public string Status { get; set; } = string.Empty;
-        public string ActivityCode { get; set; } = string.Empty;
-        public string CohortCode { get; set; } = string.Empty;
+/*        public string ActivityCode { get; set; } = string.Empty;
+        public string CohortCode { get; set; } = string.Empty;*/
+        public int? ActivityId { get; set; }
+        public int? CohortId { get; set; }
         public int? MinCapacity { get; set; } = 0; 
         public int? MaxCapacity { get; set; } = int.MaxValue; 
         public DateTime? StartTime { get; set; }
