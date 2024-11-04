@@ -69,18 +69,32 @@ namespace ClassBookingRoom_API.Controllers
             }
             return BadRequest();
         }
-        [HttpGet]
-        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoom([FromQuery] SearchRoomQuery query)
+        [HttpGet("available")]
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoomForUser([FromQuery] SearchRoomQuery query)
         {
             try
             {
-                var (rooms, totalCount) = await _roomService.SearchRoomQuery(query);
+                var (rooms, totalCount) = await _roomService.SearchRoomUser(query);
                 var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
                 Response.Headers.Append("X-Total-Count", totalCount.ToString());
                 Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
                 Response.Headers.Append("X-Total-Pages", totalPages.ToString());
                 return Ok(rooms);
             } catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoomForAdmin([FromQuery] SearchRoomQuery query)
+        {
+            try
+            {
+                var (rooms, totalCount) = await _roomService.SearchRoomAdmin(query);
+                var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
+                Response.Headers.Append("X-Total-Count", totalCount.ToString());
+                Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
+                Response.Headers.Append("X-Total-Pages", totalPages.ToString());
+                return Ok(rooms);
+            }
+            catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
         // ROOM SLOT

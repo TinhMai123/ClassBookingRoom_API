@@ -20,6 +20,8 @@ namespace ClassBookingRoom_Service.IServices
         Task<List<BookingResponseModel>> GetBookingsByRoomId(int roomId);
         Task<List<ReportResponseModel>> GetReportsByRoomId(int roomId);
         Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update);
-        Task<(List<RoomResponseModel> response, int totalCount)>SearchRoomQuery(SearchRoomQuery query);
+        /*Task<(List<RoomResponseModel> response, int totalCount)>SearchRoomQuery(SearchRoomQuery query);*/
+        Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query);
+        Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query);
     }
 }

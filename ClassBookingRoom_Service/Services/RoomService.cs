@@ -15,6 +15,7 @@ using ClassBookingRoom_Repository.Repos;
 using Microsoft.EntityFrameworkCore;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Report;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -64,13 +65,19 @@ namespace ClassBookingRoom_Service.Services
             var rooms = await _repo.GetRooms();
             return rooms.Select(x => x.ToRoomDTO()).ToList(); 
         }
-
-        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomQuery(SearchRoomQuery query)
-        {
-            var modelList = await _repo.GetRooms(); 
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query) {
+            var modelList = await _repo.GetRooms();
             var result = modelList.AsQueryable();
             result = result.Where(r => r.RoomSlots!.Count() > 0);
-            
+            return SearchRoomQuery(query, result);
+        }
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query) {
+            var modelList = await _repo.GetRooms();
+            var result = modelList.AsQueryable();
+            return SearchRoomQuery(query, result);
+        }
+        public (List<RoomResponseModel> response, int totalCount) SearchRoomQuery(SearchRoomQuery query, IQueryable<Room> result)
+        {   
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
                 result = result.Where(r => r.RoomName.Contains(query.SearchValue));
