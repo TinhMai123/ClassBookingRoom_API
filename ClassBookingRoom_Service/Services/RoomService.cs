@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using System.ComponentModel.DataAnnotations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -112,12 +113,19 @@ namespace ClassBookingRoom_Service.Services
             var rooms = await _repo.GetRooms();
             return rooms.Select(x => x.ToRoomDTO()).ToList();
         }
-
-        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomQuery(SearchRoomQuery query)
-        {
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query) {
             var modelList = await _repo.GetRooms();
             var result = modelList.AsQueryable();
-
+            result = result.Where(r => r.RoomSlots!.Count() > 0);
+            return SearchRoomQuery(query, result);
+        }
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query) {
+            var modelList = await _repo.GetRooms();
+            var result = modelList.AsQueryable();
+            return SearchRoomQuery(query, result);
+        }
+        public (List<RoomResponseModel> response, int totalCount) SearchRoomQuery(SearchRoomQuery query, IQueryable<Room> result)
+        {   
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
                 result = result.Where(r => r.RoomName.Contains(query.SearchValue));
@@ -159,17 +167,19 @@ namespace ClassBookingRoom_Service.Services
                             result = result.Where(r => r.RoomSlots!.Any(c => c.Bookings!
                             .Any(c => c.BookingDate.CompareTo(query.BookingDate) == 0)));
                         }*/
-
             if (query.BookingDate is not null && (query.StartTime is not null || query.EndTime is not null))
             {
                 result = result.Where(r =>
-                    r.RoomSlots!.Any(slot =>
+                    r.RoomSlots == null || r.RoomSlots.Count == 0 || r.RoomSlots.Any(slot =>
                         slot.EndTime <= query.EndTime &&
                         slot.StartTime >= query.StartTime &&
                         (
-                            slot.Bookings == null || slot.Bookings.Any(b =>
-                                b.BookingDate != query.BookingDate &&
-                                (b.Status != "Accepted" && b.Status != "Check-in")
+                            slot.Bookings == null || !slot.Bookings.Any() || 
+                            slot.Bookings.All(c =>
+                                c.BookingDate != query.BookingDate ||       
+                                (c.BookingDate == query.BookingDate &&      
+                                 (c.Status != "Accepted" && c.Status != "Checked-in")
+                                )
                             )
                         )
                     )
