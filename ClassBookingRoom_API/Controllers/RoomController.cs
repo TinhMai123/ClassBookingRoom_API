@@ -69,16 +69,12 @@ namespace ClassBookingRoom_API.Controllers
             }
             return BadRequest();
         }
-        [HttpGet("available")]
-        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoomForUser([FromQuery] SearchRoomQuery query)
+        [HttpPost("available")]
+        public async Task<ActionResult<List<RoomResponseModel>>> SearchRoomForUser([FromBody] GetAvailableRoomsRequest request)
         {
             try
             {
-                var (rooms, totalCount) = await _roomService.SearchRoomUser(query);
-                var totalPages = (int)Math.Ceiling((double)totalCount / query.PageSize);
-                Response.Headers.Append("X-Total-Count", totalCount.ToString());
-                Response.Headers.Append("X-Current-Page", query.PageNumber.ToString());
-                Response.Headers.Append("X-Total-Pages", totalPages.ToString());
+                var  rooms = await _roomService.GetAvailableRooms(request);
                 return Ok(rooms);
             } catch (Exception ex) { return BadRequest(ex.Message); }
         }

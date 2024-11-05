@@ -51,39 +51,43 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<List<RoomResponseModel>> GetAvailableRooms(GetAvailableRoomsRequest request)
         {
-            var rooms = await _repo.GetAvailableRooms(request.ActivityId, request.CohortId);
+            var rooms = await _repo.GetAvailableRooms();
             var roomDTOs = new List<RoomResponseModel>();
             var bookingStartTime = getRelativeTime(request.BookingDate, request.StartTime);
             var bookingEndTime = getRelativeTime(request.BookingDate, request.EndTime);
             foreach (var room in rooms)
             {
-                var bookings = await _bookRepo.GetBookings();
-                bookings = bookings.Where(b => b.RoomSlots.First().RoomId == room.Id
-                && b.BookingDate == request.BookingDate).ToList();
-                if (bookings.Count == 0)
+                if (room.RoomType.AllowedCohorts.Any(c => c.Id == request.CohortId)
+                    && room.RoomType.Activities.Any(a => a.Id == request.ActivityId))
                 {
-                    roomDTOs.Add(room.ToRoomDTO());
-                } else
-                {
-                    var slots = room.RoomSlots;
-                    foreach (var booking in bookings)
+                    var bookings = await _bookRepo.GetBookings();
+                    bookings = bookings.Where(b => b.RoomSlots.First().RoomId == room.Id
+                    && b.BookingDate.Date == request.BookingDate.Date).ToList();
+                    if (bookings.Count == 0)
                     {
-                        if (booking.Status == "Accepted" || booking.Status == "Checked-in")
+                        roomDTOs.Add(room.ToRoomDTO());
+                    } else
+                    {
+                        var slots = room.RoomSlots;
+                        foreach (var booking in bookings)
                         {
-                            foreach (var slot in slots)
+                            if (booking.Status == "Accepted" || booking.Status == "Checked-in")
                             {
-                                var slotStartTime = getRelativeTime(request.BookingDate, slot.StartTime);
-                                var slotEndTime = getRelativeTime(request.BookingDate, slot.EndTime);
-                                if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
+                                foreach (var slot in slots)
                                 {
-                                    slots.Remove(slot);
+                                    var slotStartTime = getRelativeTime(request.BookingDate, slot.StartTime);
+                                    var slotEndTime = getRelativeTime(request.BookingDate, slot.EndTime);
+                                    if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
+                                    {
+                                        slots.Remove(slot);
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (slots.Count > 0)
-                    {
-                        roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
+                        if (slots.Count > 0)
+                        {
+                            roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
+                        }
                     }
                 }
             }
@@ -113,19 +117,21 @@ namespace ClassBookingRoom_Service.Services
             var rooms = await _repo.GetRooms();
             return rooms.Select(x => x.ToRoomDTO()).ToList();
         }
-        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query) {
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query)
+        {
             var modelList = await _repo.GetRooms();
             var result = modelList.AsQueryable();
             result = result.Where(r => r.RoomSlots!.Count() > 0);
             return SearchRoomQuery(query, result);
         }
-        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query) {
+        public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query)
+        {
             var modelList = await _repo.GetRooms();
             var result = modelList.AsQueryable();
             return SearchRoomQuery(query, result);
         }
         public (List<RoomResponseModel> response, int totalCount) SearchRoomQuery(SearchRoomQuery query, IQueryable<Room> result)
-        {   
+        {
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
                 result = result.Where(r => r.RoomName.Contains(query.SearchValue));
@@ -174,10 +180,10 @@ namespace ClassBookingRoom_Service.Services
                         slot.EndTime <= query.EndTime &&
                         slot.StartTime >= query.StartTime &&
                         (
-                            slot.Bookings == null || !slot.Bookings.Any() || 
+                            slot.Bookings == null || !slot.Bookings.Any() ||
                             slot.Bookings.All(c =>
-                                c.BookingDate != query.BookingDate ||       
-                                (c.BookingDate == query.BookingDate &&      
+                                c.BookingDate != query.BookingDate ||
+                                (c.BookingDate == query.BookingDate &&
                                  (c.Status != "Accepted" && c.Status != "Checked-in")
                                 )
                             )

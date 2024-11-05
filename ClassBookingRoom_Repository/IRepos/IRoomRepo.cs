@@ -13,7 +13,7 @@ namespace ClassBookingRoom_Repository.IRepos
     {
         Task<Room?> GetRoom(int id);
         Task<List<Room>> GetRooms();
-        Task<List<Room>> GetAvailableRooms(int activityId, int cohortId);
+        Task<List<Room>> GetAvailableRooms();
     }
 }
 
