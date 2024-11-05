@@ -73,7 +73,7 @@ namespace ClassBookingRoom_Service.Services
                         {
                             if (booking.Status == "Accepted" || booking.Status == "Checked-in")
                             {
-                                foreach (var slot in slots)
+                                foreach (var slot in booking.RoomSlots)
                                 {
                                     var slotStartTime = getRelativeTime(request.BookingDate, slot.StartTime);
                                     var slotEndTime = getRelativeTime(request.BookingDate, slot.EndTime);

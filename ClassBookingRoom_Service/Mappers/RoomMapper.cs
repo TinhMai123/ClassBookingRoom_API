@@ -50,7 +50,7 @@ namespace ClassBookingRoom_Service.Mappers
             var bookings = new List<Booking>();
             foreach (RoomSlot slot in model.RoomSlots)
             {
-                foreach (Booking booking in slot.Bookings)
+                foreach (Booking booking in slot.Bookings ?? [])
                 {
                     if (bookings.FirstOrDefault(x => x.Id == booking.Id) is null)
                     {
