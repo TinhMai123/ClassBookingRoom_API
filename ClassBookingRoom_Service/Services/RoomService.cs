@@ -15,6 +15,7 @@ using ClassBookingRoom_Repository.Repos;
 using Microsoft.EntityFrameworkCore;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Report;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -40,6 +41,53 @@ namespace ClassBookingRoom_Service.Services
         {
             return await _baseRepo.DeleteAsync(id);
         }
+        private static DateTime getRelativeTime(DateTime date, DateTime time)
+        {
+            int difference = (int)(date - time).TotalDays;
+            time.AddDays(difference);
+            return time;
+        }
+
+        public async Task<List<RoomResponseModel>> GetAvailableRooms(GetAvailableRoomsRequest request)
+        {
+            var rooms = await _repo.GetAvailableRooms(request.ActivityId, request.CohortId);
+            var roomDTOs = new List<RoomResponseModel>();
+            var bookingStartTime = getRelativeTime(request.BookingDate, request.StartTime);
+            var bookingEndTime = getRelativeTime(request.BookingDate, request.EndTime);
+            foreach (var room in rooms)
+            {
+                var bookings = await _bookRepo.GetBookings();
+                bookings = bookings.Where(b => b.RoomSlots.First().RoomId == room.Id
+                && b.BookingDate == request.BookingDate).ToList();
+                if (bookings.Count == 0)
+                {
+                    roomDTOs.Add(room.ToRoomDTO());
+                } else
+                {
+                    var slots = room.RoomSlots;
+                    foreach (var booking in bookings)
+                    {
+                        if (booking.Status == "Accepted" || booking.Status == "Checked-in")
+                        {
+                            foreach (var slot in slots)
+                            {
+                                var slotStartTime = getRelativeTime(request.BookingDate, slot.StartTime);
+                                var slotEndTime = getRelativeTime(request.BookingDate, slot.EndTime);
+                                if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
+                                {
+                                    slots.Remove(slot);
+                                }
+                            }
+                        }
+                    }
+                    if (slots.Count > 0)
+                    {
+                        roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
+                    }
+                }
+            }
+            return roomDTOs;
+        }
 
         public async Task<List<BookingResponseModel>> GetBookingsByRoomId(int roomId)
         {
@@ -62,12 +110,12 @@ namespace ClassBookingRoom_Service.Services
         public async Task<List<RoomResponseModel>> GetRooms()
         {
             var rooms = await _repo.GetRooms();
-            return rooms.Select(x => x.ToRoomDTO()).ToList(); 
+            return rooms.Select(x => x.ToRoomDTO()).ToList();
         }
 
         public async Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomQuery(SearchRoomQuery query)
         {
-            var modelList = await _repo.GetRooms(); 
+            var modelList = await _repo.GetRooms();
             var result = modelList.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
@@ -80,11 +128,11 @@ namespace ClassBookingRoom_Service.Services
             }
             if (query.ActivityId is not null)
             {
-                result = result.Where(c => c.RoomType!.Activities.Any(c=>c.Id == query.ActivityId));
+                result = result.Where(c => c.RoomType!.Activities.Any(c => c.Id == query.ActivityId));
             }
             if (query.CohortId is not null)
             {
-                result = result.Where(r => r.RoomType!.AllowedCohorts.Any(c=>c.Id == query.CohortId));
+                result = result.Where(r => r.RoomType!.AllowedCohorts.Any(c => c.Id == query.CohortId));
             }
             if (query.RoomTypeId is not null)
             {
@@ -119,7 +167,7 @@ namespace ClassBookingRoom_Service.Services
                         slot.EndTime <= query.EndTime &&
                         slot.StartTime >= query.StartTime &&
                         (
-                            slot.Bookings == null ||  slot.Bookings.Any(b =>
+                            slot.Bookings == null || slot.Bookings.Any(b =>
                                 b.BookingDate != query.BookingDate &&
                                 (b.Status != "Accepted" && b.Status != "Check-in")
                             )
@@ -127,14 +175,14 @@ namespace ClassBookingRoom_Service.Services
                     )
                 );
             }
-            var totalCount = result.Count(); 
+            var totalCount = result.Count();
             var skipNumber = (query.PageNumber > 0 ? query.PageNumber - 1 : 0) * (query.PageSize > 0 ? query.PageSize : 10);
             var paginatedResult = result
                 .Skip(skipNumber)
                 .Take(query.PageSize)
-                .ToList(); 
+                .ToList();
             return (paginatedResult.Select(x => x.ToRoomDTO()).ToList(), totalCount);
-        }     
+        }
         public async Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
         {
             var room = await _baseRepo.GetByIdAsync(id);
@@ -145,9 +193,9 @@ namespace ClassBookingRoom_Service.Services
             room.RoomTypeId = update.RoomTypeId;
             room.RoomName = update.RoomName;
             room.Picture = update.Picture;
-            return await _baseRepo.UpdateAsync(room); 
+            return await _baseRepo.UpdateAsync(room);
         }
 
-        
+
     }
 }

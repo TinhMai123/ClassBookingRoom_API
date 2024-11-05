@@ -17,6 +17,22 @@ namespace ClassBookingRoom_Repository.Repos
         {
         }
 
+        public async Task<List<Room>> GetAvailableRooms(int activityId, int cohortId)
+        {
+            return await _context.Rooms
+                .Where(r => r.IsDeleted == false && r.Status == "Active")
+                .Include(r => r.RoomType)
+                .Include(r => r.RoomType.AllowedCohorts)
+                .Include(r => r.RoomType.Activities)
+                .Where(r => r.RoomType.AllowedCohorts
+                .Any(c => c.Id == cohortId && c.IsDeleted == false))
+                .Where(r => r.RoomType.Activities
+                .Any(a => a.Id == activityId && a.IsDeleted == false))
+                .Include(r => r.RoomSlots)
+                .Where(r => r.RoomSlots.Count() > 0)
+                .ToListAsync();
+        }
+
         public async Task<Room?> GetRoom(int id)
         {
             var room = await _context.Rooms
@@ -44,10 +60,10 @@ namespace ClassBookingRoom_Repository.Repos
         {
             return await _context.Rooms
                 .Where(c => c.IsDeleted == false)
-                .Include(r => r.RoomType).ThenInclude(r=>r.AllowedCohorts).Where(s=>s.IsDeleted == false)
+                .Include(r => r.RoomType).ThenInclude(r => r.AllowedCohorts).Where(s => s.IsDeleted == false)
                 .Include(r => r.RoomSlots!.Where(s => s.IsDeleted == false))
                 .ThenInclude(s => s.Bookings!.Where(c => c.IsDeleted == false))
-                .Include(r=>r.RoomType!.Activities)
+                .Include(r => r.RoomType!.Activities)
                 .Where(c => c.IsDeleted == false)
                 .ToListAsync();
         }

@@ -17,6 +17,7 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> DeleteRoomAsync(int id);
         Task<RoomResponseModel?> GetRoom(int id);
         Task<List<RoomResponseModel>> GetRooms();
+        Task<List<RoomResponseModel>> GetAvailableRooms(GetAvailableRoomsRequest request);
         Task<List<BookingResponseModel>> GetBookingsByRoomId(int roomId);
         Task<List<ReportResponseModel>> GetReportsByRoomId(int roomId);
         Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update);
