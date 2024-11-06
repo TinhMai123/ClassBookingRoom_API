@@ -5,6 +5,7 @@ using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.Room;
 using ClassBookingRoom_Repository.ResponseModels.RoomSlot;
 using ClassBookingRoom_Service.IServices;
+using ClassBookingRoom_Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -173,6 +174,13 @@ namespace ClassBookingRoom_API.Controllers
         {
             var list = await _roomService.GetReportsByRoomId(roomId);
             return Ok(list);
+        }
+
+        [HttpGet("total-rooms")]
+        public async Task<ActionResult<int>> GetTotalRoom()
+        {
+            int totalRoom = await _roomService.GetTotalRoom();
+            return Ok(totalRoom);
         }
     }
 }

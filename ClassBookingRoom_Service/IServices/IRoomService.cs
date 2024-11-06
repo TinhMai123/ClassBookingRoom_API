@@ -24,5 +24,7 @@ namespace ClassBookingRoom_Service.IServices
         /*Task<(List<RoomResponseModel> response, int totalCount)>SearchRoomQuery(SearchRoomQuery query);*/
         Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomAdmin(SearchRoomQuery query);
         Task<(List<RoomResponseModel> response, int totalCount)> SearchRoomUser(SearchRoomQuery query);
+        Task<int> GetTotalRoom();
+
     }
 }

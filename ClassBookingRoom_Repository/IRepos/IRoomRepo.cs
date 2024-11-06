@@ -14,6 +14,8 @@ namespace ClassBookingRoom_Repository.IRepos
         Task<Room?> GetRoom(int id);
         Task<List<Room>> GetRooms();
         Task<List<Room>> GetAvailableRooms();
+        Task<int> GetTotalRoom();
+
     }
 }
 
