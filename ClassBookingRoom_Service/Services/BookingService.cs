@@ -161,5 +161,11 @@ namespace ClassBookingRoom_Service.Services
             booking.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(booking);
         }
+
+        public async Task<int> GetTotalBooking()
+        {
+            var total = await _repo.GetTotalBooking();
+            return total;
+        }
     }
 }

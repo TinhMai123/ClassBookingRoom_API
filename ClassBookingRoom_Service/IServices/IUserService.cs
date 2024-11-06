@@ -31,8 +31,8 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> UpdateVerifyToken(Guid id, string verifyToken);
         Task<bool> UpdatePushToken(Guid id, string pushToken);
         Task<bool> UpdateUserStatus(Guid id, UpdateUserStatusRequest request);
-        Task<int> TotalStudent();
-        Task<int> TotalManager();
+        Task<int> GetTotalStudent();
+        Task<int> GetTotalManager();
 
 
     }

@@ -76,7 +76,7 @@ namespace ClassBookingRoom_Repository.Repos
         }
 
 
-        public async Task<int> TotalStudent()
+        public async Task<int> GetTotalStudent()
         {
             return await _context.Users
                 .Where(c => c.IsDeleted == false && c.Role.ToLower()
@@ -84,7 +84,7 @@ namespace ClassBookingRoom_Repository.Repos
                 .CountAsync();
         }
 
-        public async Task<int> TotalManager()
+        public async Task<int> GetTotalManager()
         {
             return await _context.Users
                 .Where(c => c.IsDeleted == false && c.Role.ToLower()

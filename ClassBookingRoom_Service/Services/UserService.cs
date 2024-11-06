@@ -305,15 +305,15 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.UpdateAsync(user);
         }
 
-        public async Task<int> TotalStudent()
+        public async Task<int> GetTotalStudent()
         {
-            var total = await _repo.TotalStudent();
+            var total = await _repo.GetTotalStudent();
             return total;
         }
 
-        public async Task<int> TotalManager()
+        public async Task<int> GetTotalManager()
         {
-            var total = await _repo.TotalManager();
+            var total = await _repo.GetTotalManager();
             return total;
         }
     }

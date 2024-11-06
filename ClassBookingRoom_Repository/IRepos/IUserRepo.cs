@@ -16,8 +16,8 @@ namespace ClassBookingRoom_Repository.IRepos
         Task<List<User>> GetAllUser();
         Task<List<User>> GetUserByName(string name);
         Task<bool> DeleteUser(Guid id);
-        Task<int> TotalStudent();
-        Task<int> TotalManager();
+        Task<int> GetTotalStudent();
+        Task<int> GetTotalManager();
 
     }
 }
