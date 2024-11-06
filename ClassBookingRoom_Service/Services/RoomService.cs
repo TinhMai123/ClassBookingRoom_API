@@ -43,65 +43,57 @@ namespace ClassBookingRoom_Service.Services
         {
             return await _baseRepo.DeleteAsync(id);
         }
-        private static DateTime GetRelativeTime(DateTime date, DateTime time)
+        private static DateTime GetRelativeTime(DateTime time)
         {
-            int difference = (int)Math.Ceiling((date - time).TotalDays);
-            return time.AddDays(difference); ;
+            time = time.AddHours(7);
+            return new DateTime(1, 1, 1, time.Hour, time.Minute, 0);
         }
 
         public async Task<List<RoomResponseModel>> GetAvailableRooms(GetAvailableRoomsRequest request)
         {
             var rooms = await _repo.GetAvailableRooms();
             var roomDTOs = new List<RoomResponseModel>();
-            var bookingStartTime = GetRelativeTime(request.BookingDate, request.StartTime);
-            var bookingEndTime = GetRelativeTime(request.BookingDate, request.EndTime);
+            var bookingStartTime = GetRelativeTime(request.StartTime);
+            var bookingEndTime = GetRelativeTime(request.EndTime);
             foreach (var room in rooms)
             {
                 if (room.RoomType.AllowedCohorts.Any(c => c.Id == request.CohortId)
                     && room.RoomType.Activities.Any(a => a.Id == request.ActivityId))
                 {
+                    var slots = room.RoomSlots;
+                    var filteredSlots = room.RoomSlots;
                     var bookings = await _bookRepo.GetBookings();
                     bookings = bookings.Where(b => b.RoomSlots.First().RoomId == room.Id
                     && b.BookingDate.Date == request.BookingDate.Date).ToList();
-                    if (bookings.Count == 0)
+                    if (bookings.Count != 0)
                     {
-                        var slots = room.RoomSlots;
-                        var filteredSlots = room.RoomSlots;
-                        foreach (var slot in slots)
-                        {
-                            var slotStartTime = GetRelativeTime(request.BookingDate, slot.StartTime);
-                            var slotEndTime = GetRelativeTime(request.BookingDate, slot.EndTime);
-                            if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
-                            {
-                                filteredSlots.Remove(slot);
-                            }
-                        }
-                        if (slots.Count > 0)
-                        {
-                            roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
-                        }
-                    } else
-                    {
-                        var slots = room.RoomSlots;
                         foreach (var booking in bookings)
                         {
-                            if (booking.Status == "Accepted" || booking.Status == "Checked-in")
+                            if (booking.Status == "Pending" || booking.Status == "Accepted" || booking.Status == "Checked-in")
                             {
                                 foreach (var slot in booking.RoomSlots)
                                 {
-                                    var slotStartTime = GetRelativeTime(request.BookingDate, slot.StartTime);
-                                    var slotEndTime = GetRelativeTime(request.BookingDate, slot.EndTime);
-                                    if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
+                                    if (slots.Any(s => s.Id == slot.Id))
                                     {
                                         slots.Remove(slot);
                                     }
                                 }
                             }
                         }
-                        if (slots.Count > 0)
+
+                    }
+                    foreach (var slot in slots)
+                    {
+                        var slotStartTime = GetRelativeTime(slot.StartTime);
+                        var slotEndTime = GetRelativeTime(slot.EndTime);
+                        if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
                         {
-                            roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
+                            filteredSlots.Remove(slot);
                         }
+                    }
+                    if (filteredSlots.Count > 0)
+                    {
+                        roomDTOs.Add(room.ToRoomDTO(filteredSlots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
                     }
                 }
             }
