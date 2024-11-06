@@ -42,5 +42,12 @@ namespace ClassBookingRoom_Repository.Repos
              .Include(x => x.Room)
              .Include(x => x.CreatedBy).ToListAsync();
         }
+
+        public async Task<int> GetTotalReport()
+        {
+            return await _context.Reports
+             .Where(c => c.IsDeleted == false)
+             .CountAsync();
+        }
     }
 }
