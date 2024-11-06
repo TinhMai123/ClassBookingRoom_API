@@ -315,5 +315,11 @@ namespace ClassBookingRoom_API.Controllers
             }
 
         }
+        [HttpGet("total-bookings")]
+        public async Task<ActionResult<int>> GetTotalBooking()
+        {
+            int total = await _bookingService.GetTotalBooking();
+            return Ok(total);
+        }
     }
 }
