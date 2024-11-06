@@ -304,5 +304,11 @@ namespace ClassBookingRoom_Service.Services
             user.UpdatedAt = DateTime.UtcNow;
             return await _baseRepo.UpdateAsync(user);
         }
+
+        public async Task<int> TotalStudent()
+        {
+            var total = await _repo.TotalStudent();
+            return total;
+        }
     }
 }
