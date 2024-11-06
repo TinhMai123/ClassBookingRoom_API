@@ -242,6 +242,12 @@ namespace ClassBookingRoom_API.Controllers
             return Ok(totalStudent);
         }
 
+        [HttpGet("totalManager")]
+        public async Task<ActionResult<int>> GetTotalStaff()
+        {
+            int totalStaff = await _userService.TotalManager();
+            return Ok(totalStaff);
+        }
 
 
     }

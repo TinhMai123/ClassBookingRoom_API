@@ -75,13 +75,20 @@ namespace ClassBookingRoom_Repository.Repos
                 .ToListAsync();
         }
 
-        
 
         public async Task<int> TotalStudent()
         {
             return await _context.Users
                 .Where(c => c.IsDeleted == false && c.Role.ToLower()
                 .Equals("student"))
+                .CountAsync();
+        }
+
+        public async Task<int> TotalManager()
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false && c.Role.ToLower()
+                .Equals("manager"))
                 .CountAsync();
         }
     }

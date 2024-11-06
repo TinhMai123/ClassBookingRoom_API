@@ -310,5 +310,11 @@ namespace ClassBookingRoom_Service.Services
             var total = await _repo.TotalStudent();
             return total;
         }
+
+        public async Task<int> TotalManager()
+        {
+            var total = await _repo.TotalManager();
+            return total;
+        }
     }
 }
