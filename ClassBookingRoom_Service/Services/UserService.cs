@@ -316,5 +316,7 @@ namespace ClassBookingRoom_Service.Services
             var total = await _repo.GetTotalManager();
             return total;
         }
+
+        
     }
 }

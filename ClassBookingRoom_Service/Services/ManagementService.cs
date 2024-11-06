@@ -1,5 +1,6 @@
 ﻿using ClassBookingRoom_Repository.IRepos;
 using ClassBookingRoom_Repository.ResponseModels.Management;
+using ClassBookingRoom_Service.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClassBookingRoom_Service.Services
 {
-    public class ManagementService
+    public class ManagementService : IManagementService
     {
         private readonly IUserRepo _userRepo;
         private readonly IBookingRepo _bookRepo;
