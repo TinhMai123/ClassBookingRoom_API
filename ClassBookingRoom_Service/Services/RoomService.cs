@@ -17,6 +17,7 @@ using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ClassBookingRoom_Service.Services
 {
@@ -42,19 +43,18 @@ namespace ClassBookingRoom_Service.Services
         {
             return await _baseRepo.DeleteAsync(id);
         }
-        private static DateTime getRelativeTime(DateTime date, DateTime time)
+        private static DateTime GetRelativeTime(DateTime date, DateTime time)
         {
-            int difference = (int)(date - time).TotalDays;
-            time.AddDays(difference);
-            return time;
+            int difference = (int)Math.Ceiling((date - time).TotalDays);
+            return time.AddDays(difference); ;
         }
 
         public async Task<List<RoomResponseModel>> GetAvailableRooms(GetAvailableRoomsRequest request)
         {
             var rooms = await _repo.GetAvailableRooms();
             var roomDTOs = new List<RoomResponseModel>();
-            var bookingStartTime = getRelativeTime(request.BookingDate, request.StartTime);
-            var bookingEndTime = getRelativeTime(request.BookingDate, request.EndTime);
+            var bookingStartTime = GetRelativeTime(request.BookingDate, request.StartTime);
+            var bookingEndTime = GetRelativeTime(request.BookingDate, request.EndTime);
             foreach (var room in rooms)
             {
                 if (room.RoomType.AllowedCohorts.Any(c => c.Id == request.CohortId)
@@ -65,7 +65,21 @@ namespace ClassBookingRoom_Service.Services
                     && b.BookingDate.Date == request.BookingDate.Date).ToList();
                     if (bookings.Count == 0)
                     {
-                        roomDTOs.Add(room.ToRoomDTO());
+                        var slots = room.RoomSlots;
+                        var filteredSlots = room.RoomSlots;
+                        foreach (var slot in slots)
+                        {
+                            var slotStartTime = GetRelativeTime(request.BookingDate, slot.StartTime);
+                            var slotEndTime = GetRelativeTime(request.BookingDate, slot.EndTime);
+                            if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
+                            {
+                                filteredSlots.Remove(slot);
+                            }
+                        }
+                        if (slots.Count > 0)
+                        {
+                            roomDTOs.Add(room.ToRoomDTO(slots.Select(s => s.ToRoomSlotsFromRoomDTO()).ToList()));
+                        }
                     } else
                     {
                         var slots = room.RoomSlots;
@@ -75,8 +89,8 @@ namespace ClassBookingRoom_Service.Services
                             {
                                 foreach (var slot in booking.RoomSlots)
                                 {
-                                    var slotStartTime = getRelativeTime(request.BookingDate, slot.StartTime);
-                                    var slotEndTime = getRelativeTime(request.BookingDate, slot.EndTime);
+                                    var slotStartTime = GetRelativeTime(request.BookingDate, slot.StartTime);
+                                    var slotEndTime = GetRelativeTime(request.BookingDate, slot.EndTime);
                                     if (slotStartTime < bookingStartTime || slotEndTime > bookingEndTime)
                                     {
                                         slots.Remove(slot);
