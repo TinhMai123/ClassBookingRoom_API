@@ -115,7 +115,13 @@ namespace ClassBookingRoom_Service.Services
         public async Task<RoomResponseModel?> GetRoom(int id)
         {
             var room = await _repo.GetRoom(id);
-            return room?.ToRoomDTO();
+            if (room == null)
+            {
+                return null;
+            } else
+            {
+                return room.ToRoomDTO();
+            }
         }
 
         public async Task<List<RoomResponseModel>> GetRooms()

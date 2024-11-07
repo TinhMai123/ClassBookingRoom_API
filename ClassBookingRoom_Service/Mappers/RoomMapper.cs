@@ -34,7 +34,7 @@ namespace ClassBookingRoom_Service.Mappers
                 Capacity = model.Capacity,
                 RoomName = model.RoomName,
                 RoomTypeId = model.RoomTypeId,
-                RoomType = model.RoomType.ToRoomTypeDTO(),
+                RoomType = model.RoomType?.ToRoomTypeDTO(),
                 RoomSlots = slots ?? [],
                 Picture = model.Picture,
                 Status = model.Status,

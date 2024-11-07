@@ -26,7 +26,6 @@ namespace ClassBookingRoom_Service.Mappers
                 AllowedCohorts = allowedCohorts,
                 AllowedActivities = allowedActivities
             };
-
         }
         public static RoomType ToRoomTypeFromCreate(this CreateRoomTypeRequestModel dto)
         {

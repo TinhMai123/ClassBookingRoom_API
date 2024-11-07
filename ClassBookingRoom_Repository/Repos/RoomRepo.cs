@@ -31,25 +31,16 @@ namespace ClassBookingRoom_Repository.Repos
 
         public async Task<Room?> GetRoom(int id)
         {
-            var room = await _context.Rooms
-                .Where(c => c.IsDeleted == false)
-                .Include(r => r.RoomType)
-                .Include(r => r.RoomSlots.Where(s => s.IsDeleted == false))
-                .ThenInclude(s => s.Bookings.Where(c => c.IsDeleted == false && c.Status == "Pending"))
-                .SingleOrDefaultAsync(r => r.Id == id);
-            if (room != null)
-            {
-                // Filter RoomType if necessary
-                if (room.RoomType?.IsDeleted == true)
-                {
-                    room.RoomType = null; // Set to null if the RoomType is deleted
-                }
-
-                // Filter RoomSlots
-                room.RoomSlots = room.RoomSlots.Where(rs => !rs.IsDeleted).ToList();
-            }
-
-            return room;
+            return await _context.Rooms
+                 .Where(c => c.IsDeleted == false)
+                 .Include(r => r.RoomType)
+                 .ThenInclude(r => r.AllowedCohorts)
+                 .Where(s => s.IsDeleted == false)
+                 .Include(r => r.RoomSlots!.Where(s => s.IsDeleted == false))
+                 .ThenInclude(s => s.Bookings!.Where(c => c.IsDeleted == false))
+                 .Include(r => r.RoomType!.Activities)
+                 .Where(c => c.IsDeleted == false)
+                 .SingleOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<List<Room>> GetRooms()
