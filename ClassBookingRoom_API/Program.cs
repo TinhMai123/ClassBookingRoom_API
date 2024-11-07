@@ -111,7 +111,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policyBuilder =>
         policyBuilder
-        .WithOrigins("http://localhost:5173", "https://swd392-lilac.vercel.app", "https://class-booking-room.vercel.app/")
+        .WithOrigins("http://localhost:5173",
+        "https://swd392-lilac.vercel.app",
+        "https://class-booking-room.vercel.app/",
+        "https://class-booking-room-k3qsnjlfd-vuvuvo0303s-projects.vercel.app")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .WithExposedHeaders("X-Total-Count", "X-Current-Page", "X-Total-Pages")
