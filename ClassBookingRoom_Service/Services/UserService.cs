@@ -211,7 +211,7 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<(List<UserResponseModel>, int)> SearchUser(SearchUserQuery query)
         {
-            var modelList = await _baseRepo.GetAllAsync();
+            var modelList = await _repo.GetAllUser();
             var result = modelList.AsQueryable();
             if (!string.IsNullOrWhiteSpace(query.SearchValue))
             {
