@@ -87,6 +87,12 @@ namespace ClassBookingRoom_Service.Services
             var list = await _reportRepo.GetReports();
             return list.Where(x => x.CreatorId == userId).Select(x => x.ToReportDTO()).ToList();
         }
+
+        public async Task<int> GetTotalReport()
+        {
+            var total = await _reportRepo.GetTotalReport();
+            return total;
+        }
     }
 
 }

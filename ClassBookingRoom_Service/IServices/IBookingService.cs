@@ -25,5 +25,6 @@ namespace ClassBookingRoom_Service.IServices
         Task<bool> CancelBooking(int id);
         Task<bool> CheckInBooking(int id);
         Task<bool> DenyBooking(int id, string note);
+        Task<int> GetTotalBooking();
     }
 }

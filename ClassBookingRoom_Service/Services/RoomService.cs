@@ -218,6 +218,10 @@ namespace ClassBookingRoom_Service.Services
             return await _baseRepo.UpdateAsync(room);
         }
 
-
+        public async Task<int> GetTotalRoom()
+        {
+            var total = await _repo.GetTotalRoom();
+            return total;
+        }
     }
 }

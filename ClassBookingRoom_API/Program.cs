@@ -70,6 +70,8 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IRoomSlotService, RoomSlotService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IBookingModifyHistoryService, BookingModifyHistoryService>();
+builder.Services.AddScoped<IManagementService, ManagementService>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
