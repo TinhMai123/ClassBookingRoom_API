@@ -179,6 +179,13 @@ namespace ClassBookingRoom_API.Controllers
         {
             try
             {
+                var user = await _userService.GetUserByEmailAsync(login.Email);
+                if (user == null)
+                {
+                    return BadRequest("Incorrect email");
+                } else if (user.Password != login.Password) {
+                    return BadRequest("Incorrect password");
+                }
                 var token = await _userService.Login(login);
                 if (token != null) return Ok(token);
                 else return NotFound("User Not Found");
