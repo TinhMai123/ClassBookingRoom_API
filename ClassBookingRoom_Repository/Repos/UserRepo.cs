@@ -91,5 +91,12 @@ namespace ClassBookingRoom_Repository.Repos
                 .Equals("manager"))
                 .CountAsync();
         }
+        public async Task<int> GetTotalStudentInCohort(int id)
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false && c.Role.ToLower()
+                .Equals("student") && c.CohortId == id)
+                .CountAsync();
+        }
     }
 }

@@ -253,19 +253,6 @@ namespace ClassBookingRoom_API.Controllers
             int totalStaff = await _userService.GetTotalManager();
             return Ok(totalStaff);
         }
-
-        [HttpGet("data-admin-dashboard")]
-        public async Task<ActionResult<DashBoardAdminResponseModel>> DashBoardAdmin()
-        {
-            var total = await _management.GetDashBoardForAdmin();
-            return Ok(total);
-        }
-
-        [HttpGet("data-staff-dashboard")]
-        public async Task<ActionResult<DashBoardStaffResponseModel>> DashBoardStaff()
-        {
-            var total = await _management.GetDashBoardForStaff();
-            return Ok(total);
-        }
+        
     }
 }

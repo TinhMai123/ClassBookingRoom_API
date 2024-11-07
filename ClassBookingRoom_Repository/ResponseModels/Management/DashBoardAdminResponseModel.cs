@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassBookingRoom_Repository.ResponseModels.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ClassBookingRoom_Repository.ResponseModels.Management
         public int totalRoom { get; set; }
         public int totalBooking { get; set; }
         public ICollection<int> totalBookinginMonth { get; set; } = [];
-        public ICollection<double> PercentUserInCohort { get; set; } = [];
+        public ICollection<PercentStudentInCohort> PercentStudentInCohort { get; set; } = [];
 
     }
 }
