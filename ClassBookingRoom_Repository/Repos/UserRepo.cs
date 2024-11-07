@@ -74,5 +74,29 @@ namespace ClassBookingRoom_Repository.Repos
                 .Include(x => x.Department)
                 .ToListAsync();
         }
+
+
+        public async Task<int> GetTotalStudent()
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false && c.Role.ToLower()
+                .Equals("student"))
+                .CountAsync();
+        }
+
+        public async Task<int> GetTotalManager()
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false && c.Role.ToLower()
+                .Equals("manager"))
+                .CountAsync();
+        }
+        public async Task<int> GetTotalStudentInCohort(int id)
+        {
+            return await _context.Users
+                .Where(c => c.IsDeleted == false && c.Role.ToLower()
+                .Equals("student") && c.CohortId == id)
+                .CountAsync();
+        }
     }
 }

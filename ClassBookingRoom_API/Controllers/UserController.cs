@@ -2,6 +2,7 @@
 using ClassBookingRoom_Repository.RequestModels.User;
 using ClassBookingRoom_Repository.ResponseModels.Booking;
 using ClassBookingRoom_Repository.ResponseModels.FaceDescriptor;
+using ClassBookingRoom_Repository.ResponseModels.Management;
 using ClassBookingRoom_Repository.ResponseModels.Report;
 using ClassBookingRoom_Repository.ResponseModels.User;
 using ClassBookingRoom_Service.IServices;
@@ -18,12 +19,16 @@ namespace ClassBookingRoom_API.Controllers
         private readonly IReportService _reportService;
         private readonly IFaceDescriptorService _faceDescriptorService;
         private readonly IBookingService _bookingService;
-        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService, IReportService reportService, IBookingService bookingService)
+        private readonly IManagementService _management;
+
+
+        public UserController(IUserService userService, IFaceDescriptorService faceDescriptorService, IReportService reportService, IBookingService bookingService, IManagementService management)
         {
             _userService = userService;
             _faceDescriptorService = faceDescriptorService;
             _reportService = reportService;
             _bookingService = bookingService;
+            _management = management;
         }
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<UserResponseModel>> GetById([FromRoute] Guid id)
@@ -234,7 +239,20 @@ namespace ClassBookingRoom_API.Controllers
             {
                 return BadRequest(e.Message);
             }
-
         }
+        [HttpGet("total-students")]
+        public async Task<ActionResult<int>> GetTotalStudent()
+        {
+            int totalStudent = await _userService.GetTotalStudent(); 
+            return Ok(totalStudent);
+        }
+
+        [HttpGet("total-managers")]
+        public async Task<ActionResult<int>> GetTotalStaff()
+        {
+            int totalStaff = await _userService.GetTotalManager();
+            return Ok(totalStaff);
+        }
+        
     }
 }

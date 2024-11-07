@@ -159,7 +159,24 @@ namespace ClassBookingRoom_Service.Services
             }
             booking.Status = "Checked-in";
             booking.UpdatedAt = DateTime.UtcNow;
-            return await _baseRepo.UpdateAsync(booking);
+            var result = await _baseRepo.UpdateAsync(booking);
+            if (result)
+            {
+                var student = await _userRepo.GetById(booking.UserId);
+                var roomSlot = await _baseSlotRepo.GetByIdAsync(booking.RoomSlots.First().Id);
+                var room = await _roomRepo.GetRoom(roomSlot!.RoomId);
+                if (student != null)
+                {
+                    await _notificationService.NotifyManager("A student has successfully checked in a booking.", $"Student Name: {student.FullName}\r\nRoom: {room.RoomName}\r");
+                }
+            }
+            return result;
+        }
+
+        public async Task<int> GetTotalBooking()
+        {
+            var total = await _repo.GetTotalBooking();
+            return total;
         }
     }
 }
