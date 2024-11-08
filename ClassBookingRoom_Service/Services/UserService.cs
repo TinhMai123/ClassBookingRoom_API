@@ -10,6 +10,7 @@ using ClassBookingRoom_Service.IServices;
 using ClassBookingRoom_Service.Mappers;
 using FirebaseAdmin.Auth;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,6 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Management;
 using System.Net.Mail;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -251,7 +253,7 @@ namespace ClassBookingRoom_Service.Services
         {
             return await _repo.GetUserByEmail(email);
         }
-
+    
         public async Task<bool> VerifyUser(Guid id, string verifyToken)
         {
             var user = await _repo.GetById(id);

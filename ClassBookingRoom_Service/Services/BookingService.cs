@@ -152,7 +152,7 @@ namespace ClassBookingRoom_Service.Services
 
         public async Task<bool> CheckInBooking(int id)
         {
-            var booking = await _baseRepo.GetByIdAsync(id);
+            var booking = await _repo.GetBooking(id);
             if (booking == null)
             {
                 throw new Exception("Booking not found");
