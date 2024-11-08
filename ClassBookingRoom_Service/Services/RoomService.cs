@@ -36,6 +36,10 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> AddRoomAsync(CreateRoomRequestModel dto)
         {
+            var roomList = await _baseRepo.GetAllAsync();
+            if (roomList.FirstOrDefault(c => c.RoomName.ToLower().Equals(dto.RoomName.ToLower())) != null)
+            { throw new Exception($"Room Name : {dto.RoomName} is already taken"); }
+            if (dto.Capacity <= 0) { throw new Exception("Capacity cannot be smaller than 0"); }
             return await _baseRepo.AddAsync(dto.ToRoomFromCreate());
         }
 
@@ -213,8 +217,13 @@ namespace ClassBookingRoom_Service.Services
         }
         public async Task<bool> UpdateRoomAsync(int id, UpdateRoomRequestModel update)
         {
+            var roomList = await _baseRepo.GetAllAsync();
             var room = await _baseRepo.GetByIdAsync(id);
-            if (room is null) { return false; }
+
+            if (room is null) { throw new Exception($"Room with ID {id} not found."); }
+            if(roomList.Any(c=>c.Id != id && c.RoomName.ToLower().Equals(update.RoomName.ToLower()))) 
+            { throw new Exception($"Room Name : {update.RoomName} is already taken"); }
+            if (update.Capacity <= 0) { throw new Exception("Capacity cannot be smaller than 0"); }
             room.UpdatedAt = DateTime.UtcNow;
             room.Status = update.Status ?? "";
             room.Capacity = update.Capacity;
