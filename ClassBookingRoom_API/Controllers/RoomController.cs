@@ -41,23 +41,37 @@ namespace ClassBookingRoom_API.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<RoomResponseModel>> UpdateRoom([FromRoute] int id, [FromBody] UpdateRoomRequestModel dto)
         {
-            var result = await _roomService.UpdateRoomAsync(id, dto);
-            if (result)
+            try
             {
-                return Ok();
+                var result = await _roomService.UpdateRoomAsync(id, dto);
+                if (result)
+                {
+                    return Ok("Update successfully");
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<RoomResponseModel>> CreateRoom([FromBody] CreateRoomRequestModel dto)
         {
-            var result = await _roomService.AddRoomAsync(dto);
-            if (result)
+            try
             {
-                return Ok();
+                var result = await _roomService.AddRoomAsync(dto);
+                if (result)
+                {
+                    return Ok("Room added successfully");
+                }
+                return BadRequest();
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
         }
 
         [HttpDelete("{id:int}")]
